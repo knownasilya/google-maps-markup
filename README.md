@@ -1,6 +1,16 @@
-# Google-maps-markup
+# google-maps-markup
 
 This README outlines the details of collaborating on this Ember addon.
+
+## Usage
+
+```bash
+ember install google-maps-markup
+```
+
+```hbs
+{{google-maps-markup map=map}}
+```
 
 ## Installation
 
