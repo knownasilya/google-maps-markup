@@ -1,6 +1,6 @@
 # google-maps-markup
 
-This README outlines the details of collaborating on this Ember addon.
+[![Build Status](https://travis-ci.org/knownasilya/google-maps-markup.svg)](https://travis-ci.org/knownasilya/google-maps-markup)
 
 ## Usage
 
