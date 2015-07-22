@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import layout from './template';
-import createCircle from '../../utils/create-circle';
+import overlayToFeature from '../../utils/overlay-to-feature';
 import MODE from '../../utils/modes';
 import DRAWING_MODE from '../../utils/drawing-modes';
 
@@ -15,10 +15,6 @@ const {
   A: boundArray,
   observer: observes
 } = Ember;
-const {
-  Polygon,
-  Feature
-} = google.maps.Data;
 const {
   LatLng
 } = google.maps;
@@ -163,6 +159,15 @@ export default Ember.Component.extend({
       });
 
       this.set('results', boundArray());
+    },
+
+    removeResult(result) {
+      var results = this.get('results');
+      var layer = this.get('activeLayer');
+
+      layer.data.remove(result.feature);
+
+      this.set('results', results.without(result));
     }
   },
 
@@ -195,30 +200,10 @@ export default Ember.Component.extend({
 
     let listener = dm.addListener('overlaycomplete', run.bind(this, (event) => {
       var activeLayer = this.get('activeLayer');
+      var feature = overlayToFeature(event.type, event.overlay);
       var paths;
 
       event.overlay.setMap(null);
-
-      if (event.type === 'circle') {
-        let center = event.overlay.getCenter();
-        let radius = event.overlay.radius;
-
-        paths = [createCircle(center, radius)];
-      } else if (event.type === 'rectangle') {
-        let bounds = event.overlay.getBounds();
-        let ne = bounds.getNorthEast();
-        let sw = bounds.getSouthWest();
-        let nw = new LatLng(ne.lat(), sw.lng());
-        let se = new LatLng(sw.lat(), ne.lng());
-        let path = [ne, se, sw, nw];
-
-        paths = [path];
-      }
-
-      let polygon = new Polygon(paths);
-      let feature = new Feature({
-        geometry: polygon
-      });
 
       activeLayer.data.add(feature);
     }));

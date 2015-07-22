@@ -40,7 +40,7 @@
   </button>
   <ul>
     {{#each results as |result|}}
-      <li>{{result.type}}</li>
+      {{markup-result-item data=result onremove=(action "removeResult")}}
     {{/each}}
   </ul>
 {{/if}}
