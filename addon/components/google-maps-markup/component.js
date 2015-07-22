@@ -19,6 +19,9 @@ const {
   Polygon,
   Feature
 } = google.maps.Data;
+const {
+  LatLng
+} = google.maps;
 
 export default Ember.Component.extend({
   layout: layout,
@@ -46,10 +49,13 @@ export default Ember.Component.extend({
     DRAWING_MODE.marker,
     DRAWING_MODE.polyline,
     DRAWING_MODE.circle,
+    DRAWING_MODE.rectangle,
     DRAWING_MODE.polygon
   ],
   measureModes: [
     DRAWING_MODE.polyline,
+    DRAWING_MODE.circle,
+    DRAWING_MODE.rectangle,
     DRAWING_MODE.polygon
   ],
 
@@ -188,13 +194,29 @@ export default Ember.Component.extend({
     var dm = this.get('dm');
 
     let listener = dm.addListener('overlaycomplete', run.bind(this, (event) => {
+      var activeLayer = this.get('activeLayer');
+      var paths;
+
       event.overlay.setMap(null);
 
-      var activeLayer = this.get('activeLayer');
-      var center = event.overlay.getCenter();
-      var radius = event.overlay.radius;
-      var polygon = new Polygon([createCircle(center, radius)]);
-      var feature = new Feature({
+      if (event.type === 'circle') {
+        let center = event.overlay.getCenter();
+        let radius = event.overlay.radius;
+
+        paths = [createCircle(center, radius)];
+      } else if (event.type === 'rectangle') {
+        let bounds = event.overlay.getBounds();
+        let ne = bounds.getNorthEast();
+        let sw = bounds.getSouthWest();
+        let nw = new LatLng(ne.lat(), sw.lng());
+        let se = new LatLng(sw.lat(), ne.lng());
+        let path = [ne, se, sw, nw];
+
+        paths = [path];
+      }
+
+      let polygon = new Polygon(paths);
+      let feature = new Feature({
         geometry: polygon
       });
 
