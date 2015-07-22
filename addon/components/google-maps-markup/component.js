@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from './template';
+import createCircle from '../../utils/create-circle';
 import MODE from '../../utils/modes';
 import DRAWING_MODE from '../../utils/drawing-modes';
 
@@ -9,13 +10,21 @@ if (!window.google) {
 
 const {
   on,
+  run,
   computed,
   A: boundArray,
   observer: observes
 } = Ember;
+const {
+  Polygon,
+  Feature
+} = google.maps.Data;
 
 export default Ember.Component.extend({
   layout: layout,
+  dm: new google.maps.drawing.DrawingManager({
+    drawingControl: false
+  }),
   dataLayers: [
     { isHidden: false, data: new google.maps.Data() },
     { isHidden: false, data: new google.maps.Data() }
@@ -26,7 +35,7 @@ export default Ember.Component.extend({
   }),
   activeLayer: undefined,
   resultsHidden: false,
-  drawingMode: 'Point',
+  drawingMode: 'marker',
   mode: MODE.pan.id,
   modes: [
     MODE.pan,
@@ -36,6 +45,7 @@ export default Ember.Component.extend({
   drawingModes: [
     DRAWING_MODE.marker,
     DRAWING_MODE.polyline,
+    DRAWING_MODE.circle,
     DRAWING_MODE.polygon
   ],
   measureModes: [
@@ -61,43 +71,65 @@ export default Ember.Component.extend({
       }
 
       this.set(`markupResults.${mode}`, data);
+
+      return data;
     }
   }),
+
+  getTool(id) {
+    var mode = this.get('mode');
+
+    if (mode === 'pan') {
+      return;
+    }
+
+    return DRAWING_MODE[id];
+  },
 
   actions: {
     changeMode(mode) {
       var map = this.get('map');
-      var drawingMode = this.get('drawingMode');
+      var drawingModeId = this.get('drawingMode');
       var dataLayers = this.get('dataLayers');
       var activeLayer = this.get('activeLayer');
       var id = mode.id;
 
       this.set('lastActiveLayer', activeLayer);
+      this.set('mode', id);
 
       if (mode === MODE.pan) {
         if (activeLayer) {
           activeLayer.data.setDrawingMode(null);
         }
       } else if (mode === MODE.draw || mode === MODE.measure) {
+        let tool = this.getTool(drawingModeId);
+
         activeLayer = dataLayers[mode === MODE.draw ? 0 : 1];
 
         if (!activeLayer.isHidden) {
           activeLayer.data.setMap(map);
         }
 
-        activeLayer.data.setDrawingMode(drawingMode);
+        activeLayer.data.setDrawingMode(tool.dataId);
 
         this.set('activeLayer', activeLayer);
       }
-
-      this.set('mode', id);
     },
 
     changeDrawingMode(mode) {
       var activeLayer = this.get('activeLayer');
+      var dm = this.get('dm');
+      var tool = this.getTool(mode);
 
       if (activeLayer) {
-        activeLayer.data.setDrawingMode(mode);
+        if (tool.dataId) {
+          activeLayer.data.setDrawingMode(tool.dataId);
+        } else if (tool.dmId) {
+          let map = this.get('map');
+
+          dm.setDrawingMode(tool.dmId);
+          dm.setMap(map);
+        }
       }
 
       this.set('drawingMode', mode);
@@ -129,6 +161,7 @@ export default Ember.Component.extend({
   },
 
   activeLayerSetup: observes('activeLayer', function () {
+    var dm = this.get('dm');
     var layer = this.get('activeLayer');
     var lastLayer = this.get('lastActiveLayer');
 
@@ -140,27 +173,51 @@ export default Ember.Component.extend({
       google.maps.event.clearListeners(lastLayer.data, 'addfeature');
     }
 
-    var listener = layer.data.addListener('addfeature', (event) => {
-      Ember.run(() => {
-        let drawingMode = this.get('drawingMode');
-        let results = this.get('results');
+    var listener = layer.data.addListener('addfeature', run.bind(this, (event) => {
+      let drawingMode = this.get('drawingMode');
+      let results = this.get('results');
 
-        results.pushObject({ type: drawingMode, feature: event.feature });
-      });
-    });
+      results.pushObject({ type: drawingMode, feature: event.feature });
+    }));
+
 
     this.set('addFeatureListener', listener);
   }),
 
+  setup: on('didInsertElement', function () {
+    var dm = this.get('dm');
+
+    let listener = dm.addListener('overlaycomplete', run.bind(this, (event) => {
+      event.overlay.setMap(null);
+
+      var activeLayer = this.get('activeLayer');
+      var center = event.overlay.getCenter();
+      var radius = event.overlay.radius;
+      var polygon = new Polygon([createCircle(center, radius)]);
+      var feature = new Feature({
+        geometry: polygon
+      });
+
+      activeLayer.data.add(feature);
+    }));
+
+    this.set('dmListener', listener);
+  }),
+
   teardown: on('willDestroyElement', function () {
     var dataLayers = this.get('dataLayers');
+    var dmListener = this.get('dmListener');
 
-    if (!dataLayers) {
-      return;
+    // Cleanup all data layer events
+    if (dataLayers) {
+      dataLayers.forEach(layer => {
+        google.maps.event.clearListeners(layer, 'addfeature');
+      });
     }
 
-    dataLayers.forEach(layer => {
-      google.maps.event.clearListeners(layer, 'addfeature');
-    });
+    // Cleanup drawing manager events
+    if (dmListener) {
+      google.maps.event.clearListeners(dmListener, 'overlaycomplete');
+    }
   })
 });
