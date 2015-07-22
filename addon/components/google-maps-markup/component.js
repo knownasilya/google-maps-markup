@@ -52,6 +52,15 @@ export default Ember.Component.extend({
       }
 
       return this.get(`markupResults.${mode}`);
+    },
+    set(key, data) {
+      var mode = this.get('mode');
+
+      if (!mode) {
+        return;
+      }
+
+      this.set(`markupResults.${mode}`, data);
     }
   }),
 
@@ -62,6 +71,8 @@ export default Ember.Component.extend({
       var dataLayers = this.get('dataLayers');
       var activeLayer = this.get('activeLayer');
       var id = mode.id;
+
+      this.set('lastActiveLayer', activeLayer);
 
       if (mode === MODE.pan) {
         if (activeLayer) {
@@ -119,9 +130,14 @@ export default Ember.Component.extend({
 
   activeLayerSetup: observes('activeLayer', function () {
     var layer = this.get('activeLayer');
+    var lastLayer = this.get('lastActiveLayer');
 
     if (!layer) {
       return;
+    }
+
+    if (lastLayer) {
+      google.maps.event.clearListeners(lastLayer.data, 'addfeature');
     }
 
     var listener = layer.data.addListener('addfeature', (event) => {
@@ -144,7 +160,7 @@ export default Ember.Component.extend({
     }
 
     dataLayers.forEach(layer => {
-      google.maps.events.clearListeners(layer, 'addfeature');
+      google.maps.event.clearListeners(layer, 'addfeature');
     });
   })
 });
