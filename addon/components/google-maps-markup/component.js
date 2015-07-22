@@ -15,9 +15,6 @@ const {
   A: boundArray,
   observer: observes
 } = Ember;
-const {
-  LatLng
-} = google.maps;
 
 export default Ember.Component.extend({
   layout: layout,
