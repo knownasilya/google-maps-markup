@@ -1,0 +1,44 @@
+<h4>Mode</h4>
+
+<div class="btn-group form-group" role="group" aria-label="Markup Modes">
+  {{#each modes as |mode|}}
+    <button type="button" class="btn btn-default" title={{mode.title}} onclick={{action 'changeMode' mode}}>
+      <i class="fa {{mode.icon}}"></i>
+      {{mode.name}}
+    </button>
+  {{/each}}
+</div>
+
+<h4>Tools</h4>
+{{#if (is-equal mode 'draw')}}
+  <div>
+    {{#each drawingModes as |mode|}}
+      <button type="button" class="btn btn-default {{if (is-equal mode.id drawingMode) 'active'}}" title={{mode.title}} onclick={{action 'changeDrawingMode' mode.id}}>
+        {{mode.name}}
+      </button>
+    {{/each}}
+  </div>
+{{else if (is-equal mode 'measure')}}
+  <div>
+    {{#each measureModes as |mode|}}
+      <button type="button" class="btn btn-default {{if (is-equal mode.id drawingMode) 'active'}}" title={{mode.title}} onclick={{action 'changeDrawingMode' mode.id}}>
+        {{mode.name}}
+      </button>
+    {{/each}}
+  </div>
+{{/if}}
+
+<h4>Results</h4>
+<ul>
+  {{#if (is-equal mode 'draw')}}
+    {{#each results.draw as |result|}}
+      <li>{{result.type}}</li>
+    {{/each}}
+  {{else if (is-equal mode 'measure')}}
+    {{#each results.measure as |result|}}
+      <li>{{result.type}}</li>
+    {{/each}}
+  {{/if}}
+</ul>
+
+{{yield}}
