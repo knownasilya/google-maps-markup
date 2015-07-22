@@ -9,36 +9,40 @@
   {{/each}}
 </div>
 
-<h4>Tools</h4>
-{{#if (is-equal mode 'draw')}}
-  <div>
-    {{#each drawingModes as |mode|}}
-      <button type="button" class="btn btn-default {{if (is-equal mode.id drawingMode) 'active'}}" title={{mode.title}} onclick={{action 'changeDrawingMode' mode.id}}>
-        {{mode.name}}
-      </button>
-    {{/each}}
-  </div>
-{{else if (is-equal mode 'measure')}}
-  <div>
-    {{#each measureModes as |mode|}}
-      <button type="button" class="btn btn-default {{if (is-equal mode.id drawingMode) 'active'}}" title={{mode.title}} onclick={{action 'changeDrawingMode' mode.id}}>
-        {{mode.name}}
-      </button>
-    {{/each}}
-  </div>
-{{/if}}
-
-<h4>Results</h4>
-<ul>
+{{#unless (is-equal mode 'pan')}}
+  <h4>Tools</h4>
   {{#if (is-equal mode 'draw')}}
-    {{#each results.draw as |result|}}
-      <li>{{result.type}}</li>
-    {{/each}}
+    <div>
+      {{#each drawingModes as |mode|}}
+        <button type="button" class="btn btn-default {{if (is-equal mode.id drawingMode) 'active'}}" title={{mode.title}} onclick={{action 'changeDrawingMode' mode.id}}>
+          {{mode.name}}
+        </button>
+      {{/each}}
+    </div>
   {{else if (is-equal mode 'measure')}}
-    {{#each results.measure as |result|}}
+    <div>
+      {{#each measureModes as |mode|}}
+        <button type="button" class="btn btn-default {{if (is-equal mode.id drawingMode) 'active'}}" title={{mode.title}} onclick={{action 'changeDrawingMode' mode.id}}>
+          {{mode.name}}
+        </button>
+      {{/each}}
+    </div>
+  {{/if}}
+{{/unless}}
+
+{{#if results}}
+  <h4>Results</h4>
+  <button type="button" class="btn btn-default" title="Clear Results" onclick={{action 'clearResults'}}>
+    Clear
+  </button>
+  <button type="button" class="btn btn-default" title="{{if resultsHidden 'Show' 'Hide'}} Results" onclick={{action 'toggleResults'}}>
+    {{if resultsHidden 'Show' 'Hide'}}
+  </button>
+  <ul>
+    {{#each results as |result|}}
       <li>{{result.type}}</li>
     {{/each}}
-  {{/if}}
-</ul>
+  </ul>
+{{/if}}
 
 {{yield}}

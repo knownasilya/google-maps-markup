@@ -9,6 +9,7 @@ if (!window.google) {
 
 const {
   on,
+  computed,
   A: boundArray,
   observer: observes
 } = Ember;
@@ -16,11 +17,12 @@ const {
 export default Ember.Component.extend({
   layout: layout,
   dataLayers: [new google.maps.Data()],
-  results: Ember.Object.create({
+  markupResults: Ember.Object.create({
     draw: boundArray(),
     measure: boundArray()
   }),
   activeLayer: undefined,
+  resultsHidden: false,
   drawingMode: 'Point',
   mode: MODE.pan.id,
   modes: [
@@ -37,6 +39,18 @@ export default Ember.Component.extend({
     DRAWING_MODE.polyline,
     DRAWING_MODE.polygon
   ],
+
+  results: computed('mode', {
+    get() {
+      var mode = this.get('mode');
+
+      if (!mode) {
+        return;
+      }
+
+      return this.get(`markupResults.${mode}`);
+    }
+  }),
 
   actions: {
     changeMode(mode) {
@@ -71,6 +85,28 @@ export default Ember.Component.extend({
       }
 
       this.set('drawingMode', mode);
+    },
+
+    toggleResults() {
+      var isHidden = this.toggleProperty('resultsHidden');
+      var activeLayer = this.get('activeLayer');
+      var map = this.get('map');
+
+      if (!isHidden) {
+        activeLayer.setMap(map);
+      } else {
+        activeLayer.setMap(null);
+      }
+    },
+
+    clearResults() {
+      var layer = this.get('activeLayer');
+
+      layer.forEach((feature) => {
+        layer.remove(feature);
+      });
+
+      this.set('results', boundArray());
     }
   },
 
@@ -83,10 +119,8 @@ export default Ember.Component.extend({
 
     var listener = layer.addListener('addfeature', (event) => {
       Ember.run(() => {
-        console.log(event.feature);
-        let mode = this.get('mode');
         let drawingMode = this.get('drawingMode');
-        let results = this.get(`results.${mode}`);
+        let results = this.get('results');
 
         results.pushObject({ type: drawingMode, feature: event.feature });
       });
