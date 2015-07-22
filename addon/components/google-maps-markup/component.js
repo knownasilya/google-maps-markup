@@ -169,7 +169,6 @@ export default Ember.Component.extend({
   },
 
   activeLayerSetup: observes('activeLayer', function () {
-    var dm = this.get('dm');
     var layer = this.get('activeLayer');
     var lastLayer = this.get('lastActiveLayer');
 
@@ -198,7 +197,6 @@ export default Ember.Component.extend({
     let listener = dm.addListener('overlaycomplete', run.bind(this, (event) => {
       var activeLayer = this.get('activeLayer');
       var feature = overlayToFeature(event.type, event.overlay);
-      var paths;
 
       event.overlay.setMap(null);
 
