@@ -16,7 +16,10 @@ const {
 
 export default Ember.Component.extend({
   layout: layout,
-  dataLayers: [new google.maps.Data()],
+  dataLayers: [
+    { isHidden: false, data: new google.maps.Data() },
+    { isHidden: false, data: new google.maps.Data() }
+  ],
   markupResults: Ember.Object.create({
     draw: boundArray(),
     measure: boundArray()
@@ -62,16 +65,18 @@ export default Ember.Component.extend({
 
       if (mode === MODE.pan) {
         if (activeLayer) {
-          activeLayer.setDrawingMode(null);
+          activeLayer.data.setDrawingMode(null);
         }
-      } else if (mode === MODE.draw) {
-        if (!activeLayer) {
-          activeLayer = dataLayers[0];
-          activeLayer.setMap(map);
-          this.set('activeLayer', activeLayer);
+      } else if (mode === MODE.draw || mode === MODE.measure) {
+        activeLayer = dataLayers[mode === MODE.draw ? 0 : 1];
+
+        if (!activeLayer.isHidden) {
+          activeLayer.data.setMap(map);
         }
 
-        activeLayer.setDrawingMode(drawingMode);
+        activeLayer.data.setDrawingMode(drawingMode);
+
+        this.set('activeLayer', activeLayer);
       }
 
       this.set('mode', id);
@@ -81,7 +86,7 @@ export default Ember.Component.extend({
       var activeLayer = this.get('activeLayer');
 
       if (activeLayer) {
-        activeLayer.setDrawingMode(mode);
+        activeLayer.data.setDrawingMode(mode);
       }
 
       this.set('drawingMode', mode);
@@ -93,17 +98,19 @@ export default Ember.Component.extend({
       var map = this.get('map');
 
       if (!isHidden) {
-        activeLayer.setMap(map);
+        activeLayer.data.setMap(map);
       } else {
-        activeLayer.setMap(null);
+        activeLayer.data.setMap(null);
       }
+
+      activeLayer.isHidden = isHidden;
     },
 
     clearResults() {
       var layer = this.get('activeLayer');
 
-      layer.forEach((feature) => {
-        layer.remove(feature);
+      layer.data.forEach((feature) => {
+        layer.data.remove(feature);
       });
 
       this.set('results', boundArray());
@@ -117,7 +124,7 @@ export default Ember.Component.extend({
       return;
     }
 
-    var listener = layer.addListener('addfeature', (event) => {
+    var listener = layer.data.addListener('addfeature', (event) => {
       Ember.run(() => {
         let drawingMode = this.get('drawingMode');
         let results = this.get('results');
