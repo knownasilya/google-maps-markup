@@ -1,4 +1,3 @@
-const LatLng = google.maps.LatLng;
 const computeArea = google.maps.geometry.spherical.computeArea;
 
 export function polygonArea(polygon) {
