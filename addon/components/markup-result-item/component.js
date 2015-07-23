@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import layout from './template';
-import { polygonArea, circleArea, rectangleArea } from 'map/utils/shape-area';
+import { polygonArea, circleArea, rectangleArea } from '../../utils/shape-area';
 
 const {
   on
