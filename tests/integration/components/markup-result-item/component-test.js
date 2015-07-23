@@ -7,21 +7,15 @@ moduleForComponent('markup-result-item', 'Integration | Component | markup resul
 });
 
 test('it renders', function(assert) {
-  assert.expect(2);
+  assert.expect(1);
 
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
+  this.set('data', {
+    type: 'circle'
+  });
 
-  this.render(hbs`{{markup-result-item}}`);
+  this.render(hbs`{{markup-result-item data=data}}`);
 
-  assert.equal(this.$().text(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#markup-result-item}}
-      template block text
-    {{/markup-result-item}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$().text().trim().split('\n').join(' '), 'circle Remove');
 });

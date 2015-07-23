@@ -5,6 +5,6 @@ module('Unit | Helper | get');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  var result = get(42);
-  assert.ok(result);
+  var result = get([{ test: 'test' }, 'test']);
+  assert.equal(result, 'test');
 });

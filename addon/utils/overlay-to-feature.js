@@ -16,7 +16,7 @@ export default function overlayToFeature(type, overlay) {
       let center = overlay.getCenter();
       let radius = overlay.radius;
 
-      paths = [createCircle(center, radius)];
+      paths = [createCircle(center.lat(), center.lng(), radius)];
       break;
     }
 

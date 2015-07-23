@@ -5,6 +5,6 @@ module('Unit | Utility | modes');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  var result = modes();
-  assert.ok(result);
+  var result = modes;
+  assert.ok(Object.keys(result));
 });

@@ -5,6 +5,6 @@ module('Unit | Utility | drawing modes');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  var result = drawingModes();
-  assert.ok(result);
+  var result = drawingModes;
+  assert.ok(Object.keys(result).length);
 });
