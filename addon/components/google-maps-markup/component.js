@@ -165,6 +165,32 @@ export default Ember.Component.extend({
       layer.data.remove(result.feature);
 
       this.set('results', results.without(result));
+    },
+
+    highlightResult(data) {
+      var layer = this.get('activeLayer');
+      var style;
+
+      if (data.type === 'marker') {
+        style = {
+          icon: {
+            url: '/google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
+            scaledSize: new google.maps.Size(22, 40)
+          }
+        };
+      } else {
+        style = {
+          strokeColor: 'red'
+        };
+      }
+
+      layer.data.overrideStyle(data.feature, style);
+    },
+
+    resetResultStyle(data) {
+      var layer = this.get('activeLayer');
+
+      layer.data.revertStyle(data.feature);
     }
   },
 

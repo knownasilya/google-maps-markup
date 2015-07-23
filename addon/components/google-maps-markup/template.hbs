@@ -43,7 +43,8 @@
 
   <ul class="list-group">
     {{#each results as |result|}}
-      {{markup-result-item data=result onremove=(action "removeResult")}}
+      {{markup-result-item data=result onremove=(action "removeResult")
+        onover="highlightResult" onout="resetResultStyle"}}
     {{/each}}
   </ul>
 {{/if}}
