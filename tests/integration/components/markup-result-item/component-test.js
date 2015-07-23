@@ -12,10 +12,13 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.set('data', {
+    mode: 'draw',
     type: 'circle'
   });
 
   this.render(hbs`{{markup-result-item data=data}}`);
 
-  assert.equal(this.$().text().trim().split('\n').join(' '), 'circle Remove');
+  let text = this.$().text().trim().split('\n').join(' ').replace(/\s/g, '');
+
+  assert.equal(text, 'circleRemove');
 });

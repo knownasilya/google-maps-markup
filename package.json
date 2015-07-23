@@ -9,6 +9,7 @@
   "scripts": {
     "start": "ember server",
     "build": "ember build",
+    "pretest": "mkdir coverage",
     "test": "ember try:testall"
   },
   "repository": "git@github.com:knownasilya/google-maps-markup.git",

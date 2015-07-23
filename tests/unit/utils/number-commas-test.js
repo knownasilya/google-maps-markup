@@ -5,6 +5,6 @@ module('Unit | Utility | number commas');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  var result = numberCommas();
-  assert.ok(result);
+  var result = numberCommas(1234);
+  assert.equal(result, '1,234');
 });
