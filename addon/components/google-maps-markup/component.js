@@ -29,8 +29,8 @@ export default Ember.Component.extend({
     draw: boundArray(),
     measure: boundArray()
   }),
-  activeLayer: undefined,
   resultsHidden: false,
+  activeLayer: undefined,
   drawingMode: DRAWING_MODE.pan.id,
   mode: MODE.draw.id,
   modes: [
@@ -88,32 +88,7 @@ export default Ember.Component.extend({
 
   actions: {
     changeMode(mode) {
-      var map = this.get('map');
-      var drawingModeId = this.get('drawingMode');
-      var dataLayers = this.get('dataLayers');
-      var activeLayer = this.get('activeLayer');
-      var id = mode.id;
-
-      this.set('lastActiveLayer', activeLayer);
-      this.set('mode', id);
-
-      if (mode === MODE.pan) {
-        if (activeLayer) {
-          activeLayer.data.setDrawingMode(null);
-        }
-      } else if (mode === MODE.draw || mode === MODE.measure) {
-        let tool = this.getTool(drawingModeId);
-
-        activeLayer = dataLayers[mode === MODE.draw ? 0 : 1];
-
-        if (!activeLayer.isHidden) {
-          activeLayer.data.setMap(map);
-        }
-
-        activeLayer.data.setDrawingMode(tool.dataId);
-
-        this.set('activeLayer', activeLayer);
-      }
+      this.set('mode', mode.id);
     },
 
     changeDrawingMode(mode) {
@@ -198,7 +173,32 @@ export default Ember.Component.extend({
     }
   },
 
+  changeLayer: on('init', observes('mode', 'map', function () {
+    var modeId = this.get('mode');
+    var map = this.get('map');
+    var drawingModeId = this.get('drawingMode');
+    var dataLayers = this.get('dataLayers');
+    var activeLayer = this.get('activeLayer');
+
+    this.set('lastActiveLayer', activeLayer);
+
+    if (modeId === MODE.draw.id || modeId === MODE.measure.id) {
+      let tool = this.getTool(drawingModeId);
+
+      activeLayer = dataLayers[modeId === MODE.draw.id ? 0 : 1];
+
+      if (!activeLayer.isHidden) {
+        activeLayer.data.setMap(map);
+      }
+
+      activeLayer.data.setDrawingMode(tool.dataId);
+
+      this.set('activeLayer', activeLayer);
+    }
+  })),
+
   activeLayerSetup: observes('activeLayer', function () {
+    var mode = this.get('mode');
     var layer = this.get('activeLayer');
     var lastLayer = this.get('lastActiveLayer');
 
@@ -214,7 +214,7 @@ export default Ember.Component.extend({
       let drawingMode = this.get('drawingMode');
       let results = this.get('results');
 
-      results.pushObject({ type: drawingMode, feature: event.feature });
+      results.pushObject({ mode: mode, type: drawingMode, feature: event.feature });
     }));
 
 
@@ -223,6 +223,8 @@ export default Ember.Component.extend({
 
   setup: on('didInsertElement', function () {
     var dm = this.get('dm');
+
+    this.set('mode', MODE.draw.id);
 
     let listener = dm.addListener('overlaycomplete', run.bind(this, (event) => {
       var activeLayer = this.get('activeLayer');
