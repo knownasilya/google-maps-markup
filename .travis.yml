@@ -34,4 +34,4 @@ script:
   - ember try $EMBER_TRY_SCENARIO test
 
 after_script:
-  - "npm install coveralls@2 && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
+  - "npm install coveralls@2 && cat ./coverage/coverage.lcov | ./node_modules/.bin/coveralls"
