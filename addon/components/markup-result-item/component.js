@@ -3,5 +3,10 @@ import layout from './template';
 
 export default Ember.Component.extend({
   layout: layout,
-  tagName: 'li'
+  tagName: 'li',
+  classNames: ['list-group-item', 'clearfix'],
+
+  mouseEnter(event) {
+    this.sendAction('onhover', this.get('data'));
+  }
 });

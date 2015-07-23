@@ -1,10 +1,10 @@
 <h4>Mode</h4>
 
 <div class="btn-group form-group" role="group" aria-label="Markup Modes">
-  {{#each modes as |mode|}}
-    <button type="button" class="btn btn-default" title={{mode.title}} onclick={{action 'changeMode' mode}}>
-      <i class="fa {{mode.icon}}"></i>
-      {{mode.name}}
+  {{#each modes as |item|}}
+    <button type="button" class="btn btn-default {{if (is-equal item.id mode) 'active'}}" title={{item.title}} onclick={{action 'changeMode' item}}>
+      <i class="fa {{item.icon}}"></i>
+      {{item.name}}
     </button>
   {{/each}}
 </div>
@@ -12,7 +12,7 @@
 {{#unless (is-equal mode 'pan')}}
   <h4>Tools</h4>
   {{#if (is-equal mode 'draw')}}
-    <div>
+    <div class="btn-group form-group" role="group" aria-label="Drawing Tools">
       {{#each drawingModes as |mode|}}
         <button type="button" class="btn btn-default {{if (is-equal mode.id drawingMode) 'active'}}" title={{mode.title}} onclick={{action 'changeDrawingMode' mode.id}}>
           {{mode.name}}
@@ -20,7 +20,7 @@
       {{/each}}
     </div>
   {{else if (is-equal mode 'measure')}}
-    <div>
+    <div class="btn-group form-group" role="group" aria-label="Measure Tools">
       {{#each measureModes as |mode|}}
         <button type="button" class="btn btn-default {{if (is-equal mode.id drawingMode) 'active'}}" title={{mode.title}} onclick={{action 'changeDrawingMode' mode.id}}>
           {{mode.name}}
@@ -32,13 +32,16 @@
 
 {{#if results}}
   <h4>Results</h4>
-  <button type="button" class="btn btn-default" title="Clear Results" onclick={{action 'clearResults'}}>
-    Clear
-  </button>
-  <button type="button" class="btn btn-default" title="{{if resultsHidden 'Show' 'Hide'}} Results" onclick={{action 'toggleResults'}}>
-    {{if resultsHidden 'Show' 'Hide'}}
-  </button>
-  <ul>
+  <div class="form-group">
+    <button type="button" class="btn btn-default" title="Clear Results" onclick={{action 'clearResults'}}>
+      Clear
+    </button>
+    <button type="button" class="btn btn-default" title="{{if resultsHidden 'Show' 'Hide'}} Results" onclick={{action 'toggleResults'}}>
+      {{if resultsHidden 'Show' 'Hide'}}
+    </button>
+  </div>
+
+  <ul class="list-group">
     {{#each results as |result|}}
       {{markup-result-item data=result onremove=(action "removeResult")}}
     {{/each}}
