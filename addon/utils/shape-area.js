@@ -2,22 +2,19 @@ const LatLng = google.maps.LatLng;
 const computeArea = google.maps.geometry.spherical.computeArea;
 
 export function polygonArea(polygon) {
-  return computeArea(polygon.getPath());
+  var geometry = polygon.getGeometry();
+
+  return computeArea(geometry.getArray()[0].getArray());
 }
 
 export function circleArea(circle) {
-  var radius = circle.getRadius();
+  var geometry = circle.getGeometry();
 
-  return Math.PI * (radius * radius);
+  return computeArea(geometry.getArray()[0].getArray());
 }
 
 export function rectangleArea(rectangle) {
-  var bounds = rectangle.getBounds();
-  var ne = bounds.getNorthEast();
-  var sw = bounds.getSouthWest();
-  var nw = new LatLng(ne.lat(), sw.lng());
-  var se = new LatLng(sw.lat(), ne.lng());
-  var path = [ne, se, sw, nw];
+  var geometry = rectangle.getGeometry();
 
-  return computeArea(path);
+  return computeArea(geometry.getArray()[0].getArray());
 }

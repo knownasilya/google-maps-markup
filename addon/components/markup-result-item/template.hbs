@@ -1,4 +1,6 @@
-{{data.type}}
+<b>{{data.type}}</b>
+{{~if description ':'}}
+{{description}}
 <button type="button" class="btn btn-danger btn-xs pull-right" onclick={{action onremove data}}>
   Remove
 </button>
