@@ -1,10 +1,4 @@
 export default {
-  pan: {
-    id: 'pan',
-    name: 'Pan',
-    icon: 'fa-arrows',
-    title: 'Map panning mode'
-  },
   draw: {
     id: 'draw',
     name: 'Draw',

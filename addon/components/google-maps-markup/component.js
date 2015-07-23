@@ -31,14 +31,14 @@ export default Ember.Component.extend({
   }),
   activeLayer: undefined,
   resultsHidden: false,
-  drawingMode: 'marker',
-  mode: MODE.pan.id,
+  drawingMode: DRAWING_MODE.pan.id,
+  mode: MODE.draw.id,
   modes: [
-    MODE.pan,
     MODE.draw,
     MODE.measure
   ],
   drawingModes: [
+    DRAWING_MODE.pan,
     DRAWING_MODE.marker,
     DRAWING_MODE.polyline,
     DRAWING_MODE.circle,
@@ -46,6 +46,7 @@ export default Ember.Component.extend({
     DRAWING_MODE.polygon
   ],
   measureModes: [
+    DRAWING_MODE.pan,
     DRAWING_MODE.polyline,
     DRAWING_MODE.circle,
     DRAWING_MODE.rectangle,
@@ -121,7 +122,10 @@ export default Ember.Component.extend({
       var tool = this.getTool(mode);
 
       if (activeLayer) {
-        if (tool.dataId) {
+        if (tool.id === 'pan') {
+          activeLayer.data.setDrawingMode(null);
+          dm.setDrawingMode(null);
+        } else if (tool.dataId) {
           activeLayer.data.setDrawingMode(tool.dataId);
         } else if (tool.dmId) {
           let map = this.get('map');

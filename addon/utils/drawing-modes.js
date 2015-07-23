@@ -1,4 +1,9 @@
 export default {
+  pan: {
+    id: 'pan',
+    name: 'Pan',
+    title: 'Pan Tool'
+  },
   marker: {
     id: 'marker',
     dataId: 'Point',
