@@ -2,7 +2,7 @@ export default {
   draw: {
     id: 'draw',
     name: 'Draw',
-    icon: 'fa-brush',
+    icon: 'fa-paint-brush',
     title: 'Drawing mode'
   },
   measure: {
