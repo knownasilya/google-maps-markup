@@ -3,6 +3,7 @@ import layout from './template';
 import overlayToFeature from '../../utils/overlay-to-feature';
 import MODE from '../../utils/modes';
 import DRAWING_MODE from '../../utils/drawing-modes';
+import createFeature from '../../utils/create-feature';
 
 if (!window.google) {
   throw new Error('Sorry, but `google` defined globally is required for this addon');
@@ -22,10 +23,6 @@ export default Ember.Component.extend({
   dm: new google.maps.drawing.DrawingManager({
     drawingControl: false
   }),
-  dataLayers: [
-    { isHidden: false, data: new google.maps.Data() },
-    { isHidden: false, data: new google.maps.Data() }
-  ],
   markupResults: Ember.Object.create({
     draw: boundArray(),
     measure: boundArray()
@@ -53,6 +50,20 @@ export default Ember.Component.extend({
     DRAWING_MODE.rectangle,
     DRAWING_MODE.polygon
   ],
+
+  dataLayers: computed({
+    get() {
+      var results = this.get('results');
+      var setId = function (geom) {
+        return createFeature(geom, results);
+      };
+
+      return [
+        { isHidden: false, data: new google.maps.Data({ featureFactory: setId }) },
+        { isHidden: false, data: new google.maps.Data({ featureFactory: setId }) }
+      ];
+    }
+  }),
 
   results: computed('mode', {
     get() {
@@ -149,6 +160,18 @@ export default Ember.Component.extend({
       this.set('results', results.without(result));
     },
 
+    toggleResult(result) {
+      var layer = this.get('activeLayer');
+
+      if (layer.data.contains(result.feature)) {
+        Ember.set(result, 'isVisible', false);
+        layer.data.remove(result.feature);
+      } else {
+        Ember.set(result, 'isVisible', true);
+        layer.data.add(result.feature);
+      }
+    },
+
     highlightResult(data) {
       var layer = this.get('activeLayer');
       var style;
@@ -216,8 +239,18 @@ export default Ember.Component.extend({
     var listener = layer.data.addListener('addfeature', run.bind(this, (event) => {
       let drawingMode = this.get('drawingMode');
       let results = this.get('results');
+      let found = results.find(function (item) {
+        return item.feature.getId() === event.feature.getId();
+      });
 
-      results.pushObject({ mode: mode, type: drawingMode, feature: event.feature });
+      if (!found) {
+        results.pushObject({
+          mode,
+          isVisible: true,
+          type: drawingMode,
+          feature: event.feature
+        });
+      }
     }));
 
 
@@ -226,12 +259,13 @@ export default Ember.Component.extend({
 
   setup: on('didInsertElement', function () {
     var dm = this.get('dm');
+    var results = this.get('results');
 
     this.set('mode', MODE.draw.id);
 
     let listener = dm.addListener('overlaycomplete', run.bind(this, (event) => {
       var activeLayer = this.get('activeLayer');
-      var feature = overlayToFeature(event.type, event.overlay);
+      var feature = overlayToFeature(event.type, event.overlay, results);
 
       event.overlay.setMap(null);
 

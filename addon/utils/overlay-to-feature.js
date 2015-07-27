@@ -1,14 +1,14 @@
 import createCircle from './create-circle';
+import createFeature from './create-feature';
 
 const {
-  Polygon,
-  Feature
+  Polygon
 } = google.maps.Data;
 const {
   LatLng
 } = google.maps;
 
-export default function overlayToFeature(type, overlay) {
+export default function overlayToFeature(type, overlay, results) {
   var paths;
 
   switch(type) {
@@ -34,9 +34,7 @@ export default function overlayToFeature(type, overlay) {
   }
 
   let polygon = new Polygon(paths);
-  let feature = new Feature({
-    geometry: polygon
-  });
+  let feature = createFeature(polygon, results);
 
   return feature;
 }
