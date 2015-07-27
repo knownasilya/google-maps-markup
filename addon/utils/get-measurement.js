@@ -1,5 +1,7 @@
 import { polygonArea, circleArea, rectangleArea } from './shape-area';
 import commaifyNumber from './number-commas';
+import squareMiles from './square-miles';
+import miles from './miles';
 
 export default function getMeasurement(type, feature) {
   var result = {
@@ -27,6 +29,7 @@ export default function getMeasurement(type, feature) {
 
       // meters->feet conversion
       result.value = result.value * 3.28084;
+      result = miles(result);
       break;
     }
 
@@ -36,6 +39,7 @@ export default function getMeasurement(type, feature) {
       result.value = area * 10.7639;
       result.measurementType = 'Area';
       result.unit = 'sq. ft.';
+      result = squareMiles(result);
       break;
     }
 
@@ -45,6 +49,7 @@ export default function getMeasurement(type, feature) {
       result.value = area * 10.7639;
       result.measurementType = 'Area';
       result.unit = 'sq. ft.';
+      result = squareMiles(result);
       break;
     }
 
@@ -54,11 +59,12 @@ export default function getMeasurement(type, feature) {
       result.value = area * 10.7639;
       result.measurementType = 'Area';
       result.unit = 'sq. ft.';
+      result = squareMiles(result);
       break;
     }
   }
 
-  result.value = commaifyNumber(Math.round(result.value));
+  result.value = commaifyNumber(result.value);
 
   return result;
 }

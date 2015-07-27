@@ -1,3 +1,7 @@
 export default function numberCommas(value) {
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  var parts = value.toString().split('.');
+
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  return parts.join('.');
 }
