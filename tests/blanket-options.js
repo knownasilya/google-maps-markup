@@ -14,6 +14,7 @@ var options = {
     autostart: true
   }
 };
+
 if (typeof exports === 'undefined') {
   blanket.options(options);
 } else {
