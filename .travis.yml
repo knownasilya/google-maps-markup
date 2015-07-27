@@ -31,6 +31,9 @@ install:
   - npm install
   - bower install
 
+before_script:
+  - "mkdir coverage"
+
 script:
   - ember try $EMBER_TRY_SCENARIO test
 
