@@ -4,7 +4,7 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'dummy',
     environment: environment,
-    baseURL: '/',
+    baseURL: '/google-maps-markup',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
