@@ -41,7 +41,7 @@
     </button>
   </div>
 
-  <ul class="list-group">
+  <ul class="list-group results-list">
     {{#each results as |result|}}
       {{markup-result-item data=result onremove=(action "removeResult")
         onover="highlightResult" onout="resetResultStyle"}}

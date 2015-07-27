@@ -17,6 +17,7 @@ const {
 } = Ember;
 
 export default Ember.Component.extend({
+  classNames: ['knownasilya--google-maps-markup'],
   layout: layout,
   dm: new google.maps.drawing.DrawingManager({
     drawingControl: false
