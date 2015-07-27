@@ -156,7 +156,7 @@ export default Ember.Component.extend({
       if (data.type === 'marker') {
         style = {
           icon: {
-            url: '/google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
+            url: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
             scaledSize: new google.maps.Size(22, 40)
           }
         };
