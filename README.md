@@ -1,5 +1,7 @@
 # google-maps-markup
 
+Drawing and measurement tools for a Google Map
+
 [![Build Status](https://travis-ci.org/knownasilya/google-maps-markup.svg)](https://travis-ci.org/knownasilya/google-maps-markup)
 [![Coverage Status](https://coveralls.io/repos/knownasilya/google-maps-markup/badge.svg?branch=master&service=github)](https://coveralls.io/github/knownasilya/google-maps-markup?branch=master)
 
