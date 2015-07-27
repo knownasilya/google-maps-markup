@@ -25,6 +25,21 @@ export default Ember.Component.extend({
     }
   }),
 
+  actions: {
+    edit() {
+      var data = this.get('data');
+      var wormhole = this.get('wormhole');
+
+      this.sendAction('onedit', data, wormhole);
+    }
+  },
+
+  register: on('init', function () {
+    var data = this.get('data');
+
+    Ember.set(data, 'listItem', this);
+  }),
+
   onOver: on('mouseEnter', function () {
     this.sendAction('onover', this.get('data'));
   }),

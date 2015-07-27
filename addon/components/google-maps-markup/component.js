@@ -27,6 +27,7 @@ export default Ember.Component.extend({
     draw: boundArray(),
     measure: boundArray()
   }),
+  listeners: boundArray(),
   resultsHidden: false,
   activeLayer: undefined,
   drawingMode: DRAWING_MODE.pan.id,
@@ -50,6 +51,20 @@ export default Ember.Component.extend({
     DRAWING_MODE.rectangle,
     DRAWING_MODE.polygon
   ],
+
+  initPopupEvents: on('init', function () {
+    const popup = new google.maps.InfoWindow();
+
+    popup.setContent(`<div id='google-maps-markup-infowindow'></div>`);
+
+    popup.addListener('closeclick', Ember.run.bind(this, function () {
+      Ember.set(popup, 'lastData.editing', false);
+      Ember.set(popup, 'lastData', undefined);
+      // cleanup?
+    }));
+
+    this.set('markupEditPopup', popup);
+  }),
 
   dataLayers: computed({
     get() {
@@ -172,6 +187,49 @@ export default Ember.Component.extend({
       }
     },
 
+    editResult(data, wormhole) {
+      var popup = this.get('markupEditPopup');
+      var map = this.get('map');
+
+      if (popup.getPosition()) {
+        popup.close();
+
+        if (popup.lastData) {
+          Ember.set(popup, 'lastData.editing', false);
+        }
+
+        if (popup.lastData === data) {
+          Ember.set(popup, 'lastData', undefined);
+          return;
+        }
+      }
+
+      if (data) {
+        let geometry = data.feature.getGeometry();
+        let latlng = geometry.get();
+
+        if (geometry.getType() === 'Point') {
+          popup.setOptions({
+            pixelOffset: new google.maps.Size(0, -40)
+          });
+        } else {
+          popup.setOptions({
+            pixelOffset: new google.maps.Size(0, 0)
+          });
+        }
+
+        popup.setPosition(latlng);
+        popup.open(map);
+        popup.lastData = data;
+        Ember.set(data, 'editing', true);
+
+        // see routable-site template for wormhole/infowindow layout
+        if (wormhole && !wormhole.isDestroying && !wormhole.isDestroyed) {
+          wormhole.rerender();
+        }
+      }
+    },
+
     highlightResult(data) {
       var layer = this.get('activeLayer');
       var style;
@@ -246,6 +304,7 @@ export default Ember.Component.extend({
       if (!found) {
         results.pushObject({
           mode,
+          layer,
           isVisible: true,
           type: drawingMode,
           feature: event.feature
@@ -253,8 +312,21 @@ export default Ember.Component.extend({
       }
     }));
 
+    var clickListener = layer.data.addListener('click', event => {
+      let results = this.get('results');
+      let found = results.find(function (item) {
+        return item.feature.getId() === event.feature.getId();
+      });
 
-    this.set('addFeatureListener', listener);
+      if (found.listItem) {
+        found.listItem.send('edit');
+      }
+    });
+
+    this.get('listeners').pushObjects([
+      listener,
+      clickListener
+    ]);
   }),
 
   setup: on('didInsertElement', function () {
@@ -272,23 +344,17 @@ export default Ember.Component.extend({
       activeLayer.data.add(feature);
     }));
 
-    this.set('dmListener', listener);
+    this.get('listeners').pushObject(listener);
   }),
 
   teardown: on('willDestroyElement', function () {
-    var dataLayers = this.get('dataLayers');
-    var dmListener = this.get('dmListener');
+    var listeners = this.get('listeners');
 
-    // Cleanup all data layer events
-    if (dataLayers) {
-      dataLayers.forEach(layer => {
-        google.maps.event.clearListeners(layer, 'addfeature');
+    // Cleanup all listeners
+    if (listeners) {
+      listeners.forEach(listener => {
+        google.maps.event.removeListener(listener);
       });
-    }
-
-    // Cleanup drawing manager events
-    if (dmListener) {
-      google.maps.event.clearListeners(dmListener, 'overlaycomplete');
     }
   })
 });
