@@ -4,6 +4,7 @@ import overlayToFeature from '../../utils/overlay-to-feature';
 import MODE from '../../utils/modes';
 import DRAWING_MODE from '../../utils/drawing-modes';
 import createFeature from '../../utils/create-feature';
+import featureCenter from '../../utils/feature-center';
 
 if (!window.google) {
   throw new Error('Sorry, but `google` defined globally is required for this addon');
@@ -234,6 +235,8 @@ export default Ember.Component.extend({
       var layer = this.get('activeLayer');
       var style;
 
+      this.panToIfHidden(data.feature);
+
       if (data.type === 'marker') {
         style = {
           icon: {
@@ -254,6 +257,28 @@ export default Ember.Component.extend({
       var layer = this.get('activeLayer');
 
       layer.data.revertStyle(data.feature);
+      this.panBack();
+    }
+  },
+
+  panToIfHidden(feature) {
+    var map = this.get('map');
+    var center = featureCenter(feature);
+    var bounds = map.getBounds();
+
+    this.set('originalCenter', map.getCenter());
+
+    if (!bounds.contains(center)) {
+      map.panTo(center);
+    }
+  },
+
+  panBack() {
+    var map = this.get('map');
+    var center = this.get('originalCenter');
+
+    if (center) {
+      map.setCenter(center);
     }
   },
 
