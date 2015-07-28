@@ -207,7 +207,7 @@ export default Ember.Component.extend({
 
       if (data) {
         let geometry = data.feature.getGeometry();
-        let latlng = geometry.get();
+        let latlng = featureCenter(data.feature);
 
         if (geometry.getType() === 'Point') {
           popup.setOptions({
@@ -256,7 +256,10 @@ export default Ember.Component.extend({
     resetResultStyle(data) {
       var layer = this.get('activeLayer');
 
-      layer.data.revertStyle(data.feature);
+      if (!data.editingShape) {
+        layer.data.revertStyle(data.feature);
+      }
+
       this.panBack();
     }
   },
@@ -265,6 +268,10 @@ export default Ember.Component.extend({
     var map = this.get('map');
     var center = featureCenter(feature);
     var bounds = map.getBounds();
+
+    if (!center) {
+      return;
+    }
 
     this.set('originalCenter', map.getCenter());
 

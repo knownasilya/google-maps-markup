@@ -16,6 +16,8 @@
 
 {{#if data.editing}}
   {{#ember-wormhole to="google-maps-markup-infowindow" viewName="wormhole"}}
-    Editing
+    <button type="button" class="btn btn-default" {{action 'toggleEditShape'}}>
+      Edit Shape
+    </button>
   {{/ember-wormhole}}
 {{/if}}

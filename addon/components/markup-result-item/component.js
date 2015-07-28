@@ -31,6 +31,20 @@ export default Ember.Component.extend({
       var wormhole = this.get('wormhole');
 
       this.sendAction('onedit', data, wormhole);
+    },
+
+    toggleEditShape() {
+      var edit = this.toggleProperty('data.editingShape');
+      var data = this.get('data');
+
+      if (edit) {
+        data.layer.data.overrideStyle(data.feature, {
+          editable: true,
+          draggable: true
+        });
+      } else {
+        data.layer.data.revertStyle(data.feature);
+      }
     }
   },
 
