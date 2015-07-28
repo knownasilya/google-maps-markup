@@ -20,5 +20,5 @@ test('it renders', function(assert) {
 
   let text = this.$().text().trim().split('\n').join(' ').replace(/\s/g, '');
 
-  assert.equal(text, 'circleRemove');
+  assert.equal(text, 'circleEditRemove');
 });
