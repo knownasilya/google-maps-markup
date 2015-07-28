@@ -8,7 +8,7 @@ const {
   LatLng
 } = google.maps;
 
-export default function overlayToFeature(type, overlay, results) {
+export default function overlayToFeature(type, overlay) {
   var paths;
 
   switch(type) {
@@ -34,7 +34,7 @@ export default function overlayToFeature(type, overlay, results) {
   }
 
   let polygon = new Polygon(paths);
-  let feature = createFeature(polygon, results);
+  let feature = createFeature(polygon);
 
   return feature;
 }

@@ -1,7 +1,8 @@
-export default function createFeature(geometry, results) {
-  var id = results.get('length') + 1;
+import guid from './guid';
+
+export default function createFeature(geometry) {
   var feature = new google.maps.Data.Feature({
-    id: id,
+    id: guid(),
     geometry: geometry
   });
 
