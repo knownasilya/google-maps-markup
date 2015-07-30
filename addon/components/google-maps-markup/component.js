@@ -120,6 +120,8 @@ export default Ember.Component.extend({
       var dm = this.get('dm');
       var tool = this.getTool(mode);
 
+      this.resetAllLayers();
+
       if (activeLayer) {
         if (tool.id === 'pan') {
           activeLayer.data.setDrawingMode(null);
@@ -260,6 +262,14 @@ export default Ember.Component.extend({
         this.panBack();
       }
     }
+  },
+
+  resetAllLayers() {
+    var layers = this.get('dataLayers');
+
+    layers.forEach(layer => {
+      layer.data.setDrawingMode(null);
+    });
   },
 
   panToIfHidden(feature) {
