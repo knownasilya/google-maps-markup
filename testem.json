@@ -8,5 +8,8 @@
   "launch_in_dev": [
     "PhantomJS",
     "Chrome"
+  ],
+  "phantomjs_args": [
+    "--ignore-ssl-errors=true"
   ]
 }

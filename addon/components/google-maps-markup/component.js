@@ -107,10 +107,6 @@ export default Ember.Component.extend({
   getTool(id) {
     var mode = this.get('mode');
 
-    if (mode === 'pan') {
-      return;
-    }
-
     return DRAWING_MODE[id];
   },
 
@@ -260,7 +256,9 @@ export default Ember.Component.extend({
         layer.data.revertStyle(data.feature);
       }
 
-      this.panBack();
+      if (!data.editing) {
+        this.panBack();
+      }
     }
   },
 
@@ -381,6 +379,8 @@ export default Ember.Component.extend({
 
   teardown: on('willDestroyElement', function () {
     var listeners = this.get('listeners');
+
+    this.send('changeDrawingMode', DRAWING_MODE.pan.id);
 
     // Cleanup all listeners
     if (listeners) {
