@@ -21,6 +21,8 @@ const {
 export default Ember.Component.extend({
   // Start Attrs
   editable: true,
+  panForOffscreen: true,
+  autoResetToPan: false,
   map: undefined,
   // End Attrs
 
@@ -113,8 +115,6 @@ export default Ember.Component.extend({
   }),
 
   getTool(id) {
-    var mode = this.get('mode');
-
     return DRAWING_MODE[id];
   },
 
@@ -286,9 +286,15 @@ export default Ember.Component.extend({
   },
 
   panToIfHidden(feature) {
-    var map = this.get('map');
-    var center = featureCenter(feature);
-    var bounds = map.getBounds();
+    var panForOffscreen = this.get('panForOffscreen');
+
+    if (!panForOffscreen) {
+      return;
+    }
+
+    let map = this.get('map');
+    let center = featureCenter(feature);
+    let bounds = map.getBounds();
 
     if (!center) {
       return;
@@ -302,6 +308,12 @@ export default Ember.Component.extend({
   },
 
   panBack() {
+    var panForOffscreen = this.get('panForOffscreen');
+
+    if (!panForOffscreen) {
+      return;
+    }
+
     var map = this.get('map');
     var center = this.get('originalCenter');
 
@@ -362,6 +374,12 @@ export default Ember.Component.extend({
           type: drawingMode,
           feature: event.feature
         });
+      }
+
+      let autoResetToPan = this.get('autoResetToPan');
+
+      if (autoResetToPan) {
+        this.send('changeDrawingMode', DRAWING_MODE.pan.id);
       }
     }));
 

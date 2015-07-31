@@ -21,6 +21,8 @@ ember install google-maps-markup
 
 - `map` - **REQUIRED**; Google Map instance, defaults to `undefined`. Bring your own map!
 - `editable` - Allow shapes to be edited. Defaults to `true`.
+- `panForOffscreen` - On hover pan to shape if not in view (reset to last bounds after). Defaults to `true`.
+- `autoResetToPan` - After drawing a shape the tool changes to "Pan" instead of staying on the current tool. Defaults to `false`.
 
 ## Installation
 
