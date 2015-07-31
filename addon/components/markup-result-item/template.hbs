@@ -6,9 +6,11 @@
 </button>
 
 <div class="pull-right">
-  <button type="button" class="btn btn-default btn-xs" onclick={{action 'edit'}}>
-    Edit
-  </button>
+  {{#if editable}}
+    <button type="button" class="btn btn-default btn-xs" onclick={{action 'edit'}}>
+      Edit
+    </button>
+  {{/if}}
   <button type="button" class="btn btn-danger btn-xs" onclick={{action onremove data}}>
     Remove
   </button>

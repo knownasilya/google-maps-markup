@@ -43,7 +43,7 @@
 
   <ul class="list-group results-list">
     {{#each results as |result|}}
-      {{markup-result-item data=result onremove=(action "removeResult") ontoggle=(action 'toggleResult')
+      {{markup-result-item data=result editable=editable onremove=(action "removeResult") ontoggle=(action 'toggleResult')
         onover="highlightResult" onout="resetResultStyle"
         onedit="editResult"}}
     {{/each}}

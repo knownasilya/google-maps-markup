@@ -19,6 +19,11 @@ const {
 } = Ember;
 
 export default Ember.Component.extend({
+  // Start Attrs
+  editable: true,
+  map: undefined,
+  // End Attrs
+
   classNames: ['knownasilya--google-maps-markup'],
   layout: layout,
   dm: new google.maps.drawing.DrawingManager({
@@ -54,17 +59,20 @@ export default Ember.Component.extend({
   ],
 
   initPopupEvents: on('init', function () {
-    const popup = new google.maps.InfoWindow();
+    var editable = this.get('editable');
+    if (editable) {
+      let popup = new google.maps.InfoWindow();
 
-    popup.setContent(`<div id='google-maps-markup-infowindow'></div>`);
+      popup.setContent(`<div id='google-maps-markup-infowindow'></div>`);
 
-    popup.addListener('closeclick', Ember.run.bind(this, function () {
-      Ember.set(popup, 'lastData.editing', false);
-      Ember.set(popup, 'lastData', undefined);
-      // cleanup?
-    }));
+      popup.addListener('closeclick', Ember.run.bind(this, function () {
+        Ember.set(popup, 'lastData.editing', false);
+        Ember.set(popup, 'lastData', undefined);
+        // cleanup?
+      }));
 
-    this.set('markupEditPopup', popup);
+      this.set('markupEditPopup', popup);
+    }
   }),
 
   dataLayers: computed({
@@ -189,6 +197,11 @@ export default Ember.Component.extend({
     editResult(data, wormhole) {
       var popup = this.get('markupEditPopup');
       var map = this.get('map');
+      var editable = this.get('editable');
+
+      if (!editable) {
+        return;
+      }
 
       if (popup.getPosition()) {
         popup.close();

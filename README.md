@@ -17,6 +17,11 @@ ember install google-maps-markup
 {{google-maps-markup map=map}}
 ```
 
+### Available Attributes
+
+- `map` - **REQUIRED**; Google Map instance, defaults to `undefined`. Bring your own map!
+- `editable` - Allow shapes to be edited. Defaults to `true`.
+
 ## Installation
 
 * `git clone` this repository
