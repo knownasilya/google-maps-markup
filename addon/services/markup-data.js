@@ -50,4 +50,16 @@ export default Ember.Service.extend({
       return data;
     }
   }),
+
+  featureToResult(feature, layer) {
+    var results = this.get('results');
+
+    results.pushObject({
+      mode: feature.getProperty('mode'),
+      type: feature.getProperty('type'),
+      isVisible: feature.getProperty('isVisible'),
+      feature,
+      layer
+    });
+  }
 });
