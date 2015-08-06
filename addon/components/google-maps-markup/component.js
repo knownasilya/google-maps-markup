@@ -371,8 +371,13 @@ export default Ember.Component.extend({
   setup: on('didInsertElement', function () {
     var dm = this.get('dm');
     var results = this.get('results');
+    var layers = this.get('dataLayers');
+    var map = this.get('map');
 
     this.set('mode', MODE.draw.id);
+
+    // Enable all layers to show on map
+    layers.forEach(layer => layer.data.setMap(map));
 
     let listener = dm.addListener('overlaycomplete', run.bind(this, (event) => {
       var activeLayer = this.get('activeLayer');
