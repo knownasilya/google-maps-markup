@@ -3,7 +3,6 @@ import layout from './template';
 import overlayToFeature from '../../utils/overlay-to-feature';
 import MODE from '../../utils/modes';
 import DRAWING_MODE from '../../utils/drawing-modes';
-import createFeature from '../../utils/create-feature';
 import featureCenter from '../../utils/feature-center';
 
 if (!window.google) {
@@ -13,6 +12,7 @@ if (!window.google) {
 const {
   on,
   run,
+  inject,
   computed,
   A: boundArray,
   observer: observes
@@ -26,20 +26,20 @@ export default Ember.Component.extend({
   map: undefined,
   // End Attrs
 
+  markupData: inject.service(),
   classNames: ['knownasilya--google-maps-markup'],
   layout: layout,
+  dataLayers: computed.alias('markupData.layers'),
+  results: computed.alias('markupData.results'),
+  mode: computed.alias('markupData.mode'),
+  markupResults: computed.alias('markupData.markupResults'),
   dm: new google.maps.drawing.DrawingManager({
     drawingControl: false
-  }),
-  markupResults: Ember.Object.create({
-    draw: boundArray(),
-    measure: boundArray()
   }),
   listeners: boundArray(),
   resultsHidden: false,
   activeLayer: undefined,
   drawingMode: DRAWING_MODE.pan.id,
-  mode: MODE.draw.id,
   modes: [
     MODE.draw,
     MODE.measure
@@ -74,43 +74,6 @@ export default Ember.Component.extend({
       }));
 
       this.set('markupEditPopup', popup);
-    }
-  }),
-
-  dataLayers: computed({
-    get() {
-      var results = this.get('results');
-      var setId = function (geom) {
-        return createFeature(geom, results);
-      };
-
-      return [
-        { isHidden: false, data: new google.maps.Data({ featureFactory: setId }) },
-        { isHidden: false, data: new google.maps.Data({ featureFactory: setId }) }
-      ];
-    }
-  }),
-
-  results: computed('mode', {
-    get() {
-      var mode = this.get('mode');
-
-      if (!mode) {
-        return;
-      }
-
-      return this.get(`markupResults.${mode}`);
-    },
-    set(key, data) {
-      var mode = this.get('mode');
-
-      if (!mode) {
-        return;
-      }
-
-      this.set(`markupResults.${mode}`, data);
-
-      return data;
     }
   }),
 
