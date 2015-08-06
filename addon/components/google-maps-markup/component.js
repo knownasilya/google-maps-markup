@@ -32,7 +32,6 @@ export default Ember.Component.extend({
   dataLayers: computed.alias('markupData.layers'),
   results: computed.alias('markupData.results'),
   mode: computed.alias('markupData.mode'),
-  markupResults: computed.alias('markupData.markupResults'),
   dm: new google.maps.drawing.DrawingManager({
     drawingControl: false
   }),

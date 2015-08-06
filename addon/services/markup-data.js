@@ -52,14 +52,15 @@ export default Ember.Service.extend({
   }),
 
   featureToResult(feature, layer) {
-    var results = this.get('results');
+    var mode = feature.getProperty('mode');
+    var results = this.get(`markupResults.${mode}`);
 
     results.pushObject({
-      mode: feature.getProperty('mode'),
-      type: feature.getProperty('type'),
-      isVisible: feature.getProperty('isVisible'),
+      mode,
       feature,
-      layer
+      layer,
+      type: feature.getProperty('type'),
+      isVisible: feature.getProperty('isVisible')
     });
   }
 });
