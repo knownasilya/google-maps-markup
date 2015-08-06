@@ -150,9 +150,11 @@ export default Ember.Component.extend({
 
       if (layer.data.contains(result.feature)) {
         Ember.set(result, 'isVisible', false);
+        result.feature.setProperty('isVisible', false);
         layer.data.remove(result.feature);
       } else {
         Ember.set(result, 'isVisible', true);
+        result.feature.setProperty('isVisible', true);
         layer.data.add(result.feature);
       }
     },
@@ -328,6 +330,10 @@ export default Ember.Component.extend({
       let found = results.find(function (item) {
         return item.feature.getId() === event.feature.getId();
       });
+
+      event.feature.setProperty('mode', mode);
+      event.feature.setProperty('type', drawingMode);
+      event.feature.setProperty('isVisible', true);
 
       if (!found) {
         results.pushObject({
