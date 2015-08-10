@@ -324,6 +324,10 @@ export default Ember.Component.extend({
     }
 
     var listener = layer.data.addListener('addfeature', run.bind(this, (event) => {
+      if (event.feature.getProperty('skip')) {
+        return;
+      }
+
       let drawingMode = this.get('drawingMode');
       let results = this.get('results');
       let found = results.find(function (item) {
