@@ -14,6 +14,15 @@ export default Ember.Service.extend({
     measure: boundArray()
   }),
 
+  activate(map) {
+    this.set('map', map);
+
+    var layers = this.get('layers');
+
+    // Enable all layers to show on map
+    layers.forEach(layer => layer.data.setMap(map));
+  },
+
   layers: computed({
     get() {
       var results = this.get('results');

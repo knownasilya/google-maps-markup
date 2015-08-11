@@ -23,12 +23,12 @@ export default Ember.Component.extend({
   editable: true,
   panForOffscreen: true,
   autoResetToPan: false,
-  map: undefined,
+  map: computed.alias('markupData.map'),
   // End Attrs
 
+  layout: layout,
   markupData: inject.service(),
   classNames: ['knownasilya--google-maps-markup'],
-  layout: layout,
   dataLayers: computed.alias('markupData.layers'),
   results: computed.alias('markupData.results'),
   mode: computed.alias('markupData.mode'),
