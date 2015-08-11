@@ -3,9 +3,14 @@ import createFeature from '../utils/create-feature';
 import MODE from '../utils/modes';
 
 const {
+  get,
   computed,
   A: boundArray
 } = Ember;
+const MODES = [
+  MODE.draw.id,
+  MODE.measure.id
+];
 
 export default Ember.Service.extend({
   mode: MODE.draw.id,
@@ -21,6 +26,20 @@ export default Ember.Service.extend({
 
     // Enable all layers to show on map
     layers.forEach(layer => layer.data.setMap(map));
+  },
+
+  changeModeByResults() {
+    var markupResults = this.get('markupResults');
+
+    for (let i = 0; i < MODES.length; i++) {
+      let key = MODES[i];
+      let modeResults = get(markupResults, key);
+
+      if (modeResults && modeResults.length) {
+        this.set('mode', key);
+        return;
+      }
+    }
   },
 
   layers: computed({
