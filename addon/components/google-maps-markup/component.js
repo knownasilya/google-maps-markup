@@ -132,6 +132,10 @@ export default Ember.Component.extend({
         });
 
         this.set('results', boundArray());
+
+        if (this.get('afterClearResults')) {
+          this.sendAction('afterClearResults', layer);
+        }
       }
     },
 

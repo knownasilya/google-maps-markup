@@ -24,6 +24,10 @@ ember install google-maps-markup
 - `panForOffscreen` - On hover pan to shape if not in view (reset to last bounds after). Defaults to `true`.
 - `autoResetToPan` - After drawing a shape the tool changes to "Pan" instead of staying on the current tool. Defaults to `false`.
 
+#### Actions
+
+- `afterClearResults` - Fires after clicking "Clear" for a mode. Passes the mode as the first argument, i.e `afterClearResults(mode) {}`.
+
 ## Installation
 
 * `git clone` this repository
