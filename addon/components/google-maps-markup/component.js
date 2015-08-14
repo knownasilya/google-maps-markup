@@ -343,13 +343,19 @@ export default Ember.Component.extend({
       event.feature.setProperty('isVisible', true);
 
       if (!found) {
-        results.pushObject({
+        let item = {
           mode,
           layer,
           isVisible: true,
           type: drawingMode,
           feature: event.feature
-        });
+        };
+
+        results.pushObject(item);
+
+        if (this.get('afterAddFeature')) {
+          this.sendAction('afterAddFeature', item);
+        }
       }
 
       let autoResetToPan = this.get('autoResetToPan');

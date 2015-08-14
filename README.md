@@ -26,6 +26,7 @@ ember install google-maps-markup
 
 #### Actions
 
+- `afterAddFeature` - Fires after finishing some markup on the map. Passes the result as the first argument, i.e. `afterAddFeature(result) {}`.
 - `afterClearResults` - Fires after clicking "Clear" for a mode. Passes the mode as the first argument, i.e `afterClearResults(mode) {}`.
 
 ## Installation
