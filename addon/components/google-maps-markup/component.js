@@ -388,7 +388,9 @@ export default Ember.Component.extend({
     var layers = this.get('dataLayers');
     var map = this.get('map');
 
-    this.set('mode', MODE.draw.id);
+    if (!this.get('mode')) {
+      this.set('mode', MODE.draw.id);
+    }
 
     // Enable all layers to show on map
     layers.forEach(layer => layer.data.setMap(map));
