@@ -1,11 +1,11 @@
-const SQMILE = 3.58701e-8;
+const ACRE = 2.29568e-5;
 
-export default function squareMiles(result) {
+export default function acres(result) {
   var output = {};
 
-  if (result.value > 50000) {
-    output.value = result.value * SQMILE;
-    output.unit = 'sq. mi.';
+  if (result.value > 43560) {
+    output.value = result.value * ACRE;
+    output.unit = 'ac.';
 
     if (output.value < 1) {
       // 4 decimal places

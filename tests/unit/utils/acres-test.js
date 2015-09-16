@@ -1,7 +1,7 @@
-import squareMiles from '../../../utils/square-miles';
+import acres from 'google-maps-markup/utils/acres';
 import { module, test } from 'qunit';
 
-module('Unit | Utility | square miles');
+module('Unit | Utility | acres');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
@@ -10,11 +10,11 @@ test('it works', function(assert) {
     unit: 'sq. ft.',
     measurementType: 'Area'
   };
-  var result = squareMiles(input);
+  var result = acres(input);
 
   assert.deepEqual(result, {
-    value: 0.0022,
-    unit: 'sq. mi.',
+    value: 1.37741,
+    unit: 'ac.',
     measurementType: input.measurementType
   });
 });

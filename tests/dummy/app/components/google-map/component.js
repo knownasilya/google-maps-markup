@@ -16,7 +16,7 @@ export default Ember.Component.extend({
     this.setup(el, center, zoom);
   }),
 
-  setup: function (el, center, zoom) {
+  setup(el, center, zoom) {
     var map;
 
     google.maps.visualRefresh = true;

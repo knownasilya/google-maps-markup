@@ -3,7 +3,7 @@ const TO_MILE = 0.000189394;
 export default function miles(result) {
   var output = {};
 
-  if (result.value > 1500) {
+  if (result.value > 5280) {
     output.value = result.value * TO_MILE;
     output.unit = 'mi.';
 

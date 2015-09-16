@@ -1,6 +1,6 @@
 import { polygonArea, circleArea, rectangleArea } from './shape-area';
 import commaifyNumber from './number-commas';
-import squareMiles from './square-miles';
+import acres from './acres';
 import miles from './miles';
 
 export default function getMeasurement(type, feature) {
@@ -39,7 +39,7 @@ export default function getMeasurement(type, feature) {
       result.value = area * 10.7639;
       result.measurementType = 'Area';
       result.unit = 'sq. ft.';
-      result = squareMiles(result);
+      result = acres(result);
       break;
     }
 
@@ -49,7 +49,7 @@ export default function getMeasurement(type, feature) {
       result.value = area * 10.7639;
       result.measurementType = 'Area';
       result.unit = 'sq. ft.';
-      result = squareMiles(result);
+      result = acres(result);
       break;
     }
 
@@ -59,7 +59,7 @@ export default function getMeasurement(type, feature) {
       result.value = area * 10.7639;
       result.measurementType = 'Area';
       result.unit = 'sq. ft.';
-      result = squareMiles(result);
+      result = acres(result);
       break;
     }
   }
