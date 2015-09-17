@@ -1,3 +1,7 @@
 .knownasilya--google-maps-markup .results-list > li:hover {
   background-color: #FAFAFA;
 }
+
+.knownasilya--google-maps-markup .tools-group .btn {
+  margin-bottom: 0.4em;
+}
