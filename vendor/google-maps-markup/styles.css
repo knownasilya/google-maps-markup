@@ -5,3 +5,8 @@
 .knownasilya--google-maps-markup .tools-group .btn {
   margin-bottom: 0.4em;
 }
+
+.google-maps-markup-map-label {
+  background-color: #fff;
+  opacity: 1;
+}

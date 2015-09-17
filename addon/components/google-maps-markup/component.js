@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from './template';
+import MapLabel from '../../utils/map-label';
 import overlayToFeature from '../../utils/overlay-to-feature';
 import MODE from '../../utils/modes';
 import DRAWING_MODE from '../../utils/drawing-modes';
@@ -131,7 +132,7 @@ export default Ember.Component.extend({
           layer.data.remove(feature);
         });
 
-        this.set('results', boundArray());
+        this.get('results').clear();
 
         if (this.get('afterClearResults')) {
           this.sendAction('afterClearResults', layer);
@@ -313,7 +314,17 @@ export default Ember.Component.extend({
       this.set('activeLayer', activeLayer);
     }
   })),
+/*
+  setupMap: on('init', observes('map', function () {
+    var map = this.get('map');
 
+    if (map) {
+      map.addListener('click', function () {
+        debugger;
+      });
+    }
+  })),
+*/
   activeLayerSetup: observes('activeLayer', function () {
     var mode = this.get('mode');
     var layer = this.get('activeLayer');
@@ -350,6 +361,14 @@ export default Ember.Component.extend({
           type: drawingMode,
           feature: event.feature
         };
+
+        if (mode === 'measure') {
+          let center = featureCenter(event.feature);
+          item.label = new MapLabel(center, {
+            defaultLabel: 'hello'
+          });
+          item.label.setMap(this.get('map'));
+        }
 
         results.pushObject(item);
 
