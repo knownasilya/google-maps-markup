@@ -22,7 +22,7 @@ class MapLabel extends google.maps.OverlayView {
 
   // Required by GMaps
   onAdd() {
-    var pane = this.getPanes().overlayLayer;
+    var pane = this.getPanes().markerLayer;
 
     if (pane) {
       pane.appendChild(this._element);

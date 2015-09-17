@@ -7,6 +7,10 @@
 }
 
 .google-maps-markup-map-label {
-  background-color: #fff;
+  color: #000;
   opacity: 1;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1.1em;
+  text-shadow: -1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff,1px 1px 0 #fff;
 }
