@@ -127,12 +127,16 @@ export default Ember.Component.extend({
     clearResults() {
       if (confirm('This cannot be undone, are you sure you want to clear all markup for this mode?')) {
         let layer = this.get('activeLayer');
+        let results = this.get('results');
 
         layer.data.forEach((feature) => {
           layer.data.remove(feature);
         });
 
-        this.get('results').clear();
+        results.forEach(result => {
+          result.label.onRemove();
+        });
+        results.clear();
 
         if (this.get('afterClearResults')) {
           this.sendAction('afterClearResults', layer);
@@ -145,8 +149,9 @@ export default Ember.Component.extend({
       var layer = this.get('activeLayer');
 
       layer.data.remove(result.feature);
+      result.label.onRemove();
 
-      this.set('results', results.without(result));
+      results.removeObject(result);
     },
 
     toggleResult(result) {
