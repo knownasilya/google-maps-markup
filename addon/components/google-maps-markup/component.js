@@ -314,17 +314,7 @@ export default Ember.Component.extend({
       this.set('activeLayer', activeLayer);
     }
   })),
-/*
-  setupMap: on('init', observes('map', function () {
-    var map = this.get('map');
 
-    if (map) {
-      map.addListener('click', function () {
-        debugger;
-      });
-    }
-  })),
-*/
   activeLayerSetup: observes('activeLayer', function () {
     var mode = this.get('mode');
     var layer = this.get('activeLayer');
