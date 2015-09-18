@@ -82,4 +82,15 @@ local version of this addon.
 
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
 
+## Github Pages/Demo
+
+Build by checking out the relevant branch, since the test dummy app
+is actually the demo app.
+
+Run the following command:
+
+```no-highlight
+ember github-pages:commit --message <message describing demo release>
+```
+
 [Preview Demo]: http://knownasilya.github.io/google-maps-markup
