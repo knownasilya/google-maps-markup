@@ -45,6 +45,7 @@ export default Ember.Component.extend({
         listener = google.maps.event.addListener(data.feature, 'setgeometry', run.bind(this, function () {
           // force recalculation
           this.set('shapeModified', true);
+          this.notifyPropertyChange('description');
         }));
         this.set('originalFeatureGeometry', data.feature.getGeometry());
         data.layer.data.overrideStyle(data.feature, {
