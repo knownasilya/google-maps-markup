@@ -5,6 +5,7 @@ import getMeasurement from '../../utils/get-measurement';
 
 const {
   on,
+  run,
   computed
 } = Ember;
 
@@ -38,14 +39,38 @@ export default Ember.Component.extend({
     toggleEditShape() {
       var edit = this.toggleProperty('data.editingShape');
       var data = this.get('data');
+      var listener;
 
       if (edit) {
+        listener = google.maps.event.addListener(data.feature, 'setgeometry', run.bind(this, function () {
+          // force recalculation
+          this.set('shapeModified', true);
+        }));
+        this.set('originalFeatureGeometry', data.feature.getGeometry());
         data.layer.data.overrideStyle(data.feature, {
           editable: true,
           draggable: true
         });
       } else {
         data.layer.data.revertStyle(data.feature);
+        if (listener) {
+          google.maps.event.removeListener(listener);
+        }
+      }
+
+      this.set('data', data);
+    },
+
+    cancelEditShape() {
+      var data = this.get('data');
+      var shapeModified = this.get('shapeModified');
+      var originalGeometry = this.get('originalFeatureGeometry');
+
+      if (shapeModified && originalGeometry) {
+        this.set('originalFeatureGeometry');
+        this.send('toggleEditShape');
+        data.feature.setGeometry(originalGeometry);
+        this.set('shapeModified', false);
       }
     }
   },
