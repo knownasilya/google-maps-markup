@@ -28,11 +28,11 @@ export default Ember.Component.extend({
   }),
 
   actions: {
-    edit() {
+    edit(position) {
       var data = this.get('data');
       var wormhole = this.get('wormhole');
 
-      this.sendAction('onedit', data, wormhole);
+      this.sendAction('onedit', data, wormhole, position);
     },
 
     toggleEditShape() {

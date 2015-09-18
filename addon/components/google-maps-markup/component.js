@@ -112,36 +112,11 @@ export default Ember.Component.extend({
     },
 
     toggleResults() {
-      var mode = this.get('mode');
       var isHidden = this.toggleProperty('resultsHidden');
       var activeLayer = this.get('activeLayer');
       var results = this.get('results');
-      var map = this.get('map');
 
       results.forEach(result => this.send('toggleResult', result, !isHidden));
-/*
-      if (!isHidden) {
-        activeLayer.data.setMap(map);
-
-        results.forEach(result => {
-          Ember.set(result, 'isVisible', true);
-
-          if (isMeasure) {
-            result.label.show();
-          }
-        });
-      } else {
-        activeLayer.data.setMap(null);
-
-        results.forEach(result => {
-          Ember.set(result, 'isVisible', false);
-
-          if (isMeasure) {
-            result.label.hide();
-          }
-        });
-      }
-*/
       activeLayer.isHidden = isHidden;
     },
 
@@ -214,7 +189,7 @@ export default Ember.Component.extend({
       }
     },
 
-    editResult(data, wormhole) {
+    editResult(data, wormhole, position) {
       var popup = this.get('markupEditPopup');
       var map = this.get('map');
       var editable = this.get('editable');
@@ -229,16 +204,11 @@ export default Ember.Component.extend({
         if (popup.lastData) {
           Ember.set(popup, 'lastData.editing', false);
         }
-
-        if (popup.lastData === data) {
-          Ember.set(popup, 'lastData', undefined);
-          return;
-        }
       }
 
       if (data) {
         let geometry = data.feature.getGeometry();
-        let latlng = featureCenter(data.feature);
+        let latlng = position && position instanceof google.maps.LatLng ? position : featureCenter(data.feature);
 
         if (geometry.getType() === 'Point') {
           popup.setOptions({
@@ -432,7 +402,7 @@ export default Ember.Component.extend({
       });
 
       if (found.listItem) {
-        found.listItem.send('edit');
+        found.listItem.send('edit', event.latLng);
       }
     });
 
