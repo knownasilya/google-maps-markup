@@ -112,24 +112,42 @@ export default Ember.Component.extend({
     },
 
     toggleResults() {
+      var mode = this.get('mode');
       var isHidden = this.toggleProperty('resultsHidden');
       var activeLayer = this.get('activeLayer');
       var results = this.get('results');
       var map = this.get('map');
 
+      results.forEach(result => this.send('toggleResult', result, !isHidden));
+/*
       if (!isHidden) {
         activeLayer.data.setMap(map);
-        results.forEach(result => result.label.show());
+
+        results.forEach(result => {
+          Ember.set(result, 'isVisible', true);
+
+          if (isMeasure) {
+            result.label.show();
+          }
+        });
       } else {
         activeLayer.data.setMap(null);
-        results.forEach(result => result.label.hide());
-      }
 
+        results.forEach(result => {
+          Ember.set(result, 'isVisible', false);
+
+          if (isMeasure) {
+            result.label.hide();
+          }
+        });
+      }
+*/
       activeLayer.isHidden = isHidden;
     },
 
     clearResults() {
       if (confirm('This cannot be undone, are you sure you want to clear all markup for this mode?')) {
+        let mode = this.get('mode');
         let layer = this.get('activeLayer');
         let results = this.get('results');
 
@@ -137,9 +155,12 @@ export default Ember.Component.extend({
           layer.data.remove(feature);
         });
 
-        results.forEach(result => {
-          result.label.onRemove();
-        });
+        if (mode === 'measure') {
+          results.forEach(result => {
+            result.label.onRemove();
+          });
+        }
+
         results.clear();
 
         if (this.get('afterClearResults')) {
@@ -149,28 +170,47 @@ export default Ember.Component.extend({
     },
 
     removeResult(result) {
+      var mode = this.get('mode');
       var results = this.get('results');
       var layer = this.get('activeLayer');
 
       layer.data.remove(result.feature);
-      result.label.onRemove();
+
+      if (mode === 'measure') {
+        result.label.onRemove();
+      }
 
       results.removeObject(result);
     },
 
-    toggleResult(result) {
+    /**
+     * Toggle show/hide of a result.
+     *
+     * @param {Object} result The result object to toggle.
+     * @param {Boolean} force Override the toggle, true for show and false for hide.
+     */
+    toggleResult(result, force) {
       var layer = this.get('activeLayer');
+      var mode = this.get('mode');
+      var isMeasure = mode === 'measure';
+      var hide = force !== undefined && force !== null ? !force : layer.data.contains(result.feature);
 
-      if (layer.data.contains(result.feature)) {
+      if (hide) {
         Ember.set(result, 'isVisible', false);
         result.feature.setProperty('isVisible', false);
-        result.label.hide();
         layer.data.remove(result.feature);
+
+        if (isMeasure) {
+          result.label.hide();
+        }
       } else {
         Ember.set(result, 'isVisible', true);
         result.feature.setProperty('isVisible', true);
-        result.label.show();
         layer.data.add(result.feature);
+
+        if (isMeasure) {
+          result.label.show();
+        }
       }
     },
 
