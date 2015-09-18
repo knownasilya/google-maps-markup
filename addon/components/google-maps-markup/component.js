@@ -62,6 +62,7 @@ export default Ember.Component.extend({
 
   initPopupEvents: on('init', function () {
     var editable = this.get('editable');
+
     if (editable) {
       let popup = new google.maps.InfoWindow();
 
@@ -113,12 +114,15 @@ export default Ember.Component.extend({
     toggleResults() {
       var isHidden = this.toggleProperty('resultsHidden');
       var activeLayer = this.get('activeLayer');
+      var results = this.get('results');
       var map = this.get('map');
 
       if (!isHidden) {
         activeLayer.data.setMap(map);
+        results.forEach(result => result.label.show());
       } else {
         activeLayer.data.setMap(null);
+        results.forEach(result => result.label.hide());
       }
 
       activeLayer.isHidden = isHidden;
@@ -160,10 +164,12 @@ export default Ember.Component.extend({
       if (layer.data.contains(result.feature)) {
         Ember.set(result, 'isVisible', false);
         result.feature.setProperty('isVisible', false);
+        result.label.hide();
         layer.data.remove(result.feature);
       } else {
         Ember.set(result, 'isVisible', true);
         result.feature.setProperty('isVisible', true);
+        result.label.show();
         layer.data.add(result.feature);
       }
     },

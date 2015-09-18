@@ -51,6 +51,10 @@ ember install google-maps-markup
 
 * `ember build`
 
+For developing locally with your app, you can use `DEVELOPING=true npm start` for your app, and
+`npm link path/to/this/addon` and your app will automatically rebuild as you make changes to your
+local version of this addon.
+
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
 
-[Preview Demo]: http://knownasilya.github.io/google-maps-markup  
+[Preview Demo]: http://knownasilya.github.io/google-maps-markup

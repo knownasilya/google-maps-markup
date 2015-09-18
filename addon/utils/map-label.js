@@ -69,6 +69,14 @@ class MapLabel extends google.maps.OverlayView {
   get label() {
     return this._element.textContent;
   }
+
+  hide() {
+    this._element.style.display = 'none';
+  }
+
+  show() {
+    this._element.style.display = 'block';
+  }
 }
 
 export default MapLabel;

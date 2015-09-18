@@ -8,5 +8,9 @@ module.exports = {
     var target = (parentAddon || app);
 
     target.import('vendor/google-maps-markup/styles.css');
+  },
+
+  isDevelopingAddon: function() {
+    return process.env.DEVELOPING === 'true';
   }
 };
