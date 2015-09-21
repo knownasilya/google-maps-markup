@@ -2,6 +2,7 @@ import Ember from 'ember';
 import layout from './template';
 import MODE from '../../utils/modes';
 import getMeasurement from '../../utils/get-measurement';
+import featureCenter from '../../utils/feature-center';
 
 const {
   on,
@@ -14,7 +15,7 @@ export default Ember.Component.extend({
   tagName: 'li',
   classNames: ['list-group-item', 'clearfix'],
 
-  description: computed('data.mode', 'shapeModified', {
+  description: computed('data.mode', {
     get() {
       var mode = this.get('data.mode');
       var data = this.get('data');
@@ -43,8 +44,12 @@ export default Ember.Component.extend({
 
       if (edit) {
         listener = google.maps.event.addListener(data.feature, 'setgeometry', run.bind(this, function () {
+          if (data.label) {
+            data.label.position = featureCenter(data.feature);
+          }
           // force recalculation
           this.set('shapeModified', true);
+          this.notifyPropertyChange('description');
         }));
         this.set('originalFeatureGeometry', data.feature.getGeometry());
         data.layer.data.overrideStyle(data.feature, {

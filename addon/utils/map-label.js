@@ -4,7 +4,7 @@ class MapLabel extends google.maps.OverlayView {
 
     options = options || {};
 
-    this.position = latlng;
+    this.latlng = latlng;
 
     this._opts = options;
     this._element = document.createElement('div');
@@ -32,20 +32,12 @@ class MapLabel extends google.maps.OverlayView {
   // Required by GMaps
   draw() {
     var projection = this.getProjection();
-    var position = projection.fromLatLngToDivPixel(this.position);
+    var position = projection.fromLatLngToDivPixel(this.latlng);
     var div = this._element;
 
     if (position && position.x && position.y) {
-      var latlng = projection.fromDivPixelToLatLng(position);
-      var distance = google.maps.geometry.spherical.computeDistanceBetween(this.position, latlng);
-      var offsetY = 88;
-
-      if (distance < 0.00003) {
-        offsetY += 100;
-      } else if (distance < 0.00005) {
-        offsetY += 40;
-      }
-
+      let latlng = projection.fromDivPixelToLatLng(position);
+      let distance = google.maps.geometry.spherical.computeDistanceBetween(this.latlng, latlng);
       let width = this._element.clientWidth;
       let height = this._element.clientHeight;
 
@@ -68,6 +60,15 @@ class MapLabel extends google.maps.OverlayView {
 
   get label() {
     return this._element.textContent;
+  }
+
+  set position(value) {
+    this.latlng = value;
+    this.draw();
+  }
+
+  get position() {
+    return this.latlng;
   }
 
   hide() {
