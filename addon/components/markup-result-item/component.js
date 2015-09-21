@@ -14,7 +14,7 @@ export default Ember.Component.extend({
   tagName: 'li',
   classNames: ['list-group-item', 'clearfix'],
 
-  description: computed('data.mode', {
+  description: computed('data.mode', 'shapeModified', {
     get() {
       var mode = this.get('data.mode');
       var data = this.get('data');
@@ -45,7 +45,6 @@ export default Ember.Component.extend({
         listener = google.maps.event.addListener(data.feature, 'setgeometry', run.bind(this, function () {
           // force recalculation
           this.set('shapeModified', true);
-          this.notifyPropertyChange('description');
         }));
         this.set('originalFeatureGeometry', data.feature.getGeometry());
         data.layer.data.overrideStyle(data.feature, {
@@ -54,6 +53,7 @@ export default Ember.Component.extend({
         });
       } else {
         data.layer.data.revertStyle(data.feature);
+        this.set('shapeModified', false);
         if (listener) {
           google.maps.event.removeListener(listener);
         }
