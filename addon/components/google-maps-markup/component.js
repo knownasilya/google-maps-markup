@@ -376,7 +376,7 @@ export default Ember.Component.extend({
         if (mode === 'measure') {
           let center = featureCenter(event.feature);
           item.label = new MapLabel(center, {
-            defaultLabel: 'hello'
+            defaultLabel: '--'
           });
           item.label.setMap(this.get('map'));
         }

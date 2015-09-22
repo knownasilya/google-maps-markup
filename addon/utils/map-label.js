@@ -36,8 +36,6 @@ class MapLabel extends google.maps.OverlayView {
     var div = this._element;
 
     if (position && position.x && position.y) {
-      let latlng = projection.fromDivPixelToLatLng(position);
-      let distance = google.maps.geometry.spherical.computeDistanceBetween(this.latlng, latlng);
       let width = this._element.clientWidth;
       let height = this._element.clientHeight;
 
