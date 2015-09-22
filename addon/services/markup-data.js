@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import MapLabel from '../utils/map-label';
 import createFeature from '../utils/create-feature';
-import featureCenter from '../utils/feature-center';
+import initMeasureLabel from '../utils/init-measure-label';
 import MODE from '../utils/modes';
 
 const {
@@ -83,6 +82,7 @@ export default Ember.Service.extend({
   }),
 
   featureToResult(feature, layer) {
+    var map = this.get('map');
     var mode = feature.getProperty('mode');
     var results = this.get(`markupResults.${mode}`);
     var result = {
@@ -93,16 +93,7 @@ export default Ember.Service.extend({
       isVisible: feature.getProperty('isVisible')
     };
 
-    if (mode === 'measure') {
-      let map = this.get('map');
-      let center = featureCenter(feature);
-      let label = new MapLabel(center, {
-        defaultLabel: '--'
-      });
-      label.setMap(map);
-      result.label = label;
-    }
-
+    initMeasureLabel(result, map);
     results.pushObject(result);
   }
 });

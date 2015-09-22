@@ -22,6 +22,7 @@ export default Ember.Component.extend({
 
       if (mode === MODE.measure.id) {
         let m = getMeasurement(data.type, data.feature);
+        // update the measure label
         data.label.label = `${m.value} ${m.unit}`;
 
         return `${m.measurementType}: ${m.value} ${m.unit}`;

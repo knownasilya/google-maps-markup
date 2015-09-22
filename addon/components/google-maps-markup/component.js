@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import layout from './template';
-import MapLabel from '../../utils/map-label';
 import overlayToFeature from '../../utils/overlay-to-feature';
 import MODE from '../../utils/modes';
-import DRAWING_MODE from '../../utils/drawing-modes';
 import featureCenter from '../../utils/feature-center';
+import DRAWING_MODE from '../../utils/drawing-modes';
+import initMeasureLabel from '../../utils/init-measure-label';
 
 if (!window.google) {
   throw new Error('Sorry, but `google` defined globally is required for this addon');
@@ -354,6 +354,7 @@ export default Ember.Component.extend({
         return;
       }
 
+      let map = this.get('map');
       let drawingMode = this.get('drawingMode');
       let results = this.get('results');
       let found = results.find(function (item) {
@@ -373,14 +374,7 @@ export default Ember.Component.extend({
           feature: event.feature
         };
 
-        if (mode === 'measure') {
-          let center = featureCenter(event.feature);
-          item.label = new MapLabel(center, {
-            defaultLabel: '--'
-          });
-          item.label.setMap(this.get('map'));
-        }
-
+        initMeasureLabel(item, map);
         results.pushObject(item);
 
         if (this.get('afterAddFeature')) {
