@@ -24,9 +24,17 @@ export default Ember.Service.extend({
     this.set('map', map);
 
     var layers = this.get('layers');
+    var measureResults = this.get('markupResults.measure');
 
     // Enable all layers to show on map
-    layers.forEach(layer => layer.data.setMap(map));
+    layers.forEach(layer => {
+      layer.data.setMap(map);
+    });
+
+    // Init measure labels
+    measureResults.forEach(result => {
+      initMeasureLabel(result, map);
+    });
   },
 
   changeModeByResults() {
@@ -82,7 +90,6 @@ export default Ember.Service.extend({
   }),
 
   featureToResult(feature, layer) {
-    var map = this.get('map');
     var mode = feature.getProperty('mode');
     var results = this.get(`markupResults.${mode}`);
     var result = {
@@ -93,7 +100,6 @@ export default Ember.Service.extend({
       isVisible: feature.getProperty('isVisible')
     };
 
-    initMeasureLabel(result, map);
     results.pushObject(result);
   }
 });
