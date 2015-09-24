@@ -105,11 +105,9 @@ class MapLabel extends google.maps.OverlayView {
       this.scale = 1;
     }
 
-    if (this.scale < 0) {
-      this.scale = 0;
+    if (this.scale >= 0) {
+      this._element.style.transform = `scale(${this.scale})`;
     }
-
-    this._element.style.transform = `scale(${this.scale})`;
   }
 }
 
