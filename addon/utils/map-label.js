@@ -31,6 +31,7 @@ class MapLabel extends google.maps.OverlayView {
 
   // Required by GMaps
   draw() {
+    var map = this.getMap();
     var projection = this.getProjection();
     var position = projection.fromLatLngToDivPixel(this.latlng);
     var div = this._element;
@@ -40,6 +41,14 @@ class MapLabel extends google.maps.OverlayView {
       let height = this._element.clientHeight;
 
       div.style.display = 'block';
+
+      if (map) {
+        let zoom = map.getZoom();
+
+        this.updateScale(zoom, this.lastZoom);
+        this.lastZoom = zoom;
+      }
+
       div.style.left = position.x - (width / 2) + 'px';
       div.style.top = position.y - (height / 2) + 'px';
     } else {
@@ -75,6 +84,32 @@ class MapLabel extends google.maps.OverlayView {
 
   show() {
     this._element.style.display = 'block';
+  }
+
+  updateScale(newZoom, oldZoom) {
+    if (oldZoom === undefined) {
+      this._element.style.transform = 'scale(1)';
+      this.scale = 1;
+      this.scaleMaxZoom = newZoom;
+      return;
+    }
+
+
+    if (newZoom < oldZoom) {
+      this.scale -= 0.2;
+    } else if (newZoom > oldZoom) {
+      this.scale += 0.2;
+    }
+
+    if (newZoom >= this.scaleMaxZoom) {
+      this.scale = 1;
+    }
+
+    if (this.scale < 0) {
+      this.scale = 0;
+    }
+
+    this._element.style.transform = `scale(${this.scale})`;
   }
 }
 
