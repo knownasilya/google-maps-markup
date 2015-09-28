@@ -32,7 +32,17 @@ class MapLabel extends google.maps.OverlayView {
   // Required by GMaps
   draw() {
     var map = this.getMap();
+
+    if (!map) {
+      return;
+    }
+
     var projection = this.getProjection();
+
+    if (!projection) {
+      return;
+    }
+
     var position = projection.fromLatLngToDivPixel(this.latlng);
     var div = this._element;
 

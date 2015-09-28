@@ -39,7 +39,6 @@ export default Ember.Service.extend({
 
   changeModeByResults() {
     var markupResults = this.get('markupResults');
-    var map = this.get('map');
 
     for (let i = 0; i < MODES.length; i++) {
       let key = MODES[i];

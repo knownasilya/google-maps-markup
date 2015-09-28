@@ -1,3 +1,5 @@
+import pathsToBounds from './paths-to-bounds';
+
 export default function featureCenter(feature) {
   var geometry = feature.getGeometry();
   var type = geometry.getType();
@@ -23,12 +25,3 @@ export default function featureCenter(feature) {
   }
 }
 
-function pathsToBounds(paths) {
-  var bounds = new google.maps.LatLngBounds();
-
-  paths.forEach(latlng => {
-    bounds.extend(latlng);
-  });
-
-  return bounds;
-}

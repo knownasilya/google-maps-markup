@@ -5,6 +5,8 @@ import MODE from '../../utils/modes';
 import featureCenter from '../../utils/feature-center';
 import DRAWING_MODE from '../../utils/drawing-modes';
 import initMeasureLabel from '../../utils/init-measure-label';
+import MapLabel from '../../utils/map-label';
+import pathsToBounds from '../../utils/paths-to-bounds';
 
 if (!window.google) {
   throw new Error('Sorry, but `google` defined globally is required for this addon');
@@ -37,6 +39,8 @@ export default Ember.Component.extend({
     drawingControl: false
   }),
   listeners: boundArray(),
+  currentPoints: boundArray(),
+  currentLabel: new MapLabel(),
   resultsHidden: false,
   activeLayer: undefined,
   drawingMode: DRAWING_MODE.pan.id,
@@ -419,6 +423,7 @@ export default Ember.Component.extend({
     // Enable all layers to show on map
     layers.forEach(layer => layer.data.setMap(map));
 
+
     let listener = dm.addListener('overlaycomplete', run.bind(this, (event) => {
       var activeLayer = this.get('activeLayer');
       var feature = overlayToFeature(event.type, event.overlay, results);
@@ -429,6 +434,70 @@ export default Ember.Component.extend({
     }));
 
     this.get('listeners').pushObject(listener);
+  }),
+
+  setupMapEvents: observes('isVisible', 'map', function () {
+    var map = this.get('map');
+    var isVisible = this.get('isVisible');
+    var currentPoints = this.get('currentPoints');
+    var currentLabel = this.get('currentLabel');
+
+    if (map && isVisible) {
+      let $body = Ember.$('body');
+
+      // Setup raw click handling - workaround for no basic events for drawing
+      $body.on('click', run.bind(this, (event) => {
+        var tool = this.get('drawingMode');
+        var mode = this.get('mode');
+
+        if (mode === 'draw') {
+          return;
+        }
+
+        // if tool === 'pan', that means the shape is complete.
+
+        var mapDiv = map.getDiv();
+        var target = event.target;
+        var onPage = event.currentTarget.contains(target);
+        var withinMap = mapDiv.contains(target);
+        var notPan = tool !== 'pan';
+        var shapeFinish = currentPoints.get('length') && !notPan;
+
+        if (!currentPoints.get('length') && !notPan) {
+          return;
+        }
+
+        if (withinMap && notPan) {
+          let latlng = calculateLatLng(map, event);
+          currentPoints.push(latlng);
+        } else if (notPan && !shapeFinish && !onPage) {
+          currentPoints.push(latlng);
+          if (currentPoints.get('length') > 1) {
+            let bounds = pathsToBounds(currentPoints);
+            currentLabel.position = bounds.getCenter();
+            console.log('can calc measurement');
+          }
+        } else if (shapeFinish) {
+          console.log('shape finish');
+          currentLabel.setMap(null);
+          currentPoints.clear();
+        } else {
+          currentLabel.setMap(null);
+          currentPoints.clear();
+        }
+      }));
+
+      $body.on('mousemove', run.bind(this, (event) => {
+        if (currentPoints.get('length')) {
+          let latlng = calculateLatLng(map, event);
+          let bounds = pathsToBounds(currentPoints.concat(latlng));
+          currentLabel.label = 'temmp';
+          currentLabel.position = bounds.getCenter();
+          currentLabel.setMap(map);
+          console.log('moving');
+        }
+      }));
+    }
   }),
 
   teardown: on('willDestroyElement', function () {
@@ -444,3 +513,32 @@ export default Ember.Component.extend({
     }
   })
 });
+
+function calculatePosition(mapPosition, event) {
+  var mapLeft = mapPosition.left;
+  var mapTop = mapPosition.top;
+  var x = event.pageX;
+  var y = event.pageY;
+
+  return {
+    x: x - mapLeft,
+    y: y - mapTop
+  };
+}
+
+function calculateLatLng(map, event) {
+  let $map = Ember.$(map.getDiv());
+  let projection = map.getProjection();
+  let bounds = map.getBounds();
+  let ne = bounds.getNorthEast();
+  let sw = bounds.getSouthWest();
+  let topRight = projection.fromLatLngToPoint(ne);
+  let bottomLeft = projection.fromLatLngToPoint(sw);
+  let mapPosition = $map.offset();
+  let pos = calculatePosition(mapPosition, event);
+  let scale = 1 << map.getZoom();
+  let point = new google.maps.Point(pos.x / scale + bottomLeft.x, pos.y / scale + topRight.y);
+  let latlng = projection.fromPointToLatLng(point);
+
+  return latlng;
+}
