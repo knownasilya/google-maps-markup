@@ -446,8 +446,7 @@ export default Ember.Component.extend({
       let $body = Ember.$('body');
       let plotter;
 
-      // Setup raw click handling - workaround for no basic events for drawing
-      $body.on('click', run.bind(this, (event) => {
+      var onClick = run.bind(this, (event) => {
         var tool = this.get('drawingMode');
         var mode = this.get('mode');
 
@@ -455,43 +454,61 @@ export default Ember.Component.extend({
           return;
         }
 
-        // if tool === 'pan', that means the shape is complete.
-
         var mapDiv = map.getDiv();
         var target = event.target;
         var onPage = event.currentTarget.contains(target);
         var withinMap = mapDiv.contains(target);
-        var notPan = tool !== 'pan';
-        var shapeFinish = currentPoints.get('length') && !notPan;
+        var toolIsPan = tool === 'pan';
+        var noPoints = !currentPoints.get('length');
+        var shapeFinish = !noPoints && toolIsPan && !onPage;
 
-        if (!currentPoints.get('length') && !notPan) {
+        if (noPoints && toolIsPan) {
           return;
         }
 
-        if (withinMap && notPan) {
+        if (withinMap && noPoints && !toolIsPan) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
           plotter = labelPlotter(currentLabel, currentPoints, tool, event, map);
-        } else if (notPan && !shapeFinish && !onPage) {
+        } else if (withinMap && !toolIsPan && !shapeFinish) {
+          let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
-          //plotter.update(currentPoints);
         } else if (shapeFinish) {
           plotter.finish();
           plotter = undefined;
         }
-      }));
+      });
 
-      $body.on('mousemove', run.bind(this, (event) => {
+      var onDblClick = run.bind(this, (event) => {
+        if (plotter) {
+          plotter.finish();
+          plotter = undefined;
+        }
+      });
+
+      var onMouseMove = run.bind(this, (event) => {
         if (plotter) {
           let latlng = calculateLatLng(map, event);
           plotter.update(currentPoints.concat(latlng));
         }
-      }));
+      });
+
+      // Setup raw click handling - workaround for no basic events for drawing
+      $body.on('click', onClick);
+      $body.on('dblclick', onDblClick);
+      $body.on('mousemove', onMouseMove);
+
+      this.set('bodyListeners', [
+        { event: 'click', handler: onClick },
+        { event: 'dblclick', handler: onDblClick },
+        { event: 'mousemove', handler: onMouseMove }
+      ]);
     }
   }),
 
   teardown: on('willDestroyElement', function () {
     var listeners = this.get('listeners');
+    var bodyListeners - this.get('bodyListeners');
 
     this.send('changeDrawingMode', DRAWING_MODE.pan.id);
 
@@ -499,6 +516,14 @@ export default Ember.Component.extend({
     if (listeners) {
       listeners.forEach(listener => {
         google.maps.event.removeListener(listener);
+      });
+    }
+
+    if (bodyListeners) {
+      let $body = Ember.$('body');
+
+      bodyListeners.forEach(listener => {
+        $body.off(listener.event, listener.handler);
       });
     }
   })

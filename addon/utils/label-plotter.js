@@ -15,8 +15,9 @@ export default function labelPlotter(label, points, type, event, map) {
 
   return {
     update(points) {
-
       switch(type) {
+        case 'pan': return;
+
         case 'circle': {
           if (points.length === 2) {
             let radius = computeDistanceBetween(points[0], points[1]);
@@ -38,12 +39,6 @@ export default function labelPlotter(label, points, type, event, map) {
           break;
         }
 
-        case 'polygon': {
-          if (points.length < 3) {
-            break;
-          }
-        }
-
         case 'rectangle': {
           if (points.length === 2) {
             let calcPoints = [
@@ -59,6 +54,13 @@ export default function labelPlotter(label, points, type, event, map) {
             label.position = bounds.getCenter();
           }
           break;
+        }
+
+        case 'polygon': {
+          if (points.length < 3) {
+            break;
+          }
+          // move on to default
         }
 
         default: {
@@ -78,7 +80,6 @@ export default function labelPlotter(label, points, type, event, map) {
     finish() {
       label.setMap(null);
       points.clear();
-      console.log('[plotter] finished');
     }
   };
 }
