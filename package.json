@@ -1,6 +1,6 @@
 {
   "name": "google-maps-markup",
-  "version": "1.14.4",
+  "version": "1.15.0",
   "description": "Ember markup component for Google Maps - Draw and Measure",
   "directories": {
     "doc": "doc",
