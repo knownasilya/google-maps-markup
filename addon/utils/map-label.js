@@ -5,6 +5,7 @@ class MapLabel extends google.maps.OverlayView {
     options = options || {};
 
     this.latlng = latlng;
+    this.dontScale = options.dontScale;
 
     this._opts = options;
     this._element = document.createElement('div');
@@ -33,7 +34,7 @@ class MapLabel extends google.maps.OverlayView {
   draw() {
     var map = this.getMap();
 
-    if (!map) {
+    if (!map || !this.latlng) {
       return;
     }
 
@@ -97,6 +98,10 @@ class MapLabel extends google.maps.OverlayView {
   }
 
   updateScale(newZoom, oldZoom) {
+    if (this.dontScale) {
+      return;
+    }
+
     if (oldZoom === undefined) {
       this._element.style.transform = 'scale(1)';
       this.scale = 1;

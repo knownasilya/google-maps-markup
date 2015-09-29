@@ -40,7 +40,9 @@ export default Ember.Component.extend({
   }),
   listeners: boundArray(),
   currentPoints: boundArray(),
-  currentLabel: new MapLabel(),
+  currentLabel: new MapLabel(undefined, {
+    dontScale: true
+  }),
   resultsHidden: false,
   activeLayer: undefined,
   drawingMode: DRAWING_MODE.pan.id,
