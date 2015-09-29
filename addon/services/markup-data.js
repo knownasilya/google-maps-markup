@@ -33,7 +33,11 @@ export default Ember.Service.extend({
 
     // Init measure labels
     measureResults.forEach(result => {
-      initMeasureLabel(result, map);
+      if (result.label) {
+        label.setMap(map);
+      } else {
+        initMeasureLabel(result, map);
+      }
     });
   },
 
@@ -89,6 +93,7 @@ export default Ember.Service.extend({
   }),
 
   featureToResult(feature, layer) {
+    var map = this.get('map');
     var mode = feature.getProperty('mode');
     var results = this.get(`markupResults.${mode}`);
     var result = {
@@ -99,6 +104,7 @@ export default Ember.Service.extend({
       isVisible: feature.getProperty('isVisible')
     };
 
+    initMeasureLabel(result, map);
     results.pushObject(result);
   }
 });
