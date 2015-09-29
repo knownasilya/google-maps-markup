@@ -508,7 +508,7 @@ export default Ember.Component.extend({
 
   teardown: on('willDestroyElement', function () {
     var listeners = this.get('listeners');
-    var bodyListeners - this.get('bodyListeners');
+    var bodyListeners = this.get('bodyListeners');
 
     this.send('changeDrawingMode', DRAWING_MODE.pan.id);
 
