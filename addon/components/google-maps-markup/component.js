@@ -436,7 +436,7 @@ export default Ember.Component.extend({
     this.get('listeners').pushObject(listener);
   }),
 
-  setupMapEvents: observes('isVisible', 'map', function () {
+  setupMapEvents: on('init', observes('isVisible', 'map', function () {
     var map = this.get('map');
     var isVisible = this.get('isVisible');
     var currentPoints = this.get('currentPoints');
@@ -504,7 +504,7 @@ export default Ember.Component.extend({
         { event: 'mousemove', handler: onMouseMove }
       ]);
     }
-  }),
+  })),
 
   teardown: on('willDestroyElement', function () {
     var listeners = this.get('listeners');
