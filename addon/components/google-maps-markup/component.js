@@ -6,7 +6,7 @@ import featureCenter from '../../utils/feature-center';
 import DRAWING_MODE from '../../utils/drawing-modes';
 import initMeasureLabel from '../../utils/init-measure-label';
 import MapLabel from '../../utils/map-label';
-import pathsToBounds from '../../utils/paths-to-bounds';
+import labelPlotter from '../../utils/label-plotter';
 
 if (!window.google) {
   throw new Error('Sorry, but `google` defined globally is required for this addon');
@@ -444,6 +444,7 @@ export default Ember.Component.extend({
 
     if (map && isVisible) {
       let $body = Ember.$('body');
+      let plotter;
 
       // Setup raw click handling - workaround for no basic events for drawing
       $body.on('click', run.bind(this, (event) => {
@@ -470,31 +471,20 @@ export default Ember.Component.extend({
         if (withinMap && notPan) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
+          plotter = labelPlotter(currentLabel, currentPoints, tool, event, map);
         } else if (notPan && !shapeFinish && !onPage) {
           currentPoints.push(latlng);
-          if (currentPoints.get('length') > 1) {
-            let bounds = pathsToBounds(currentPoints);
-            currentLabel.position = bounds.getCenter();
-            console.log('can calc measurement');
-          }
+          //plotter.update(currentPoints);
         } else if (shapeFinish) {
-          console.log('shape finish');
-          currentLabel.setMap(null);
-          currentPoints.clear();
-        } else {
-          currentLabel.setMap(null);
-          currentPoints.clear();
+          plotter.finish();
+          plotter = undefined;
         }
       }));
 
       $body.on('mousemove', run.bind(this, (event) => {
-        if (currentPoints.get('length')) {
+        if (plotter) {
           let latlng = calculateLatLng(map, event);
-          let bounds = pathsToBounds(currentPoints.concat(latlng));
-          currentLabel.label = 'temmp';
-          currentLabel.position = bounds.getCenter();
-          currentLabel.setMap(map);
-          console.log('moving');
+          plotter.update(currentPoints.concat(latlng));
         }
       }));
     }
