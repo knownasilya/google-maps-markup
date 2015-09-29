@@ -56,6 +56,7 @@ export default function labelPlotter(label, points, type, event, map) {
           break;
         }
 
+        /*jshint -W086 */
         case 'polygon': {
           if (points.length < 3) {
             break;

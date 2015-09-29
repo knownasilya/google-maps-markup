@@ -479,7 +479,7 @@ export default Ember.Component.extend({
         }
       });
 
-      var onDblClick = run.bind(this, (event) => {
+      var onDblClick = run.bind(this, () => {
         if (plotter) {
           plotter.finish();
           plotter = undefined;

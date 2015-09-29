@@ -12,7 +12,7 @@ export default function measureTypeResult(type, value) {
   switch(type) {
     case 'polyline': {
       // meters->feet conversion
-      result.value = value * 3.28084
+      result.value = value * 3.28084;
       result = miles(result);
       break;
     }
