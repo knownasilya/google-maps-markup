@@ -34,7 +34,7 @@ export default Ember.Service.extend({
     // Init measure labels
     measureResults.forEach(result => {
       if (result.label) {
-        label.setMap(map);
+        result.label.setMap(map);
       } else {
         initMeasureLabel(result, map);
       }
