@@ -1,70 +1,30 @@
 import { polygonArea, circleArea, rectangleArea } from './shape-area';
-import commaifyNumber from './number-commas';
-import acres from './acres';
-import miles from './miles';
+import pathDistance from './path-distance';
+import measureTypeResult from './measure-type-result';
 
 export default function getMeasurement(type, feature) {
-  var result = {
-    measurementType: 'Distance',
-    unit: 'ft',
-    value: 0
-  };
-
   switch(type) {
     case 'polyline': {
       let geometry = feature.getGeometry();
       let paths = geometry.getArray();
-      let processed = [];
+      let distance = pathDistance(paths);
 
-      paths.forEach((path) => {
-        var lastIndex = processed.length ? processed.length - 1 : undefined;
-
-        if (lastIndex !== undefined) {
-          let last = processed[lastIndex];
-          result.value += google.maps.geometry.spherical.computeDistanceBetween(last, path);
-        }
-
-        processed.push(path);
-      });
-
-      // meters->feet conversion
-      result.value = result.value * 3.28084;
-      result = miles(result);
-      break;
+      return measureTypeResult(type, distance);
     }
 
     case 'polygon': {
       let area = polygonArea(feature);
-      // sq. meters-> sq. feet
-      result.value = area * 10.7639;
-      result.measurementType = 'Area';
-      result.unit = 'sq. ft.';
-      result = acres(result);
-      break;
+      return measureTypeResult(type, area);
     }
 
     case 'circle': {
       let area = circleArea(feature);
-
-      result.value = area * 10.7639;
-      result.measurementType = 'Area';
-      result.unit = 'sq. ft.';
-      result = acres(result);
-      break;
+      return measureTypeResult(type, area);
     }
 
     case 'rectangle': {
       let area = rectangleArea(feature);
-      // sq. meters-> sq. feet
-      result.value = area * 10.7639;
-      result.measurementType = 'Area';
-      result.unit = 'sq. ft.';
-      result = acres(result);
-      break;
+      return measureTypeResult(type, area);
     }
   }
-
-  result.value = commaifyNumber(result.value);
-
-  return result;
 }
