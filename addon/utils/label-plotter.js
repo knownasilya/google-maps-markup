@@ -24,6 +24,7 @@ export default function labelPlotter(label, points, type, event, map) {
             let area = Math.PI * (radius * radius);
             let result = measureTypeResult(type, area);
             label.label = `${result.value} ${result.unit}`;
+            label.setMap(map);
           }
           break;
         }
@@ -35,6 +36,7 @@ export default function labelPlotter(label, points, type, event, map) {
             let result = measureTypeResult(type, distance);
             label.label = `${result.value} ${result.unit}`;
             label.position = bounds.getCenter();
+            label.setMap(map);
           }
           break;
         }
@@ -52,6 +54,7 @@ export default function labelPlotter(label, points, type, event, map) {
             let result = measureTypeResult(type, area);
             label.label = `${result.value} ${result.unit}`;
             label.position = bounds.getCenter();
+            label.setMap(map);
           }
           break;
         }
@@ -71,11 +74,10 @@ export default function labelPlotter(label, points, type, event, map) {
             let result = measureTypeResult(type, area);
             label.label = `${result.value} ${result.unit}`;
             label.position = bounds.getCenter();
+            label.setMap(map);
           }
         }
       }
-
-      label.setMap(map);
     },
 
     finish() {
