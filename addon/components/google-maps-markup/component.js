@@ -367,11 +367,11 @@ export default Ember.Component.extend({
         return item.feature.getId() === event.feature.getId();
       });
 
-      event.feature.setProperty('mode', mode);
-      event.feature.setProperty('type', drawingMode);
-      event.feature.setProperty('isVisible', true);
-
       if (!found) {
+        event.feature.setProperty('mode', mode);
+        event.feature.setProperty('type', drawingMode);
+        event.feature.setProperty('isVisible', true);
+
         let item = {
           mode,
           layer,
@@ -386,12 +386,12 @@ export default Ember.Component.extend({
         if (this.get('afterAddFeature')) {
           this.sendAction('afterAddFeature', item);
         }
-      }
 
-      let autoResetToPan = this.get('autoResetToPan');
+        let autoResetToPan = this.get('autoResetToPan');
 
-      if (autoResetToPan) {
-        this.send('changeDrawingMode', DRAWING_MODE.pan.id);
+        if (autoResetToPan) {
+          this.send('changeDrawingMode', DRAWING_MODE.pan.id);
+        }
       }
     }));
 
