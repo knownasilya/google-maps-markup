@@ -11,17 +11,17 @@
 <h4>Tools</h4>
 {{#if (is-equal mode 'draw')}}
   <div class="form-group tools-group" role="group" aria-label="Drawing Tools">
-    {{#each drawingModes as |mode|}}
-      <button type="button" class="btn btn-default {{if (is-equal mode.id drawingMode) 'active'}}" title={{mode.title}} onclick={{action 'changeDrawingMode' mode.id}}>
-        {{mode.name}}
+    {{#each drawingModes as |tool|}}
+      <button type="button" class="btn btn-default {{if (is-equal tool.id drawingMode) 'active'}}" title={{tool.title}} onclick={{action 'changeDrawingMode' tool.id}}>
+        {{tool.name}}
       </button>
     {{/each}}
   </div>
 {{else if (is-equal mode 'measure')}}
   <div class="form-group tools-group" role="group" aria-label="Measure Tools">
-    {{#each measureModes as |mode|}}
-      <button type="button" class="btn btn-default {{if (is-equal mode.id drawingMode) 'active'}}" title={{mode.title}} onclick={{action 'changeDrawingMode' mode.id}}>
-        {{mode.name}}
+    {{#each measureModes as |tool|}}
+      <button type="button" class="btn btn-default {{if (is-equal tool.id drawingMode) 'active'}}" title={{tool.title}} onclick={{action 'changeDrawingMode' tool.id}}>
+        {{tool.name}}
       </button>
     {{/each}}
   </div>
