@@ -130,9 +130,11 @@ export default Ember.Component.extend({
               type: tool.id,
               feature: labelMarker
             };
+
             labelMarker.setMap(map);
             results.pushObject(item);
             map.setOptions({ draggableCursor: undefined });
+            event.stop();
 
             if (autoResetToPan) {
               this.send('changeTool', DRAWING_MODE.pan.id);
