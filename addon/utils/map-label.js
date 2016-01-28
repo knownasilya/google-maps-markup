@@ -16,8 +16,10 @@ class MapLabel extends google.maps.OverlayView {
       this._element.className += ' ' + options.className;
     }
 
-    if (options.defaultLabel) {
-      this._element.textContent = options.defaultLabel;
+    this.label = options.label;
+
+    if (!options.label && options.defaultLabel) {
+      this.label = options.defaultLabel;
     }
   }
 
@@ -87,6 +89,10 @@ class MapLabel extends google.maps.OverlayView {
 
   get position() {
     return this.latlng;
+  }
+
+  get visible() {
+    return this._element.style.display === 'none' ? false : true;
   }
 
   hide() {

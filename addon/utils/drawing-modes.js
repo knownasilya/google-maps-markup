@@ -4,6 +4,14 @@ export default {
     name: 'Pan',
     title: 'Pan Tool'
   },
+  text: {
+    id: 'text',
+    name: 'Text',
+    title: 'Text Label Tool',
+    options: {
+      text: 'Text here'
+    }
+  },
   marker: {
     id: 'marker',
     dataId: 'Point',

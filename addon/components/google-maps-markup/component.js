@@ -39,6 +39,7 @@ export default Ember.Component.extend({
     drawingControl: false
   }),
   listeners: boundArray(),
+  toolListeners: boundArray(),
   currentPoints: boundArray(),
   currentLabel: new MapLabel(undefined, {
     dontScale: true
@@ -52,6 +53,7 @@ export default Ember.Component.extend({
   ],
   drawingModes: [
     DRAWING_MODE.pan,
+    DRAWING_MODE.text,
     DRAWING_MODE.marker,
     DRAWING_MODE.polyline,
     DRAWING_MODE.circle,
@@ -95,20 +97,51 @@ export default Ember.Component.extend({
 
     changeTool(toolId) {
       var activeLayer = this.get('activeLayer');
+      var map = this.get('map');
       var dm = this.get('dm');
       var tool = this.getTool(toolId);
+      var listeners = this.get('toolListeners');
+      var mode = this.get('mode');
+
+      this.set('activeTool', tool);
 
       this.resetAllLayers();
+      this.clearListeners();
 
       if (activeLayer) {
         if (tool.id === 'pan') {
           activeLayer.data.setDrawingMode(null);
           dm.setDrawingMode(null);
+        } else if (tool.id === 'text') {
+          map.setOptions({ draggableCursor: 'crosshair' });
+          let autoResetToPan = this.get('autoResetToPan');
+          let results = this.get('results');
+          let listener = map.addListener('click', event => {
+            let labelMarker = new MapLabel(event.latLng, {
+              //labelContent: tool.options.text || 'Text Here',
+              defaultLabel: 'Text Here',
+              label: tool.options.text
+              //labelClass: 'google-maps-markup-marker-label',
+              //icon: textIcon
+            });
+            let item = {
+              mode,
+              isVisible: true,
+              type: tool.id,
+              feature: labelMarker
+            };
+            labelMarker.setMap(map);
+            results.pushObject(item);
+            map.setOptions({ draggableCursor: undefined });
+
+            if (autoResetToPan) {
+              this.send('changeTool', DRAWING_MODE.pan.id);
+            }
+          });
+          listeners.pushObject(listener);
         } else if (tool.dataId) {
           activeLayer.data.setDrawingMode(tool.dataId);
         } else if (tool.dmId) {
-          let map = this.get('map');
-
           dm.setDrawingMode(tool.dmId);
           dm.setMap(map);
         }
@@ -136,11 +169,13 @@ export default Ember.Component.extend({
           layer.data.remove(feature);
         });
 
-        if (mode === 'measure') {
           results.forEach(result => {
-            result.label.onRemove();
+            if (mode === 'measure') {
+              result.label.onRemove();
+            } else {
+              result.feature.setMap(null);
+            }
           });
-        }
 
         results.clear();
 
@@ -155,7 +190,11 @@ export default Ember.Component.extend({
       var results = this.get('results');
       var layer = this.get('activeLayer');
 
-      layer.data.remove(result.feature);
+      if (result.type === 'text') {
+        result.feature.setMap(null);
+      } else {
+        layer.data.remove(result.feature);
+      }
 
       if (mode === 'measure') {
         result.label.onRemove();
@@ -174,23 +213,35 @@ export default Ember.Component.extend({
       var layer = this.get('activeLayer');
       var mode = this.get('mode');
       var isMeasure = mode === 'measure';
-      var hide = force !== undefined && force !== null ? !force : layer.data.contains(result.feature);
+      var hide = force !== undefined && force !== null ?
+        !force :
+        result.type === 'text' ? !result.feature.visible : layer.data.contains(result.feature);
 
       if (hide) {
         Ember.set(result, 'isVisible', false);
-        result.feature.setProperty('isVisible', false);
-        layer.data.remove(result.feature);
 
-        if (isMeasure) {
-          result.label.hide();
+        if (result.type === 'text') {
+          result.feature.show();
+        } else {
+          result.feature.setProperty('isVisible', false);
+          layer.data.remove(result.feature);
+
+          if (isMeasure) {
+            result.label.hide();
+          }
         }
       } else {
         Ember.set(result, 'isVisible', true);
-        result.feature.setProperty('isVisible', true);
-        layer.data.add(result.feature);
 
-        if (isMeasure) {
-          result.label.show();
+        if (result.type === 'text') {
+          result.feature.hide();
+        } else {
+          result.feature.setProperty('isVisible', true);
+          layer.data.add(result.feature);
+
+          if (isMeasure) {
+            result.label.show();
+          }
         }
       }
     },
@@ -213,10 +264,10 @@ export default Ember.Component.extend({
       }
 
       if (data) {
-        let geometry = data.feature.getGeometry();
+        let geometry = data.feature.getGeometry ? data.feature.getGeometry() : data.feature.position;
         let latlng = position && position instanceof google.maps.LatLng ? position : featureCenter(data.feature);
 
-        if (geometry.getType() === 'Point') {
+        if (geometry.getType && geometry.getType() === 'Point') {
           popup.setOptions({
             pixelOffset: new google.maps.Size(0, -40)
           });
@@ -251,7 +302,10 @@ export default Ember.Component.extend({
             scaledSize: new google.maps.Size(22, 40)
           }
         };
-      } else {
+      } /*else if (data.type === 'text') {
+        data.feature.label.labelDiv_.classList.add('highlighted');
+        return;
+      } */else {
         style = {
           strokeColor: 'red'
         };
@@ -264,7 +318,12 @@ export default Ember.Component.extend({
       var layer = this.get('activeLayer');
 
       if (!data.editingShape) {
-        layer.data.revertStyle(data.feature);
+      /*
+        if (data.type === 'text') {
+          data.feature.label.labelDiv_.classList.remove('highlighted');
+        } else {*/
+          layer.data.revertStyle(data.feature);
+        //}
       }
 
       if (!data.editing) {
@@ -279,6 +338,13 @@ export default Ember.Component.extend({
     layers.forEach(layer => {
       layer.data.setDrawingMode(null);
     });
+  },
+
+  clearListeners() {
+    var listeners = this.get('toolListeners');
+
+    listeners.forEach(l => google.maps.event.removeListener(l));
+    listeners.clear();
   },
 
   panToIfHidden(feature) {
@@ -364,7 +430,11 @@ export default Ember.Component.extend({
       let drawingMode = this.get('drawingMode');
       let results = this.get('results');
       let found = results.find(function (item) {
-        return item.feature.getId() === event.feature.getId();
+        if (item.feature && item.feature.getId) {
+          return item.feature.getId() === event.feature.getId();
+        } else if (item.feature) {
+          return item.feature === event.feature;
+        }
       });
 
       if (!found) {

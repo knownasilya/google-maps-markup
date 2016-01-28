@@ -27,6 +27,24 @@
   </div>
 {{/if}}
 
+{{#unless (is-equal drawingMode 'pan')}}
+  {{#with activeTool.options as |opt|}}
+    {{#if opt}}
+      <h4>Options</h4>
+      <form class="form-horizontal options-group" onsubmit="return false">
+        {{#if opt.text}}
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Text</label>
+            <div class="col-sm-6">
+              {{input type='text' value=opt.text placeholder='Change text here' class='form-control'}}
+            </div>
+          </div>
+        {{/if}}
+      </form>
+    {{/if}}
+  {{/with}}
+{{/unless}}
+
 {{#if results}}
   <h4>Results</h4>
   <div class="form-group">

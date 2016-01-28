@@ -26,6 +26,8 @@ export default Ember.Component.extend({
         data.label.label = `${m.value} ${m.unit}`;
 
         return `${m.measurementType}: ${m.value} ${m.unit}`;
+      } else if (data.type === 'text') {
+        return data.feature.label;
       }
     }
   }),
@@ -44,24 +46,34 @@ export default Ember.Component.extend({
       var listener;
 
       if (edit) {
-        listener = google.maps.event.addListener(data.feature, 'setgeometry', run.bind(this, function () {
-          if (data.label) {
-            data.label.position = featureCenter(data.feature);
-          }
-          // force recalculation
-          this.set('shapeModified', true);
-          this.notifyPropertyChange('description');
-        }));
-        this.set('originalFeatureGeometry', data.feature.getGeometry());
-        data.layer.data.overrideStyle(data.feature, {
-          editable: true,
-          draggable: true
-        });
+        if (data.type === 'text') {
+          this.set('originalFeatureGeometry', data.feature.position);
+          data.feature.draggable = true;
+          // TODO: implement label dragging
+        } else {
+          listener = google.maps.event.addListener(data.feature, 'setgeometry', run.bind(this, function () {
+            if (data.label) {
+              data.label.position = featureCenter(data.feature);
+            }
+            // force recalculation
+            this.set('shapeModified', true);
+            this.notifyPropertyChange('description');
+          }));
+          this.set('originalFeatureGeometry', data.feature.getGeometry());
+          data.layer.data.overrideStyle(data.feature, {
+            editable: true,
+            draggable: true
+          });
+        }
       } else {
-        data.layer.data.revertStyle(data.feature);
-        this.set('shapeModified', false);
-        if (listener) {
-          google.maps.event.removeListener(listener);
+        if (data.type === 'text') {
+          // TODO: implement
+        } else {
+          data.layer.data.revertStyle(data.feature);
+          this.set('shapeModified', false);
+          if (listener) {
+            google.maps.event.removeListener(listener);
+          }
         }
       }
 
