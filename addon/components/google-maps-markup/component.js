@@ -93,10 +93,10 @@ export default Ember.Component.extend({
       this.set('mode', mode.id);
     },
 
-    changeDrawingMode(mode) {
+    changeTool(toolId) {
       var activeLayer = this.get('activeLayer');
       var dm = this.get('dm');
-      var tool = this.getTool(mode);
+      var tool = this.getTool(toolId);
 
       this.resetAllLayers();
 
@@ -114,7 +114,7 @@ export default Ember.Component.extend({
         }
       }
 
-      this.set('drawingMode', mode);
+      this.set('drawingMode', toolId);
     },
 
     toggleResults() {
@@ -390,7 +390,7 @@ export default Ember.Component.extend({
         let autoResetToPan = this.get('autoResetToPan');
 
         if (autoResetToPan) {
-          this.send('changeDrawingMode', DRAWING_MODE.pan.id);
+          this.send('changeTool', DRAWING_MODE.pan.id);
         }
       }
     }));
@@ -512,7 +512,7 @@ export default Ember.Component.extend({
     var listeners = this.get('listeners');
     var bodyListeners = this.get('bodyListeners');
 
-    this.send('changeDrawingMode', DRAWING_MODE.pan.id);
+    this.send('changeTool', DRAWING_MODE.pan.id);
 
     // Cleanup all listeners
     if (listeners) {
