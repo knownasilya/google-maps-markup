@@ -42,6 +42,9 @@ class MapLabel extends google.maps.OverlayView {
       this._element.addEventListener('keydown', event => {
         event.stopPropagation();
       });
+      this._element.addEventListener('dblclick', event => {
+        event.stopPropagation();
+      });
       this._element.addEventListener('input', event => {
         google.maps.event.trigger(this, 'changelabel');
       });
@@ -92,6 +95,7 @@ class MapLabel extends google.maps.OverlayView {
   // Required by GMaps
   onRemove() {
     this._element.removeEventListener('keydown');
+    this._element.removeEventListener('dblclick');
     this._element.parentNode.removeChild(this._element);
   }
 
