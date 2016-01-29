@@ -15,7 +15,19 @@ export default Ember.Component.extend({
   tagName: 'li',
   classNames: ['list-group-item', 'clearfix'],
 
-  description: computed('data.mode', {
+  didInitAttrs() {
+    var data = this.get('data');
+
+    if (data.feature.addListener) {
+      let changeListener = data.feature.addListener('changelabel', () => {
+        this.set('description', data.feature.label);
+      });
+
+      this.set('changeListener', changeListener);
+    }
+  },
+
+  description: computed('data.mode', 'data.feature', {
     get() {
       var mode = this.get('data.mode');
       var data = this.get('data');
@@ -106,5 +118,15 @@ export default Ember.Component.extend({
 
   onOut: on('mouseLeave', function () {
     this.sendAction('onout', this.get('data'));
-  })
+  }),
+
+  willDestroyElement() {
+    this._super(...arguments);
+
+    var changeListener = this.get('changeListener');
+
+    if (changeListener) {
+      google.maps.event.removeListener(changeListener);
+    }
+  }
 });

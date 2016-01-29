@@ -120,7 +120,9 @@ export default Ember.Component.extend({
             let labelMarker = new MapLabel(event.latLng, {
               //labelContent: tool.options.text || 'Text Here',
               defaultLabel: 'Text Here',
-              label: tool.options.text
+              label: tool.options.text,
+              editLabelInPlace: true,
+              clickable: true
               //labelClass: 'google-maps-markup-marker-label',
               //icon: textIcon
             });

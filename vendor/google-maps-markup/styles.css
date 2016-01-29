@@ -15,3 +15,11 @@
   text-shadow: -1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff,1px 1px 0 #fff;
   white-space: pre-line;
 }
+
+.google-maps-markup-map-label.clickable {
+  cursor: pointer;
+}
+
+.google-maps-markup-map-label[contenteditable="true"] {
+  cursor: text;
+}
