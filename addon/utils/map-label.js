@@ -4,12 +4,14 @@ class MapLabel extends google.maps.OverlayView {
 
     options = options || {};
 
+    options.defaultLabel = options.defaultLabel || 'Label Text';
+
     this.latlng = latlng;
     this.dontScale = options.dontScale;
     this.editLabelInPlace = options.editLabelInPlace;
     this.clickable = options.clickable;
+    this.options = options;
 
-    this._opts = options;
     this._element = document.createElement('div');
     this._element.className = 'google-maps-markup-map-label';
     this._element.style.position = 'absolute';
@@ -22,6 +24,7 @@ class MapLabel extends google.maps.OverlayView {
       this._element.className += ' ' + options.className;
     }
 
+    // Requires element to be present
     this.label = options.label;
 
     if (!options.label && options.defaultLabel) {

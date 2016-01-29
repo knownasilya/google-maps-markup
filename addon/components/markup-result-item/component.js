@@ -20,6 +20,9 @@ export default Ember.Component.extend({
 
     if (data.feature.addListener) {
       let changeListener = data.feature.addListener('changelabel', () => {
+        if (!data.feature.label) {
+          data.feature.label = data.feature.options.defaultLabel;
+        }
         this.set('description', data.feature.label);
       });
 
