@@ -45,7 +45,7 @@ class MapLabel extends google.maps.OverlayView {
       this._element.addEventListener('dblclick', event => {
         event.stopPropagation();
       });
-      this._element.addEventListener('input', event => {
+      this._element.addEventListener('input', () => {
         google.maps.event.trigger(this, 'changelabel');
       });
     }

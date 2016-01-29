@@ -90,6 +90,36 @@ export default Ember.Component.extend({
     return DRAWING_MODE[id];
   },
 
+  addTextLabel(tool, position) {
+    let autoResetToPan = this.get('autoResetToPan');
+    let results = this.get('results');
+    let mode = this.get('mode');
+    let map = this.get('map');
+    let labelMarker = new MapLabel(position, {
+      //labelContent: tool.options.text || 'Text Here',
+      defaultLabel: 'Text Here',
+      label: tool.options.text,
+      editLabelInPlace: true,
+      clickable: true
+      //labelClass: 'google-maps-markup-marker-label',
+      //icon: textIcon
+    });
+    let item = {
+      mode,
+      isVisible: true,
+      type: tool.id,
+      feature: labelMarker
+    };
+
+    labelMarker.setMap(map);
+    results.pushObject(item);
+    map.setOptions({ draggableCursor: undefined });
+
+    if (autoResetToPan) {
+      this.send('changeTool', DRAWING_MODE.pan.id);
+    }
+  },
+
   actions: {
     changeMode(mode) {
       this.set('mode', mode.id);
@@ -101,7 +131,6 @@ export default Ember.Component.extend({
       var dm = this.get('dm');
       var tool = this.getTool(toolId);
       var listeners = this.get('toolListeners');
-      var mode = this.get('mode');
 
       this.set('activeTool', tool);
 
@@ -112,37 +141,31 @@ export default Ember.Component.extend({
         if (tool.id === 'pan') {
           activeLayer.data.setDrawingMode(null);
           dm.setDrawingMode(null);
-        } else if (tool.id === 'text') {
-          map.setOptions({ draggableCursor: 'crosshair' });
-          let autoResetToPan = this.get('autoResetToPan');
-          let results = this.get('results');
-          let listener = map.addListener('click', event => {
-            let labelMarker = new MapLabel(event.latLng, {
-              //labelContent: tool.options.text || 'Text Here',
-              defaultLabel: 'Text Here',
-              label: tool.options.text,
-              editLabelInPlace: true,
-              clickable: true
-              //labelClass: 'google-maps-markup-marker-label',
-              //icon: textIcon
+
+          let clickListener = activeLayer.data.addListener('click', event => {
+            let results = this.get('results');
+            let found = results.find(function (item) {
+              return item.feature.getId() === event.feature.getId();
             });
-            let item = {
-              mode,
-              isVisible: true,
-              type: tool.id,
-              feature: labelMarker
-            };
 
-            labelMarker.setMap(map);
-            results.pushObject(item);
-            map.setOptions({ draggableCursor: undefined });
-            event.stop();
-
-            if (autoResetToPan) {
-              this.send('changeTool', DRAWING_MODE.pan.id);
+            if (found.listItem) {
+              found.listItem.send('edit', event.latLng);
             }
           });
-          listeners.pushObject(listener);
+          listeners.pushObject(clickListener);
+        } else if (tool.id === 'text') {
+          map.setOptions({ draggableCursor: 'crosshair' });
+          let mapListener = map.addListener('click', event => {
+            this.addTextLabel(tool, event.latLng);
+            map.setOptions({ draggableCursor: 'default' });
+            event.stop();
+          });
+          let dataListener = activeLayer.data.addListener('click', event => {
+            this.addTextLabel(tool, event.latLng);
+            map.setOptions({ draggableCursor: 'default' });
+            event.stop();
+          });
+          listeners.pushObjects([ mapListener, dataListener ]);
         } else if (tool.dataId) {
           activeLayer.data.setDrawingMode(tool.dataId);
         } else if (tool.dmId) {
@@ -469,20 +492,8 @@ export default Ember.Component.extend({
       }
     }));
 
-    var clickListener = layer.data.addListener('click', event => {
-      let results = this.get('results');
-      let found = results.find(function (item) {
-        return item.feature.getId() === event.feature.getId();
-      });
-
-      if (found.listItem) {
-        found.listItem.send('edit', event.latLng);
-      }
-    });
-
     this.get('listeners').pushObjects([
-      listener,
-      clickListener
+      listener
     ]);
   }),
 
