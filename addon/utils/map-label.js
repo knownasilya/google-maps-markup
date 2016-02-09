@@ -4,21 +4,13 @@ class MapLabel extends google.maps.OverlayView {
 
     options = options || {};
 
-    options.defaultLabel = options.defaultLabel || 'Label Text';
-
     this.latlng = latlng;
     this.dontScale = options.dontScale;
-    this.editLabelInPlace = options.editLabelInPlace;
-    this.clickable = options.clickable;
     this.options = options;
 
     this._element = document.createElement('div');
     this._element.className = 'google-maps-markup-map-label';
     this._element.style.position = 'absolute';
-
-    if (this.clickable) {
-      this._element.className += ' clickable';
-    }
 
     if (options.className) {
       this._element.className += ' ' + options.className;
@@ -26,29 +18,12 @@ class MapLabel extends google.maps.OverlayView {
 
     // Requires element to be present
     this.label = options.label;
-
-    if (!options.label && options.defaultLabel) {
-      this.label = options.defaultLabel;
-    }
   }
 
   // Required by GMaps
   onAdd() {
     var panes = this.getPanes();
-    var pane = this.clickable ? panes.overlayMouseTarget : panes.markerLayer;
-
-    if (this.editLabelInPlace && this.clickable) {
-      this._element.contentEditable = true;
-      this._element.addEventListener('keydown', event => {
-        event.stopPropagation();
-      });
-      this._element.addEventListener('dblclick', event => {
-        event.stopPropagation();
-      });
-      this._element.addEventListener('input', () => {
-        google.maps.event.trigger(this, 'changelabel');
-      });
-    }
+    var pane = panes.markerLayer;
 
     if (pane) {
       pane.appendChild(this._element);
@@ -94,8 +69,6 @@ class MapLabel extends google.maps.OverlayView {
 
   // Required by GMaps
   onRemove() {
-    this._element.removeEventListener('keydown');
-    this._element.removeEventListener('dblclick');
     this._element.parentNode.removeChild(this._element);
   }
 

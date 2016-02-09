@@ -14,10 +14,18 @@
   line-height: 1.1em;
   text-shadow: -1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff,1px 1px 0 #fff;
   white-space: pre-line;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  padding: 0.1em;
 }
 
 .google-maps-markup-map-label.clickable {
   cursor: pointer;
+}
+
+.google-maps-markup-map-label.editing-text {
+  min-width: 100px;
+  border: 1px solid #333;
 }
 
 .google-maps-markup-map-label[contenteditable="true"] {

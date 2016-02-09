@@ -6,6 +6,7 @@ import featureCenter from '../../utils/feature-center';
 import DRAWING_MODE from '../../utils/drawing-modes';
 import initMeasureLabel from '../../utils/init-measure-label';
 import MapLabel from '../../utils/map-label';
+import DynamicLabel from '../../utils/dynamic-label';
 import labelPlotter from '../../utils/label-plotter';
 
 if (!window.google) {
@@ -95,14 +96,9 @@ export default Ember.Component.extend({
     let results = this.get('results');
     let mode = this.get('mode');
     let map = this.get('map');
-    let labelMarker = new MapLabel(position, {
-      //labelContent: tool.options.text || 'Text Here',
-      defaultLabel: 'Text Here',
-      label: tool.options.text,
+    let labelMarker = new DynamicLabel(position, {
+      placeholder: 'Click to edit',
       editLabelInPlace: true,
-      clickable: true
-      //labelClass: 'google-maps-markup-marker-label',
-      //icon: textIcon
     });
     let item = {
       mode,
@@ -126,6 +122,7 @@ export default Ember.Component.extend({
     },
 
     changeTool(toolId) {
+      var markupDataService = this.get('markupData');
       var activeLayer = this.get('activeLayer');
       var map = this.get('map');
       var dm = this.get('dm');
@@ -133,6 +130,7 @@ export default Ember.Component.extend({
       var listeners = this.get('toolListeners');
 
       this.set('activeTool', tool);
+      markupDataService.set('activeTool', tool.id);
 
       this.resetAllLayers();
       this.clearListeners();
