@@ -21,7 +21,7 @@ export default {
   polyline: {
     id: 'polyline',
     dataId: 'LineString',
-    name: 'PolyLine',
+    name: 'Line',
     title: 'Multi segmented line tool'
   },
   polygon: {
