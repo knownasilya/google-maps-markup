@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { v1 } from 'ember-uuid';
 import layout from './template';
 import overlayToFeature from '../../utils/overlay-to-feature';
 import MODE from '../../utils/modes';
@@ -36,6 +37,7 @@ export default Ember.Component.extend({
   dataLayers: computed.alias('markupData.layers'),
   results: computed.alias('markupData.results'),
   mode: computed.alias('markupData.mode'),
+  textGeoJson: computed.alias('markupData.textGeoJson'),
   dm: new google.maps.drawing.DrawingManager({
     drawingControl: false
   }),
@@ -92,14 +94,12 @@ export default Ember.Component.extend({
   },
 
   addTextLabel(tool, position) {
+    var activeLayer = this.get('activeLayer');
     let autoResetToPan = this.get('autoResetToPan');
     let results = this.get('results');
     let mode = this.get('mode');
     let map = this.get('map');
-    let labelMarker = new DynamicLabel(position, {
-      placeholder: 'Click to edit',
-      editLabelInPlace: true,
-    });
+    let labelMarker = new DynamicLabel(position);
     let item = {
       mode,
       isVisible: true,
@@ -110,10 +110,35 @@ export default Ember.Component.extend({
     labelMarker.setMap(map);
     results.pushObject(item);
     map.setOptions({ draggableCursor: undefined });
+    // TODO: convert to geojson and add to active layer
+    // later load during results process
+    let feature = this.markerToFeature(item, labelMarker);
+    let textGeoJson = this.get('textGeoJson');
+
+    feature.toGeoJson(data => {
+      item.geojson = data;
+      textGeoJson.pushObject(data);
+    });
 
     if (autoResetToPan) {
       this.send('changeTool', DRAWING_MODE.pan.id);
     }
+  },
+
+  markerToFeature(result, marker) {
+    var id = v1();
+    var properties = {
+      mode: result.mode,
+      type: result.type,
+      isVisible: true
+    };
+    var feature = new google.maps.Data.Feature({
+      geometry: marker.position,
+      properties,
+      id
+    });
+
+    return feature;
   },
 
   actions: {
@@ -507,6 +532,7 @@ export default Ember.Component.extend({
 
     // Enable all layers to show on map
     layers.forEach(layer => layer.data.setMap(map));
+    // TODO: initialize all text items
 
 
     let listener = dm.addListener('overlaycomplete', run.bind(this, (event) => {

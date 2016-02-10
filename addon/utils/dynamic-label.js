@@ -4,13 +4,21 @@ class DynamicLabel extends MapLabel {
   constructor(latlng, options) {
     super(...arguments);
 
+    options = options || {};
+
     this.clickable = true;
-    this.placeholder = options.placeholder;
+    this.placeholder = options.placeholder || 'Click to edit';
     this.editLabelInPlace = options.editLabelInPlace;
+
+    if (this.editLabelInPlace === undefined) {
+      this.editLabelInPlace = true;
+    }
 
     if (this.clickable) {
       this._element.className += ' clickable';
     }
+
+    this.label = options.label;
   }
 
   onAdd() {

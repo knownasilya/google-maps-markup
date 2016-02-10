@@ -1,7 +1,9 @@
 import Ember from 'ember';
 import createFeature from '../utils/create-feature';
 import initMeasureLabel from '../utils/init-measure-label';
+import initTextLabel from '../utils/init-text-label';
 import MODE from '../utils/modes';
+import Layer from '../utils/layer';
 
 const {
   get,
@@ -19,6 +21,7 @@ export default Ember.Service.extend({
     draw: boundArray(),
     measure: boundArray()
   }),
+  textGeoJson: boundArray(),
 
   activate(map) {
     this.set('map', map);
@@ -58,13 +61,21 @@ export default Ember.Service.extend({
   layers: computed({
     get() {
       var results = this.get('results');
+      var textGeoJson = this.get('textGeoJson');
       var setId = function (geom) {
         return createFeature(geom, results);
       };
 
       return [
-        { isHidden: false, data: new google.maps.Data({ featureFactory: setId }) },
-        { isHidden: false, data: new google.maps.Data({ featureFactory: setId }) }
+        new Layer({
+          textGeoJson,
+          isHidden: false,
+          data: new google.maps.Data({ featureFactory: setId })
+        }),
+        new Layer({
+          isHidden: false,
+          data: new google.maps.Data({ featureFactory: setId })
+        })
       ];
     }
   }),
@@ -105,6 +116,7 @@ export default Ember.Service.extend({
     };
 
     initMeasureLabel(result, map);
+    initTextLabel(result, layer, map);
     results.pushObject(result);
   }
 });
