@@ -17,6 +17,7 @@ if (!window.google) {
 const {
   on,
   run,
+  set,
   inject,
   computed,
   A: boundArray,
@@ -98,9 +99,9 @@ export default Ember.Component.extend({
     let results = this.get('results');
     let mode = this.get('mode');
     let map = this.get('map');
-    let color = tool.options ? tool.options.findBy('type', 'color') : undefined;
+    let color = tool.style.color;
     let labelMarker = new DynamicLabel(position, {
-      color: color && color.value
+      color
     });
     let item = {
       mode,
@@ -145,6 +146,10 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    updateOptionValue(tool, prop, value) {
+      set(tool, prop, value);
+    },
+
     changeMode(mode) {
       this.set('mode', mode.id);
     },
@@ -376,6 +381,9 @@ export default Ember.Component.extend({
           data.feature.label.labelDiv_.classList.remove('highlighted');
         } else {*/
           layer.data.revertStyle(data.feature);
+          if (data.style) {
+            layer.data.overrideStyle(data.feature, data.style);
+          }
         //}
       }
 
@@ -480,6 +488,7 @@ export default Ember.Component.extend({
       }
 
       let map = this.get('map');
+      let tool = this.get('activeTool');
       let drawingMode = this.get('drawingMode');
       let results = this.get('results');
       let found = results.find(function (item) {
@@ -500,9 +509,13 @@ export default Ember.Component.extend({
           layer,
           isVisible: true,
           type: drawingMode,
+          style: Ember.copy(tool.style),
           feature: event.feature
         };
 
+        if (item.style) {
+          layer.data.overrideStyle(event.feature, item.style);
+        }
         initMeasureLabel(item, map);
         results.pushObject(item);
 

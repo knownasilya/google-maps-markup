@@ -83,6 +83,9 @@ export default Ember.Component.extend({
           // TODO: implement
         } else {
           data.layer.data.revertStyle(data.feature);
+          if (data.style) {
+            data.layer.data.overrideStyle(data.feature, data.style);
+          }
           this.set('shapeModified', false);
           if (listener) {
             google.maps.event.removeListener(listener);

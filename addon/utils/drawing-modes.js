@@ -9,8 +9,11 @@ export default {
     name: 'Text',
     title: 'Text Label Tool',
     options: [
-      { name: 'Color', type: 'color', value: '#374046' }
-    ]
+      { name: 'Color', type: 'color', id: 'style.color' }
+    ],
+    style: {
+      color: '#374046'
+    }
   },
   marker: {
     id: 'marker',
@@ -22,24 +25,54 @@ export default {
     id: 'polyline',
     dataId: 'LineString',
     name: 'Line',
-    title: 'Multi segmented line tool'
+    title: 'Multi segmented line tool',
+    options: [
+      { name: 'Color', type: 'color', id: 'style.strokeColor' }
+    ],
+    style: {
+      strokeColor: '#374046'
+    }
   },
   polygon: {
     id: 'polygon',
     dataId: 'Polygon',
     name: 'Polygon',
-    title: 'Polygon Tool'
+    title: 'Polygon Tool',
+    options: [
+      { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
+      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
+    ],
+    style: {
+      strokeColor: '#374046',
+      fillColor: '#374046'
+    }
   },
   circle: {
     id: 'circle',
     dmId: google.maps.drawing.OverlayType.CIRCLE,
     name: 'Circle',
-    title: 'Circle Tool'
+    title: 'Circle Tool',
+    options: [
+      { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
+      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
+    ],
+    style: {
+      strokeColor: '#374046',
+      fillColor: '#374046'
+    }
   },
   rectangle: {
     id: 'rectangle',
     dmId: google.maps.drawing.OverlayType.RECTANGLE,
     name: 'Rectangle',
-    title: 'Rectangle Tool'
+    title: 'Rectangle Tool',
+    options: [
+      { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
+      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
+    ],
+    style: {
+      strokeColor: '#374046',
+      fillColor: '#374046'
+    }
   }
 };

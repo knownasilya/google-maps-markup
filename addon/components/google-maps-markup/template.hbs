@@ -35,7 +35,7 @@
       {{#if (is-equal opt.type 'color')}}
         <div class="form-group">
           <label>{{opt.name}}</label>
-          {{color-palette selected=opt.value onselect=(action (mut opt.value))}}
+          {{color-palette selected=(get activeTool opt.id) onselect=(action 'updateOptionValue' activeTool opt.id)}}
         </div>
       {{/if}}
     {{/each}}
