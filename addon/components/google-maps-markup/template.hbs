@@ -27,25 +27,21 @@
   </div>
 {{/if}}
 
-{{!-- disable for now
 {{#unless (is-equal drawingMode 'pan')}}
-  {{#with activeTool.options as |opt|}}
-    {{#if opt}}
-      <h4>Options</h4>
-      <form class="form-horizontal options-group" onsubmit="return false">
-        {{#if (present opt 'text')}}
-          <div class="form-group">
-            <label class="col-sm-2 control-label">Text</label>
-            <div class="col-sm-6">
-              {{input type='text' value=opt.text placeholder='Change text here' class='form-control'}}
-            </div>
-          </div>
-        {{/if}}
-      </form>
-    {{/if}}
-  {{/with}}
+  {{#if activeTool.options}}
+    <h4>Options</h4>
+    <form class="form options-group" onsubmit="return false">
+    {{#each activeTool.options as |opt|}}
+      {{#if (is-equal opt.type 'color')}}
+        <div class="form-group">
+          <label>{{opt.name}}</label>
+          {{color-palette selected=opt.value onselect=(action (mut opt.value))}}
+        </div>
+      {{/if}}
+    {{/each}}
+    </form>
+  {{/if}}
 {{/unless}}
---}}
 
 {{#if results}}
   <h4>Results</h4>

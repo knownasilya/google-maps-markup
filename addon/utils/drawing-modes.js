@@ -8,9 +8,9 @@ export default {
     id: 'text',
     name: 'Text',
     title: 'Text Label Tool',
-    options: {
-      text: 'Text here'
-    }
+    options: [
+      { name: 'Color', type: 'color', value: '#374046' }
+    ]
   },
   marker: {
     id: 'marker',

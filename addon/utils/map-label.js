@@ -6,6 +6,7 @@ class MapLabel extends google.maps.OverlayView {
 
     this.latlng = latlng;
     this.dontScale = options.dontScale;
+    this.color = options.color;
     this.options = options;
 
     this._element = document.createElement('div');
@@ -14,6 +15,10 @@ class MapLabel extends google.maps.OverlayView {
 
     if (options.className) {
       this._element.className += ' ' + options.className;
+    }
+
+    if (this.color) {
+      this._element.style.color = this.color;
     }
 
     // Requires element to be present

@@ -51,6 +51,7 @@
     "ember-cli-htmlbars": "0.7.9",
     "ember-cli-babel": "^5.0.0",
     "ember-wormhole": "0.3.4",
+    "ember-palette": "1.0.3",
     "ember-uuid": "1.0.0"
   },
   "ember-addon": {

@@ -94,12 +94,14 @@ export default Ember.Component.extend({
   },
 
   addTextLabel(tool, position) {
-    var activeLayer = this.get('activeLayer');
     let autoResetToPan = this.get('autoResetToPan');
     let results = this.get('results');
     let mode = this.get('mode');
     let map = this.get('map');
-    let labelMarker = new DynamicLabel(position);
+    let color = tool.options ? tool.options.findBy('type', 'color') : undefined;
+    let labelMarker = new DynamicLabel(position, {
+      color: color && color.value
+    });
     let item = {
       mode,
       isVisible: true,
@@ -130,6 +132,7 @@ export default Ember.Component.extend({
     var properties = {
       mode: result.mode,
       type: result.type,
+      color: marker.color,
       isVisible: true
     };
     var feature = new google.maps.Data.Feature({
