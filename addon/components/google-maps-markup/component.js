@@ -228,13 +228,14 @@ export default Ember.Component.extend({
           layer.data.remove(feature);
         });
 
-          results.forEach(result => {
-            if (mode === 'measure') {
-              result.label.onRemove();
-            } else {
-              result.feature.setMap(null);
-            }
-          });
+        results.forEach(result => {
+          if (mode === 'measure') {
+            result.label.onRemove();
+          } else if (result.feature.setMap) {
+            // remove text marker
+            result.feature.setMap(null);
+          }
+        });
 
         results.clear();
 
