@@ -55,7 +55,7 @@ export default Ember.Component.extend({
     MODE.draw,
     MODE.measure
   ],
-  drawingModes: [
+  drawingModes: boundArray([
     DRAWING_MODE.pan,
     DRAWING_MODE.text,
     DRAWING_MODE.marker,
@@ -63,14 +63,14 @@ export default Ember.Component.extend({
     DRAWING_MODE.circle,
     DRAWING_MODE.rectangle,
     DRAWING_MODE.polygon
-  ],
-  measureModes: [
+  ]),
+  measureModes: boundArray([
     DRAWING_MODE.pan,
     DRAWING_MODE.polyline,
     DRAWING_MODE.circle,
     DRAWING_MODE.rectangle,
     DRAWING_MODE.polygon
-  ],
+  ]),
 
   initPopupEvents: on('init', function () {
     var editable = this.get('editable');
