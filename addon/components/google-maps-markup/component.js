@@ -99,12 +99,13 @@ export default Ember.Component.extend({
     let results = this.get('results');
     let mode = this.get('mode');
     let map = this.get('map');
-    let color = tool.style.color;
+    let style = Ember.copy(tool.style);
     let labelMarker = new DynamicLabel(position, {
-      color
+      color: style.color
     });
     let item = {
       mode,
+      style,
       isVisible: true,
       type: tool.id,
       feature: labelMarker
@@ -133,7 +134,7 @@ export default Ember.Component.extend({
     var properties = {
       mode: result.mode,
       type: result.type,
-      color: marker.color,
+      style: result.style,
       isVisible: true
     };
     var feature = new google.maps.Data.Feature({
@@ -500,22 +501,25 @@ export default Ember.Component.extend({
       });
 
       if (!found) {
+        let style = Ember.copy(tool.style);
         event.feature.setProperty('mode', mode);
         event.feature.setProperty('type', drawingMode);
         event.feature.setProperty('isVisible', true);
+        event.feature.setProperty('style', style);
 
         let item = {
           mode,
           layer,
+          style,
           isVisible: true,
           type: drawingMode,
-          style: Ember.copy(tool.style),
           feature: event.feature
         };
 
         if (item.style) {
           layer.data.overrideStyle(event.feature, item.style);
         }
+
         initMeasureLabel(item, map);
         results.pushObject(item);
 

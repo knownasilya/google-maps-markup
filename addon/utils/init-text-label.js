@@ -8,9 +8,12 @@ export default function initTextLabel(result, layer, map) {
 
   if (result.mode === 'draw' && result.type === 'text') {
     let layerFeature = result.feature;
-    let center = featureCenter(result.feature);
+    let center = featureCenter(layerFeature);
+    let style = layerFeature.getProperty('style');
+
     result.feature = new DynamicLabel(center, {
-      label: result.feature.getProperty('label')
+      label: layerFeature.getProperty('label'),
+      color: style && style.color
     });
 
     if (map) {

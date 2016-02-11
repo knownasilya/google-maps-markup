@@ -111,9 +111,14 @@ export default Ember.Service.extend({
       mode,
       feature,
       layer,
+      style: feature.getProperty('style'),
       type: feature.getProperty('type'),
       isVisible: feature.getProperty('isVisible')
     };
+
+    if (result.style) {
+      layer.data.overrideStyle(feature, result.style);
+    }
 
     initMeasureLabel(result, map);
     initTextLabel(result, layer, map);
