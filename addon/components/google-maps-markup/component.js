@@ -90,8 +90,9 @@ export default Ember.Component.extend({
     }
   }),
 
-  getTool(id) {
-    return DRAWING_MODE[id];
+  getTool(id, mode) {
+    var toolIds = mode ? this.get((mode === 'draw' ? 'drawing' : mode) + 'Modes') : DRAWING_MODE;
+    return Array.isArray(toolIds) ? toolIds.findBy('id', id) : toolIds[id];
   },
 
   addTextLabel(tool, position) {
@@ -457,7 +458,7 @@ export default Ember.Component.extend({
     this.set('lastActiveLayer', activeLayer);
 
     if (modeId === MODE.draw.id || modeId === MODE.measure.id) {
-      let tool = this.getTool(drawingModeId);
+      let tool = this.getTool(drawingModeId, modeId);
 
       activeLayer = dataLayers[modeId === MODE.draw.id ? 0 : 1];
 
@@ -465,7 +466,12 @@ export default Ember.Component.extend({
         activeLayer.data.setMap(map);
       }
 
-      activeLayer.data.setDrawingMode(tool.dataId);
+      // tool doesn't exist for this mode, revert to pan
+      if (!tool) {
+        this.send('changeTool', DRAWING_MODE.pan.id);
+      }
+
+      activeLayer.data.setDrawingMode(tool && tool.dataId);
 
       this.set('activeLayer', activeLayer);
     }
