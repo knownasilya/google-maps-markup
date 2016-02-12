@@ -102,7 +102,8 @@ export default Ember.Component.extend({
     let map = this.get('map');
     let style = Ember.copy(tool.style);
     let labelMarker = new DynamicLabel(position, {
-      color: style.color
+      color: style.color,
+      autoFocus: true
     });
     let item = {
       mode,

@@ -15,6 +15,7 @@ class DynamicLabel extends MapLabel {
     this._hidden.className = 'google-maps-markup-map-hidden';
     this._hidden.innerHTML = '<span></span><br/>';
 
+    this.autoFocus = options.autoFocus || false;
     this.editLabelInPlace = options.editLabelInPlace;
     this.center = false;
 
@@ -34,7 +35,9 @@ class DynamicLabel extends MapLabel {
       pane.appendChild(this._element);
       pane.appendChild(this._hidden);
 
-      this._element.focus();
+      if (this.autoFocus) {
+        this._element.focus();
+      }
     }
 
     if (this.editLabelInPlace) {
@@ -70,17 +73,29 @@ class DynamicLabel extends MapLabel {
       });
       this._element.addEventListener('input', (event) => {
         google.maps.event.trigger(this, 'changelabel');
-        let content = this._element.value;
-        content = content.replace(/\n/g, '<br/>');
-        this._hidden.innerHTML = content + '<br/>';
-        this._element.style.height = this._hidden.clientHeight + 'px';
-        this._element.style.width = (this._hidden.clientWidth + 5) + 'px';
+        this.updateHeight();
+
         if (map) {
           google.maps.event.trigger(map, 'resize');
         }
         event.stopPropagation();
       });
     }
+  }
+
+  draw() {
+    super.draw();
+    this.updateHeight();
+  }
+
+  updateHeight() {
+    let content = this.label;
+
+    content = content.replace(/\n/g, '<br/>');
+
+    this._hidden.innerHTML = content + '<br/>';
+    this._element.style.height = this._hidden.clientHeight + 'px';
+    this._element.style.width = (this._hidden.clientWidth + 5) + 'px';
   }
 
   set editingText(val) {
