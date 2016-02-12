@@ -24,6 +24,7 @@
 }
 
 .google-maps-markup-map-hidden {
+  min-width: 100px;
   word-wrap: break-word;
   white-space: pre-wrap;
   visibility: hidden;
