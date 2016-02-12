@@ -52,6 +52,9 @@ class DynamicLabel extends MapLabel {
       this._element.addEventListener('mousemove', event => {
         event.stopPropagation();
       });
+      this._element.addEventListener('click', event => {
+        event.stopPropagation();
+      });
       this._element.addEventListener('focusin', event => {
         this.editingText = true;
         event.stopPropagation();
@@ -105,6 +108,9 @@ class DynamicLabel extends MapLabel {
     this._element.removeEventListener('keydown');
     this._element.removeEventListener('dblclick');
     this._element.removeEventListener('click');
+    this._element.removeEventListener('focusin');
+    this._element.removeEventListener('focusout');
+    this._element.removeEventListener('mousemove');
     this._element.removeEventListener('input');
 
     super.onRemove(...arguments);
