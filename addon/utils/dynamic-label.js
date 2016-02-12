@@ -2,20 +2,25 @@ import MapLabel from './map-label';
 
 class DynamicLabel extends MapLabel {
   constructor(latlng, options) {
-    super(...arguments);
-
     options = options || {};
 
-    this.clickable = true;
+    options.element = document.createElement('textarea');
+    options.element.placeholder = options.placeholder || 'Click to edit';
+    options.element.rows = 1;
+    options.element.wrap = 'hard';
+
+    super(latlng, options);
+
+    this._hidden = document.createElement('pre');
+    this._hidden.className = 'google-maps-markup-map-hidden';
+    this._hidden.innerHTML = '<span></span><br/>';
+
     this.placeholder = options.placeholder || 'Click to edit';
     this.editLabelInPlace = options.editLabelInPlace;
+    this.center = false;
 
     if (this.editLabelInPlace === undefined) {
       this.editLabelInPlace = true;
-    }
-
-    if (this.clickable) {
-      this._element.className += ' clickable';
     }
 
     this.label = options.label;
@@ -24,47 +29,53 @@ class DynamicLabel extends MapLabel {
   onAdd() {
     var panes = this.getPanes();
     var pane = panes.overlayMouseTarget;
+    var map = this.getMap();
 
     if (pane) {
       pane.appendChild(this._element);
+      pane.appendChild(this._hidden);
     }
 
     if (this.editLabelInPlace) {
-      this._element.contentEditable = true;
+      //this._element.contentEditable = true;
       this._element.addEventListener('keydown', event => {
-        event.stopPropagation();
+        // left, up, right, down, equal, minus
+        var blockedKeys = [37, 38, 39, 40, 187, 189];
+
+        if (blockedKeys.indexOf(event.keyCode) !== -1) {
+          event.stopPropagation();
+        }
       });
       this._element.addEventListener('dblclick', event => {
         event.stopPropagation();
       });
-      this._element.addEventListener('click', event => {
+      this._element.addEventListener('mousemove', event => {
+        event.stopPropagation();
+      });
+      this._element.addEventListener('focusin', event => {
         this.editingText = true;
-        if (!this.label) {
-          this._element.textContent = '';
-          this.placeholderSet = false;
-        }
         event.stopPropagation();
       });
       this._element.addEventListener('focusout', event => {
-        this.editingText = false;
-        if (!this.label) {
-          this._element.textContent = this.placeholder;
-          this.placeholderSet = true;
+        var contentBlank = !!this.label.length && this.label.trim().length === 0;
+
+        if (!contentBlank) {
+          this.editingText = false;
         }
         event.stopPropagation();
       });
-      this._element.addEventListener('input', () => {
+      this._element.addEventListener('input', (event) => {
         google.maps.event.trigger(this, 'changelabel');
+        let content = this._element.value;
+        content = content.replace(/\n/g, '<br/>');
+        this._hidden.innerHTML = content + '<br/>';
+        this._element.style.height = this._hidden.clientHeight + 'px';
+        this._element.style.width = (this._hidden.clientWidth + 5) + 'px';
+        if (map) {
+          google.maps.event.trigger(map, 'resize');
+        }
+        event.stopPropagation();
       });
-    }
-  }
-
-  draw() {
-    super.draw(...arguments);
-
-    if (!this.label && !this.editingText) {
-      this._element.textContent = this.placeholder;
-      this.placeholderSet = true;
     }
   }
 
@@ -83,23 +94,21 @@ class DynamicLabel extends MapLabel {
   }
 
   get label() {
-    if (this.placeholderSet) {
-      return '';
-    }
-
-    return super.label;
+    return this._element.value;
   }
 
   set label(value) {
-    super.label = value;
+    this._element.value = value || '';
   }
 
   onRemove() {
     this._element.removeEventListener('keydown');
     this._element.removeEventListener('dblclick');
     this._element.removeEventListener('click');
+    this._element.removeEventListener('input');
 
     super.onRemove(...arguments);
+    this._hidden.parentNode.removeChild(this._hidden);
   }
 }
 

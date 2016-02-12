@@ -6,21 +6,29 @@
   margin-bottom: 0.4em;
 }
 
-.google-maps-markup-map-label {
+.google-maps-markup-map-label,
+.google-maps-markup-map-hidden {
   color: #000;
   opacity: 1;
   font-size: 13px;
   font-weight: bold;
   line-height: 1.1em;
   text-shadow: -1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff,1px 1px 0 #fff;
-  white-space: pre-line;
   box-sizing: border-box;
   border: 1px solid transparent;
   padding: 0.1em;
+  background-color: transparent;
+  resize: none;
+  overflow: hidden;
+  min-height: 1.4em;
 }
 
-.google-maps-markup-map-label.clickable {
-  cursor: pointer;
+.google-maps-markup-map-hidden {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  visibility: hidden;
+  display: inline-block;
+  font-family: inherit;
 }
 
 .google-maps-markup-map-label.editing-text {
@@ -28,6 +36,16 @@
   border: 1px solid #333;
 }
 
-.google-maps-markup-map-label[contenteditable="true"] {
-  cursor: text;
+.google-maps-markup-map-label::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  color: #444;
+}
+.google-maps-markup-map-label::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color: #444;
+  opacity: 1;
+}
+.google-maps-markup-map-label:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #444;
+}
+.google-maps-markup-map-label:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
+  color: #444;
 }

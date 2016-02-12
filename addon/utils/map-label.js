@@ -9,7 +9,7 @@ class MapLabel extends google.maps.OverlayView {
     this.color = options.color;
     this.options = options;
 
-    this._element = document.createElement('div');
+    this._element = options.element || document.createElement('div');
     this._element.className = 'google-maps-markup-map-label';
     this._element.style.position = 'absolute';
 
@@ -23,6 +23,7 @@ class MapLabel extends google.maps.OverlayView {
 
     // Requires element to be present
     this.label = options.label;
+    this.center = true;
   }
 
   // Required by GMaps
@@ -55,6 +56,7 @@ class MapLabel extends google.maps.OverlayView {
     if (position && position.x && position.y) {
       let width = this._element.clientWidth;
       let height = this._element.clientHeight;
+      let center = this.center;
 
       div.style.display = 'block';
 
@@ -65,8 +67,11 @@ class MapLabel extends google.maps.OverlayView {
         this.lastZoom = zoom;
       }
 
-      div.style.left = position.x - (width / 2) + 'px';
-      div.style.top = position.y - (height / 2) + 'px';
+      let left = center ? position.x - (width / 2) : position.x;
+      let top = center ? position.y - (height / 2) : position.y;
+
+      div.style.left = left + 'px';
+      div.style.top = top + 'px';
     } else {
       div.style.display = 'none';
     }
