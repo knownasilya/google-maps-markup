@@ -5,7 +5,7 @@ class DynamicLabel extends MapLabel {
     options = options || {};
 
     options.element = document.createElement('textarea');
-    options.element.placeholder = options.placeholder || 'Click to edit';
+    options.element.placeholder = options.placeholder || 'Text Here';
     options.element.rows = 1;
     options.element.wrap = 'hard';
 
@@ -15,7 +15,6 @@ class DynamicLabel extends MapLabel {
     this._hidden.className = 'google-maps-markup-map-hidden';
     this._hidden.innerHTML = '<span></span><br/>';
 
-    this.placeholder = options.placeholder || 'Click to edit';
     this.editLabelInPlace = options.editLabelInPlace;
     this.center = false;
 
@@ -34,6 +33,8 @@ class DynamicLabel extends MapLabel {
     if (pane) {
       pane.appendChild(this._element);
       pane.appendChild(this._hidden);
+
+      this._element.focus();
     }
 
     if (this.editLabelInPlace) {
