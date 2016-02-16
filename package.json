@@ -52,7 +52,7 @@
     "ember-cli-babel": "^5.0.0",
     "ember-get-helper": "1.0.4",
     "ember-wormhole": "0.3.4",
-    "ember-palette": "1.0.4",
+    "ember-palette": "^1.0.5",
     "ember-uuid": "1.0.0"
   },
   "ember-addon": {
