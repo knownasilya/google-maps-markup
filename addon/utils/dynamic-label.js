@@ -57,6 +57,7 @@ class DynamicLabel extends MapLabel {
         event.stopPropagation();
       });
       this._element.addEventListener('click', event => {
+        this._element.focus();
         event.stopPropagation();
       });
       this._element.addEventListener('focusin', event => {
