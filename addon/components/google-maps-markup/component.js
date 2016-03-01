@@ -127,6 +127,7 @@ export default Ember.Component.extend({
     });
 
     if (autoResetToPan) {
+      this.toolNotFinished = true;
       google.maps.event.addListenerOnce(labelMarker, 'focusout', () => {
         run.later(this, function () {
           let freshTool = this.getTool(tool.id);
@@ -135,7 +136,8 @@ export default Ember.Component.extend({
           labelMarker.color = freshStyle.color;
           item.style = freshStyle;
           item.geojson.properties.style = freshStyle;
-          
+          this.toolNotFinished = false;
+
           this.send('changeTool', DRAWING_MODE.pan.id);
         }, 250);
       });
@@ -201,6 +203,9 @@ export default Ember.Component.extend({
         } else if (tool.id === 'text') {
           map.setOptions({ draggableCursor: 'crosshair' });
           let mapListener = map.addListener('click', event => {
+            if (this.toolNotFinished) {
+              return;
+            }
             this.addTextLabel(tool, event.latLng);
             map.setOptions({ draggableCursor: 'default' });
             event.stop();
@@ -480,7 +485,9 @@ export default Ember.Component.extend({
 
       // tool doesn't exist for this mode, revert to pan
       if (!tool) {
-        this.send('changeTool', DRAWING_MODE.pan.id);
+        run.later(this, function () {
+          this.send('changeTool', DRAWING_MODE.pan.id);
+        }, 250);
       }
 
       activeLayer.data.setDrawingMode(tool && tool.dataId);
@@ -549,7 +556,9 @@ export default Ember.Component.extend({
         let autoResetToPan = this.get('autoResetToPan');
 
         if (autoResetToPan) {
-          this.send('changeTool', DRAWING_MODE.pan.id);
+          run.later(this, function () {
+            this.send('changeTool', DRAWING_MODE.pan.id);
+          }, 250);
         }
       }
     }));
@@ -629,11 +638,13 @@ export default Ember.Component.extend({
         }
       });
 
-      var onDblClick = run.bind(this, () => {
+      var onDblClick = run.bind(this, (event) => {
         if (plotter) {
           plotter.finish();
           plotter = undefined;
         }
+        event.stopPropagation();
+        event.preventDefault();
       });
 
       var onMouseMove = run.bind(this, (event) => {
