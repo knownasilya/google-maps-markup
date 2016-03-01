@@ -130,7 +130,12 @@ export default Ember.Component.extend({
       google.maps.event.addListenerOnce(labelMarker, 'focusout', () => {
         run.later(this, function () {
           let freshTool = this.getTool(tool.id);
-          labelMarker.color = freshTool.style.color;
+          let freshStyle = Ember.copy(freshTool.style);
+
+          labelMarker.color = freshStyle.color;
+          item.style = freshStyle;
+          item.geojson.properties.style = freshStyle;
+          
           this.send('changeTool', DRAWING_MODE.pan.id);
         }, 250);
       });
