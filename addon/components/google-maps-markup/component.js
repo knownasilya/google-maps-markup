@@ -127,9 +127,13 @@ export default Ember.Component.extend({
     });
 
     if (autoResetToPan) {
-      run.later(this, function () {
-        this.send('changeTool', DRAWING_MODE.pan.id);
-      }, 150);
+      google.maps.event.addListenerOnce(labelMarker, 'focusout', () => {
+        run.later(this, function () {
+          let freshTool = this.getTool(tool.id);
+          labelMarker.color = freshTool.style.color;
+          this.send('changeTool', DRAWING_MODE.pan.id);
+        }, 250);
+      });
     }
   },
 

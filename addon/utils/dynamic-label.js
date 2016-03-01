@@ -70,6 +70,8 @@ class DynamicLabel extends MapLabel {
         if (!contentBlank) {
           this.editingText = false;
         }
+
+        google.maps.event.trigger(this, 'focusout');
         event.stopPropagation();
       });
       this._element.addEventListener('input', (event) => {

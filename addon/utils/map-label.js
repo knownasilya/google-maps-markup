@@ -6,7 +6,6 @@ class MapLabel extends google.maps.OverlayView {
 
     this.latlng = latlng;
     this.dontScale = options.dontScale;
-    this.color = options.color;
     this.options = options;
 
     this._element = options.element || document.createElement('div');
@@ -17,11 +16,8 @@ class MapLabel extends google.maps.OverlayView {
       this._element.className += ' ' + options.className;
     }
 
-    if (this.color) {
-      this._element.style.color = this.color;
-    }
-
     // Requires element to be present
+    this.color = options.color;
     this.label = options.label;
     this.center = true;
   }
@@ -88,6 +84,14 @@ class MapLabel extends google.maps.OverlayView {
 
   get label() {
     return this._element.textContent;
+  }
+
+  set color(value) {
+    this._element.style.color = value;
+  }
+
+  get color() {
+    return this._element.style.color;
   }
 
   set position(value) {
