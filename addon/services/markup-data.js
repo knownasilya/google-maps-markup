@@ -105,6 +105,7 @@ export default Ember.Service.extend({
 
   featureToResult(feature, layer) {
     var map = this.get('map');
+    var textGeoJson = this.get('textGeoJson');
     var mode = feature.getProperty('mode');
     var results = this.get(`markupResults.${mode}`);
     var result = {
@@ -122,6 +123,15 @@ export default Ember.Service.extend({
 
     initMeasureLabel(result, map);
     initTextLabel(result, layer, map);
+
+    // Put text into temp geojson table for export
+    if (textGeoJson) {
+      feature.toGeoJson(data => {
+        result.geojson = data;
+        textGeoJson.pushObject(data);
+      });
+    }
+
     results.pushObject(result);
   }
 });
