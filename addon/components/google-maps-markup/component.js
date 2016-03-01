@@ -80,7 +80,7 @@ export default Ember.Component.extend({
 
       popup.setContent(`<div id='google-maps-markup-infowindow'></div>`);
 
-      popup.addListener('closeclick', Ember.run.bind(this, function () {
+      popup.addListener('closeclick', run.bind(this, function () {
         Ember.set(popup, 'lastData.editing', false);
         Ember.set(popup, 'lastData', undefined);
         // cleanup?
@@ -127,7 +127,9 @@ export default Ember.Component.extend({
     });
 
     if (autoResetToPan) {
-      this.send('changeTool', DRAWING_MODE.pan.id);
+      run.later(this, function () {
+        this.send('changeTool', DRAWING_MODE.pan.id);
+      }, 150);
     }
   },
 
