@@ -142,6 +142,8 @@ export default Ember.Component.extend({
         }, 250);
       });
     }
+
+    this.set('drawFinished', true);
   },
 
   markerToFeature(result, marker) {
@@ -179,6 +181,7 @@ export default Ember.Component.extend({
       var listeners = this.get('toolListeners');
 
       this.set('activeTool', tool);
+      this.set('drawFinished', false);
       markupDataService.set('activeTool', tool.id);
 
       this.resetAllLayers();
@@ -564,6 +567,8 @@ export default Ember.Component.extend({
             this.send('changeTool', DRAWING_MODE.pan.id);
           }, 250);
         }
+
+        this.set('drawFinished', true);
       }
     }));
 
@@ -620,21 +625,21 @@ export default Ember.Component.extend({
         var onPage = event.currentTarget.contains(target);
         var withinMap = mapDiv.contains(target);
         var toolIsPan = tool === 'pan';
+        var drawFinished = this.get('drawFinished');
         var noPoints = !currentPoints.get('length');
-        var shapeFinish = !noPoints && toolIsPan && !onPage;
 
-        if (noPoints && toolIsPan) {
+        if (noPoints && drawFinished) {
           return;
         }
 
-        if (withinMap && noPoints && !toolIsPan) {
+        if (withinMap && noPoints && !drawFinished) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
           plotter = labelPlotter(currentLabel, currentPoints, tool, event, map);
-        } else if (withinMap && !toolIsPan && !shapeFinish) {
+        } else if (withinMap && !toolIsPan && !drawFinished) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
-        } else if (shapeFinish) {
+        } else if (drawFinished) {
           plotter.finish();
           plotter = undefined;
         }
