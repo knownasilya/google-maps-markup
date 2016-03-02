@@ -622,7 +622,6 @@ export default Ember.Component.extend({
 
         var mapDiv = map.getDiv();
         var target = event.target;
-        var onPage = event.currentTarget.contains(target);
         var withinMap = mapDiv.contains(target);
         var toolIsPan = tool === 'pan';
         var drawFinished = this.get('drawFinished');
