@@ -241,6 +241,7 @@ export default Ember.Component.extend({
         let mode = this.get('mode');
         let layer = this.get('activeLayer');
         let results = this.get('results');
+        let textGeoJson = this.get('textGeoJson');
 
         layer.data.forEach((feature) => {
           layer.data.remove(feature);
@@ -252,6 +253,9 @@ export default Ember.Component.extend({
           } else if (result.feature.setMap) {
             // remove text marker
             result.feature.setMap(null);
+            if (result.type === 'text') {
+              textGeoJson.removeObject(result.geojson);
+            }
           }
         });
 
@@ -267,9 +271,11 @@ export default Ember.Component.extend({
       var mode = this.get('mode');
       var results = this.get('results');
       var layer = this.get('activeLayer');
+      var textGeoJson = this.get('textGeoJson');
 
       if (result.type === 'text') {
         result.feature.setMap(null);
+        textGeoJson.removeObject(result.geojson);
       } else {
         layer.data.remove(result.feature);
       }
@@ -485,9 +491,7 @@ export default Ember.Component.extend({
 
       // tool doesn't exist for this mode, revert to pan
       if (!tool) {
-        run.later(this, function () {
-          this.send('changeTool', DRAWING_MODE.pan.id);
-        }, 250);
+        this.send('changeTool', DRAWING_MODE.pan.id);
       }
 
       activeLayer.data.setDrawingMode(tool && tool.dataId);
@@ -580,8 +584,6 @@ export default Ember.Component.extend({
 
     // Enable all layers to show on map
     layers.forEach(layer => layer.data.setMap(map));
-    // TODO: initialize all text items
-
 
     let listener = dm.addListener('overlaycomplete', run.bind(this, (event) => {
       var activeLayer = this.get('activeLayer');

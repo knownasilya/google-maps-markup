@@ -125,7 +125,7 @@ export default Ember.Service.extend({
     initTextLabel(result, layer, map);
 
     // Put text into temp geojson table for export
-    if (textGeoJson) {
+    if (textGeoJson && result.type === 'text') {
       feature.toGeoJson(data => {
         result.geojson = data;
         textGeoJson.pushObject(data);
