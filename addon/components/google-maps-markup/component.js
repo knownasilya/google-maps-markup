@@ -302,13 +302,13 @@ export default Ember.Component.extend({
       var isMeasure = mode === 'measure';
       var hide = force !== undefined && force !== null ?
         !force :
-        result.type === 'text' ? !result.feature.visible : layer.data.contains(result.feature);
+        result.type === 'text' ? result.feature.visible : layer.data.contains(result.feature);
 
       if (hide) {
         Ember.set(result, 'isVisible', false);
 
         if (result.type === 'text') {
-          result.feature.show();
+          result.feature.hide();
         } else {
           result.feature.setProperty('isVisible', false);
           layer.data.remove(result.feature);
@@ -321,7 +321,7 @@ export default Ember.Component.extend({
         Ember.set(result, 'isVisible', true);
 
         if (result.type === 'text') {
-          result.feature.hide();
+          result.feature.show();
         } else {
           result.feature.setProperty('isVisible', true);
           layer.data.add(result.feature);
