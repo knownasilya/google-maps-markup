@@ -42,7 +42,7 @@ class DynamicLabel extends MapLabel {
 
     if (this.editLabelInPlace) {
       //this._element.contentEditable = true;
-      this._element.addEventListener('keydown', event => {
+      google.maps.event.addDomListener(this._element, 'keydown', event => {
         // left, up, right, down, equal, minus
         var blockedKeys = [37, 38, 39, 40, 187, 189];
 
@@ -50,21 +50,22 @@ class DynamicLabel extends MapLabel {
           event.stopPropagation();
         }
       });
-      this._element.addEventListener('dblclick', event => {
+      google.maps.event.addDomListener(this._element, 'dblclick', event => {
         event.stopPropagation();
       });
-      this._element.addEventListener('mousemove', event => {
+      google.maps.event.addDomListener(this._element, 'mousemove', event => {
         event.stopPropagation();
       });
-      this._element.addEventListener('click', event => {
+      google.maps.event.addDomListener(this._element, 'click', event => {
         this._element.focus();
         event.stopPropagation();
       });
-      this._element.addEventListener('focusin', event => {
+      google.maps.event.addDomListener(this._element, 'focusin', event => {
         this.editingText = true;
         event.stopPropagation();
       });
-      this._element.addEventListener('focusout', event => {
+
+      google.maps.event.addDomListener(this._element, 'blur', (event) => {
         var contentBlank = !!this.label.length && this.label.trim().length === 0;
 
         if (!contentBlank) {
@@ -74,7 +75,8 @@ class DynamicLabel extends MapLabel {
         google.maps.event.trigger(this, 'focusout');
         event.stopPropagation();
       });
-      this._element.addEventListener('input', (event) => {
+
+      google.maps.event.addDomListener(this._element, 'input', (event) => {
         google.maps.event.trigger(this, 'changelabel');
         this.updateHeight();
 
@@ -124,6 +126,7 @@ class DynamicLabel extends MapLabel {
   }
 
   onRemove() {
+    /*
     this._element.removeEventListener('keydown');
     this._element.removeEventListener('dblclick');
     this._element.removeEventListener('click');
@@ -131,6 +134,8 @@ class DynamicLabel extends MapLabel {
     this._element.removeEventListener('focusout');
     this._element.removeEventListener('mousemove');
     this._element.removeEventListener('input');
+    */
+    google.maps.event.clearInstanceListeners(this._element);
 
     super.onRemove(...arguments);
     this._hidden.parentNode.removeChild(this._hidden);
