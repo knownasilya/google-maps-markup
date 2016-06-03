@@ -638,7 +638,7 @@ export default Ember.Component.extend({
         } else if (withinMap && !toolIsPan && !drawFinished) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
-        } else if (drawFinished) {
+        } else if (plotter && drawFinished) {
           plotter.finish();
           plotter = undefined;
         }
