@@ -142,6 +142,14 @@ class MapLabel extends google.maps.OverlayView {
       this._element.style.transform = `scale(${this.scale})`;
     }
   }
+
+  highlight() {
+    this._element.classList.add('highlighted');
+  }
+
+  clearHighlight() {
+    this._element.classList.remove('highlighted');
+  }
 }
 
 export default MapLabel;

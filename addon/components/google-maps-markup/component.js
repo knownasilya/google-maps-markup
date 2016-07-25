@@ -389,13 +389,16 @@ export default Ember.Component.extend({
             scaledSize: new google.maps.Size(22, 40)
           }
         };
-      } /*else if (data.type === 'text') {
-        data.feature.label.labelDiv_.classList.add('highlighted');
-        return;
-      } */else {
+      } else if (data.type === 'text') {
+        data.feature.highlight();
+      } else {
         style = {
           strokeColor: 'red'
         };
+      }
+
+      if (data.label) {
+        data.label.highlight();
       }
 
       layer.data.overrideStyle(data.feature, style);
@@ -405,15 +408,18 @@ export default Ember.Component.extend({
       var layer = this.get('activeLayer');
 
       if (!data.editingShape) {
-      /*
         if (data.type === 'text') {
-          data.feature.label.labelDiv_.classList.remove('highlighted');
-        } else {*/
+          data.feature.clearHighlight();
+        } else {
           layer.data.revertStyle(data.feature);
           if (data.style) {
             layer.data.overrideStyle(data.feature, data.style);
           }
-        //}
+
+          if (data.label) {
+            data.label.clearHighlight();
+          }
+        }
       }
 
       if (!data.editing) {

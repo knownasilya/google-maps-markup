@@ -24,6 +24,10 @@
   -webkit-user-select: none;
 }
 
+.google-maps-markup-map-label.highlighted {
+  color: red !important;
+}
+
 .google-maps-markup-map-hidden {
   min-width: 100px;
   word-wrap: break-word;
