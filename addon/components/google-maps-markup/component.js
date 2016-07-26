@@ -23,6 +23,7 @@ const {
   A: boundArray,
   observer: observes
 } = Ember;
+const clearAllConfirm = 'Clearing results will persist the changes, if you want to save a copy of the results please copy the url before clearing the markup.';
 
 export default Ember.Component.extend({
   // Start Attrs
@@ -240,7 +241,7 @@ export default Ember.Component.extend({
     },
 
     clearResults() {
-      if (confirm('This cannot be undone, are you sure you want to clear all markup for this mode?')) {
+      if (confirm(clearAllConfirm)) {
         let mode = this.get('mode');
         let layer = this.get('activeLayer');
         let results = this.get('results');
