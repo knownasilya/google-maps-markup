@@ -43,24 +43,16 @@
   {{/if}}
 {{/unless}}
 
-{{#if results}}
-  <h4>Results</h4>
-  <div class="form-group">
-    <button type="button" class="btn btn-default" title="Clear Results" onclick={{action 'clearResults'}}>
-      Clear All
-    </button>
-    <button type="button" class="btn btn-default" title="{{if resultsHidden 'Show' 'Hide'}} Results" onclick={{action 'toggleResults'}}>
-      {{if resultsHidden 'Show' 'Hide'}} All
-    </button>
-  </div>
-
-  <ul class="list-group results-list">
-    {{#each results as |result|}}
-      {{markup-result-item data=result editable=editable onremove=(action "removeResult") ontoggle=(action 'toggleResult')
-        onover="highlightResult" onout="resetResultStyle"
-        onedit="editResult"}}
-    {{/each}}
-  </ul>
-{{/if}}
+{{gmm-markup-results
+  results=results
+  resultsHidden=resultsHidden
+  editable=editable
+  onClearAll=(action 'clearResults')
+  onToggleAll=(action 'toggleResults')
+  onToggle=(action 'toggleResult')
+  onRemove=(action 'removeResult')
+  onOver=(action 'highlightResult')
+  onOut=(action 'resetResultStyle')
+  onEdit=(action 'editResult')}}
 
 {{yield}}
