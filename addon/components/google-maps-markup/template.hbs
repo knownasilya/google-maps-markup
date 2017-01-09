@@ -11,23 +11,23 @@
 <h4>Tools</h4>
 {{#if (is-equal mode 'draw')}}
   <div class="form-group tools-group" role="group" aria-label="Drawing Tools">
-    {{#each drawingModes as |tool|}}
-      <button type="button" class="btn btn-default {{if (is-equal tool.id drawingMode) 'active'}}" title={{tool.title}} onclick={{action 'changeTool' tool.id}}>
+    {{#each drawingTools as |tool|}}
+      <button type="button" class="btn btn-default {{if (is-equal tool.id toolId) 'active'}}" title={{tool.title}} onclick={{action 'changeTool' tool.id}}>
         {{tool.name}}
       </button>
     {{/each}}
   </div>
 {{else if (is-equal mode 'measure')}}
   <div class="form-group tools-group" role="group" aria-label="Measure Tools">
-    {{#each measureModes as |tool|}}
-      <button type="button" class="btn btn-default {{if (is-equal tool.id drawingMode) 'active'}}" title={{tool.title}} onclick={{action 'changeTool' tool.id}}>
+    {{#each measureTools as |tool|}}
+      <button type="button" class="btn btn-default {{if (is-equal tool.id toolId) 'active'}}" title={{tool.title}} onclick={{action 'changeTool' tool.id}}>
         {{tool.name}}
       </button>
     {{/each}}
   </div>
 {{/if}}
 
-{{#unless (is-equal drawingMode 'pan')}}
+{{#unless (is-equal toolId 'pan')}}
   {{#if activeTool.options}}
     <h4>Options</h4>
     <form class="form options-group" onsubmit="return false">

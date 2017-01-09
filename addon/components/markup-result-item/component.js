@@ -117,7 +117,6 @@ export default Ember.Component.extend({
     }
   },
 
-
   onOver: on('mouseEnter', function () {
     this.sendAction('onover', this.get('data'));
   }),

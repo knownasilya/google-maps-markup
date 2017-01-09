@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import { v1 } from 'ember-uuid';
 import layout from './template';
-import overlayToFeature from '../../utils/overlay-to-feature';
 import MODE from '../../utils/modes';
+import TOOLS from '../../utils/tools';
+import overlayToFeature from '../../utils/overlay-to-feature';
 import featureCenter from '../../utils/feature-center';
-import DRAWING_MODE from '../../utils/drawing-modes';
 import initMeasureLabel from '../../utils/init-measure-label';
 import MapLabel from '../../utils/map-label';
 import DynamicLabel from '../../utils/dynamic-label';
@@ -51,26 +51,26 @@ export default Ember.Component.extend({
   }),
   resultsHidden: false,
   activeLayer: undefined,
-  drawingMode: DRAWING_MODE.pan.id,
+  toolId: TOOLS.pan.id,
   modes: [
     MODE.draw,
     MODE.measure
   ],
-  drawingModes: boundArray([
-    DRAWING_MODE.pan,
-    DRAWING_MODE.text,
-    DRAWING_MODE.marker,
-    DRAWING_MODE.polyline,
-    DRAWING_MODE.circle,
-    DRAWING_MODE.rectangle,
-    DRAWING_MODE.polygon
+  drawingTools: boundArray([
+    TOOLS.pan,
+    TOOLS.text,
+    TOOLS.marker,
+    TOOLS.polyline,
+    TOOLS.circle,
+    TOOLS.rectangle,
+    TOOLS.polygon
   ]),
-  measureModes: boundArray([
-    DRAWING_MODE.pan,
-    DRAWING_MODE.polyline,
-    DRAWING_MODE.circle,
-    DRAWING_MODE.rectangle,
-    DRAWING_MODE.polygon
+  measureTools: boundArray([
+    TOOLS.pan,
+    TOOLS.polyline,
+    TOOLS.circle,
+    TOOLS.rectangle,
+    TOOLS.polygon
   ]),
 
   init() {
@@ -102,7 +102,7 @@ export default Ember.Component.extend({
   },
 
   getTool(id, mode) {
-    let toolIds = mode ? this.get((mode === 'draw' ? 'drawing' : mode) + 'Modes') : DRAWING_MODE;
+    let toolIds = mode ? this.get((mode === 'draw' ? 'drawing' : mode) + 'Tools') : TOOLS;
     return Array.isArray(toolIds) ? toolIds.findBy('id', id) : toolIds[id];
   },
 
@@ -149,7 +149,7 @@ export default Ember.Component.extend({
           item.geojson.properties.style = freshStyle;
           this.toolNotFinished = false;
 
-          this.send('changeTool', DRAWING_MODE.pan.id);
+          this.send('changeTool', TOOLS.pan.id);
         }, 250);
       });
     }
@@ -238,7 +238,7 @@ export default Ember.Component.extend({
         }
       }
 
-      this.set('drawingMode', toolId);
+      this.set('toolId', toolId);
     },
 
     toggleResults() {
@@ -494,14 +494,14 @@ export default Ember.Component.extend({
   changeLayer: on('init', observes('mode', 'map', function () {
     let modeId = this.get('mode');
     let map = this.get('map');
-    let drawingModeId = this.get('drawingMode');
+    let toolId = this.get('toolId');
     let dataLayers = this.get('dataLayers');
     let activeLayer = this.get('activeLayer');
 
     this.set('lastActiveLayer', activeLayer);
 
     if (modeId === MODE.draw.id || modeId === MODE.measure.id) {
-      let tool = this.getTool(drawingModeId, modeId);
+      let tool = this.getTool(toolId, modeId);
 
       activeLayer = dataLayers[modeId === MODE.draw.id ? 0 : 1];
 
@@ -511,7 +511,7 @@ export default Ember.Component.extend({
 
       // tool doesn't exist for this mode, revert to pan
       if (!tool) {
-        this.send('changeTool', DRAWING_MODE.pan.id);
+        this.send('changeTool', TOOLS.pan.id);
       }
 
       activeLayer.data.setDrawingMode(tool && tool.dataId);
@@ -540,7 +540,7 @@ export default Ember.Component.extend({
 
       let map = this.get('map');
       let tool = this.get('activeTool');
-      let drawingMode = this.get('drawingMode');
+      let toolId = this.get('toolId');
       let results = this.get('results');
       let found = results.find(function (item) {
         if (item.feature && item.feature.getId) {
@@ -553,7 +553,7 @@ export default Ember.Component.extend({
       if (!found) {
         let style = Ember.copy(tool.style);
         event.feature.setProperty('mode', mode);
-        event.feature.setProperty('type', drawingMode);
+        event.feature.setProperty('type', toolId);
         event.feature.setProperty('isVisible', true);
         event.feature.setProperty('style', style);
 
@@ -562,7 +562,7 @@ export default Ember.Component.extend({
           layer,
           style,
           isVisible: true,
-          type: drawingMode,
+          type: toolId,
           feature: event.feature
         };
 
@@ -581,7 +581,7 @@ export default Ember.Component.extend({
 
         if (autoResetToPan) {
           run.later(this, function () {
-            this.send('changeTool', DRAWING_MODE.pan.id);
+            this.send('changeTool', TOOLS.pan.id);
           }, 250);
         }
 
@@ -643,7 +643,7 @@ export default Ember.Component.extend({
       let plotter;
 
       let onClick = run.bind(this, (event) => {
-        let tool = this.get('drawingMode');
+        let toolId = this.get('toolId');
         let mode = this.get('mode');
 
         if (mode === 'draw') {
@@ -653,7 +653,7 @@ export default Ember.Component.extend({
         let mapDiv = map.getDiv();
         let target = event.target;
         let withinMap = mapDiv.contains(target);
-        let toolIsPan = tool === 'pan';
+        let toolIsPan = toolId === 'pan';
         let drawFinished = this.get('drawFinished');
         let noPoints = !currentPoints.get('length');
 
@@ -664,7 +664,7 @@ export default Ember.Component.extend({
         if (withinMap && noPoints && !drawFinished) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
-          plotter = labelPlotter(currentLabel, currentPoints, tool, event, map);
+          plotter = labelPlotter(currentLabel, currentPoints, toolId, event, map);
         } else if (withinMap && !toolIsPan && !drawFinished) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
@@ -707,7 +707,7 @@ export default Ember.Component.extend({
     let listeners = this.get('listeners');
     let bodyListeners = this.get('bodyListeners');
 
-    this.send('changeTool', DRAWING_MODE.pan.id);
+    this.send('changeTool', TOOLS.pan.id);
 
     // Cleanup all listeners
     if (listeners) {
