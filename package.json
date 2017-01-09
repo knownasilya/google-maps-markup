@@ -48,7 +48,6 @@
   "dependencies": {
     "ember-cli-htmlbars": "^1.0.10",
     "ember-cli-babel": "^5.0.0",
-    "ember-get-helper": "1.1.0",
     "ember-wormhole": "0.5.1",
     "ember-palette": "^1.0.5",
     "ember-uuid": "1.0.0"
