@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { v1 } from 'ember-uuid';
+import { ParentMixin } from 'ember-composability-tools';
 import layout from './template';
 import MODE from '../../utils/modes';
 import TOOLS from '../../utils/tools';
@@ -25,7 +26,7 @@ const {
 } = Ember;
 const clearAllConfirm = 'Clearing results will persist the changes, if you want to save a copy of the results please copy the url before clearing the markup.';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(ParentMixin, {
   // Start Attrs
   editable: true,
   panForOffscreen: true,
@@ -204,13 +205,15 @@ export default Ember.Component.extend({
           dm.setDrawingMode(null);
 
           let clickListener = activeLayer.data.addListener('click', event => {
+            let childComponents = this.get('childComponents');
             let results = this.get('results');
-            let found = results.find(function (item) {
-              return item.feature.getId() === event.feature.getId();
+            let found = childComponents.find(function (comp) {
+              return comp.get('data').feature.getId() === event.feature.getId();
             });
 
-            if (found.listItem) {
-              found.listItem.send('edit', event.latLng);
+            if (found) {
+              // invoke action on the component
+              found.send('edit', event.latLng);
             }
           });
           listeners.pushObject(clickListener);

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { ChildMixin } from 'ember-composability-tools';
 import layout from './template';
 import MODE from '../../utils/modes';
 import getMeasurement from '../../utils/get-measurement';
@@ -11,7 +12,7 @@ const {
   computed
 } = Ember;
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(ChildMixin, {
   layout: layout,
   tagName: 'li',
   classNames: ['list-group-item', 'clearfix'],
@@ -20,10 +21,6 @@ export default Ember.Component.extend({
     this._super(...arguments);
 
     let data = this.get('data');
-
-    // register
-    // TODO: maybe use https://github.com/miguelcobain/ember-composability-tools
-    set(data, 'listItem', this);
 
     if (data.feature.addListener) {
       let changeListener = data.feature.addListener('changelabel', run.bind(this, () => {
