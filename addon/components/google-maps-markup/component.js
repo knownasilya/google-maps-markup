@@ -73,8 +73,18 @@ export default Ember.Component.extend({
     DRAWING_MODE.polygon
   ]),
 
-  initPopupEvents: on('init', function () {
-    var editable = this.get('editable');
+  init() {
+    this._super(...arguments);
+
+    this.initPopupEvents();
+
+    if (!this.get('mapEventsSetup')) {
+      this.addObserver('map', this, 'setupMapEvents');
+    }
+  },
+
+  initPopupEvents() {
+    let editable = this.get('editable');
 
     if (editable) {
       let popup = new google.maps.InfoWindow();
@@ -89,10 +99,10 @@ export default Ember.Component.extend({
 
       this.set('markupEditPopup', popup);
     }
-  }),
+  },
 
   getTool(id, mode) {
-    var toolIds = mode ? this.get((mode === 'draw' ? 'drawing' : mode) + 'Modes') : DRAWING_MODE;
+    let toolIds = mode ? this.get((mode === 'draw' ? 'drawing' : mode) + 'Modes') : DRAWING_MODE;
     return Array.isArray(toolIds) ? toolIds.findBy('id', id) : toolIds[id];
   },
 
@@ -148,14 +158,14 @@ export default Ember.Component.extend({
   },
 
   markerToFeature(result, marker) {
-    var id = v1();
-    var properties = {
+    let id = v1();
+    let properties = {
       mode: result.mode,
       type: result.type,
       style: result.style,
       isVisible: true
     };
-    var feature = new google.maps.Data.Feature({
+    let feature = new google.maps.Data.Feature({
       geometry: marker.position,
       properties,
       id
@@ -174,12 +184,12 @@ export default Ember.Component.extend({
     },
 
     changeTool(toolId) {
-      var markupDataService = this.get('markupData');
-      var activeLayer = this.get('activeLayer');
-      var map = this.get('map');
-      var dm = this.get('dm');
-      var tool = this.getTool(toolId);
-      var listeners = this.get('toolListeners');
+      let markupDataService = this.get('markupData');
+      let activeLayer = this.get('activeLayer');
+      let map = this.get('map');
+      let dm = this.get('dm');
+      let tool = this.getTool(toolId);
+      let listeners = this.get('toolListeners');
 
       this.set('activeTool', tool);
       this.set('drawFinished', false);
@@ -232,9 +242,9 @@ export default Ember.Component.extend({
     },
 
     toggleResults() {
-      var isHidden = this.toggleProperty('resultsHidden');
-      var activeLayer = this.get('activeLayer');
-      var results = this.get('results');
+      let isHidden = this.toggleProperty('resultsHidden');
+      let activeLayer = this.get('activeLayer');
+      let results = this.get('results');
 
       results.forEach(result => this.send('toggleResult', result, !isHidden));
       activeLayer.isHidden = isHidden;
@@ -272,10 +282,10 @@ export default Ember.Component.extend({
     },
 
     removeResult(result) {
-      var mode = this.get('mode');
-      var results = this.get('results');
-      var layer = this.get('activeLayer');
-      var textGeoJson = this.get('textGeoJson');
+      let mode = this.get('mode');
+      let results = this.get('results');
+      let layer = this.get('activeLayer');
+      let textGeoJson = this.get('textGeoJson');
 
       if (result.type === 'text') {
         result.feature.setMap(null);
@@ -298,10 +308,10 @@ export default Ember.Component.extend({
      * @param {Boolean} force Override the toggle, true for show and false for hide.
      */
     toggleResult(result, force) {
-      var layer = this.get('activeLayer');
-      var mode = this.get('mode');
-      var isMeasure = mode === 'measure';
-      var hide = force !== undefined && force !== null ?
+      let layer = this.get('activeLayer');
+      let mode = this.get('mode');
+      let isMeasure = mode === 'measure';
+      let hide = force !== undefined && force !== null ?
         !force :
         result.type === 'text' ? result.feature.visible : layer.data.contains(result.feature);
 
@@ -335,9 +345,9 @@ export default Ember.Component.extend({
     },
 
     editResult(data, wormhole, position) {
-      var popup = this.get('markupEditPopup');
-      var map = this.get('map');
-      var editable = this.get('editable');
+      let popup = this.get('markupEditPopup');
+      let map = this.get('map');
+      let editable = this.get('editable');
 
       if (!editable) {
         return;
@@ -378,8 +388,8 @@ export default Ember.Component.extend({
     },
 
     highlightResult(data) {
-      var layer = this.get('activeLayer');
-      var style;
+      let layer = this.get('activeLayer');
+      let style;
 
       this.panToIfHidden(data.feature);
 
@@ -406,7 +416,7 @@ export default Ember.Component.extend({
     },
 
     resetResultStyle(data) {
-      var layer = this.get('activeLayer');
+      let layer = this.get('activeLayer');
 
       if (!data.editingShape) {
         if (data.type === 'text') {
@@ -430,7 +440,7 @@ export default Ember.Component.extend({
   },
 
   resetAllLayers() {
-    var layers = this.get('dataLayers');
+    let layers = this.get('dataLayers');
 
     layers.forEach(layer => {
       layer.data.setDrawingMode(null);
@@ -438,14 +448,14 @@ export default Ember.Component.extend({
   },
 
   clearListeners() {
-    var listeners = this.get('toolListeners');
+    let listeners = this.get('toolListeners');
 
     listeners.forEach(l => google.maps.event.removeListener(l));
     listeners.clear();
   },
 
   panToIfHidden(feature) {
-    var panForOffscreen = this.get('panForOffscreen');
+    let panForOffscreen = this.get('panForOffscreen');
 
     if (!panForOffscreen) {
       return;
@@ -467,14 +477,14 @@ export default Ember.Component.extend({
   },
 
   panBack() {
-    var panForOffscreen = this.get('panForOffscreen');
+    let panForOffscreen = this.get('panForOffscreen');
 
     if (!panForOffscreen) {
       return;
     }
 
-    var map = this.get('map');
-    var center = this.get('originalCenter');
+    let map = this.get('map');
+    let center = this.get('originalCenter');
 
     if (center) {
       map.setCenter(center);
@@ -482,11 +492,11 @@ export default Ember.Component.extend({
   },
 
   changeLayer: on('init', observes('mode', 'map', function () {
-    var modeId = this.get('mode');
-    var map = this.get('map');
-    var drawingModeId = this.get('drawingMode');
-    var dataLayers = this.get('dataLayers');
-    var activeLayer = this.get('activeLayer');
+    let modeId = this.get('mode');
+    let map = this.get('map');
+    let drawingModeId = this.get('drawingMode');
+    let dataLayers = this.get('dataLayers');
+    let activeLayer = this.get('activeLayer');
 
     this.set('lastActiveLayer', activeLayer);
 
@@ -511,9 +521,9 @@ export default Ember.Component.extend({
   })),
 
   activeLayerSetup: observes('activeLayer', function () {
-    var mode = this.get('mode');
-    var layer = this.get('activeLayer');
-    var lastLayer = this.get('lastActiveLayer');
+    let mode = this.get('mode');
+    let layer = this.get('activeLayer');
+    let lastLayer = this.get('lastActiveLayer');
 
     if (!layer) {
       return;
@@ -523,7 +533,7 @@ export default Ember.Component.extend({
       google.maps.event.clearListeners(lastLayer.data, 'addfeature');
     }
 
-    var listener = layer.data.addListener('addfeature', run.bind(this, (event) => {
+    let listener = layer.data.addListener('addfeature', run.bind(this, (event) => {
       if (event.feature.getProperty('skip')) {
         return;
       }
@@ -584,11 +594,13 @@ export default Ember.Component.extend({
     ]);
   }),
 
-  setup: on('didInsertElement', function () {
-    var dm = this.get('dm');
-    var results = this.get('results');
-    var layers = this.get('dataLayers');
-    var map = this.get('map');
+  didInsertElement() {
+    this._super(...arguments);
+
+    let dm = this.get('dm');
+    let results = this.get('results');
+    let layers = this.get('dataLayers');
+    let map = this.get('map');
 
     if (!this.get('mode')) {
       this.set('mode', MODE.draw.id);
@@ -598,8 +610,8 @@ export default Ember.Component.extend({
     layers.forEach(layer => layer.data.setMap(map));
 
     let listener = dm.addListener('overlaycomplete', run.bind(this, (event) => {
-      var activeLayer = this.get('activeLayer');
-      var feature = overlayToFeature(event.type, event.overlay, results);
+      let activeLayer = this.get('activeLayer');
+      let feature = overlayToFeature(event.type, event.overlay, results);
 
       event.overlay.setMap(null);
 
@@ -607,32 +619,43 @@ export default Ember.Component.extend({
     }));
 
     this.get('listeners').pushObject(listener);
-  }),
 
-  setupMapEvents: on('init', observes('isVisible', 'map', function () {
-    var map = this.get('map');
-    var isVisible = this.get('isVisible');
-    var currentPoints = this.get('currentPoints');
-    var currentLabel = this.get('currentLabel');
+    if (!this.get('mapEventsSetup')) {
+      this.setupMapEvents();
+    }
+  },
 
-    if (map && isVisible) {
+  didReceiveAttrs() {
+    if (!this.get('mapEventsSetup')) {
+      this.setupMapEvents();
+    }
+  },
+
+  setupMapEvents() {
+    let map = this.get('map');
+    let currentPoints = this.get('currentPoints');
+    let currentLabel = this.get('currentLabel');
+
+    if (map) {
+      this.set('mapEventsSetup', true);
+
       let $body = Ember.$('body');
       let plotter;
 
-      var onClick = run.bind(this, (event) => {
-        var tool = this.get('drawingMode');
-        var mode = this.get('mode');
+      let onClick = run.bind(this, (event) => {
+        let tool = this.get('drawingMode');
+        let mode = this.get('mode');
 
         if (mode === 'draw') {
           return;
         }
 
-        var mapDiv = map.getDiv();
-        var target = event.target;
-        var withinMap = mapDiv.contains(target);
-        var toolIsPan = tool === 'pan';
-        var drawFinished = this.get('drawFinished');
-        var noPoints = !currentPoints.get('length');
+        let mapDiv = map.getDiv();
+        let target = event.target;
+        let withinMap = mapDiv.contains(target);
+        let toolIsPan = tool === 'pan';
+        let drawFinished = this.get('drawFinished');
+        let noPoints = !currentPoints.get('length');
 
         if (noPoints && drawFinished) {
           return;
@@ -651,7 +674,7 @@ export default Ember.Component.extend({
         }
       });
 
-      var onDblClick = run.bind(this, (event) => {
+      let onDblClick = run.bind(this, (event) => {
         if (plotter) {
           plotter.finish();
           plotter = undefined;
@@ -660,7 +683,7 @@ export default Ember.Component.extend({
         event.preventDefault();
       });
 
-      var onMouseMove = run.bind(this, (event) => {
+      let onMouseMove = run.bind(this, (event) => {
         if (plotter) {
           let latlng = calculateLatLng(map, event);
           plotter.update(currentPoints.concat(latlng));
@@ -678,11 +701,11 @@ export default Ember.Component.extend({
         { event: 'mousemove', handler: onMouseMove }
       ]);
     }
-  })),
+  },
 
   teardown: on('willDestroyElement', function () {
-    var listeners = this.get('listeners');
-    var bodyListeners = this.get('bodyListeners');
+    let listeners = this.get('listeners');
+    let bodyListeners = this.get('bodyListeners');
 
     this.send('changeTool', DRAWING_MODE.pan.id);
 
@@ -704,10 +727,10 @@ export default Ember.Component.extend({
 });
 
 function calculatePosition(mapPosition, event) {
-  var mapLeft = mapPosition.left;
-  var mapTop = mapPosition.top;
-  var x = event.pageX;
-  var y = event.pageY;
+  let mapLeft = mapPosition.left;
+  let mapTop = mapPosition.top;
+  let x = event.pageX;
+  let y = event.pageY;
 
   return {
     x: x - mapLeft,

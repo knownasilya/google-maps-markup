@@ -7,6 +7,7 @@ import featureCenter from '../../utils/feature-center';
 const {
   on,
   run,
+  set,
   computed
 } = Ember;
 
@@ -15,14 +16,20 @@ export default Ember.Component.extend({
   tagName: 'li',
   classNames: ['list-group-item', 'clearfix'],
 
-  didInitAttrs() {
-    var data = this.get('data');
+  init() {
+    this._super(...arguments);
+
+    let data = this.get('data');
+
+    // register
+    // TODO: maybe use https://github.com/miguelcobain/ember-composability-tools
+    set(data, 'listItem', this);
 
     if (data.feature.addListener) {
-      let changeListener = data.feature.addListener('changelabel', () => {
+      let changeListener = data.feature.addListener('changelabel', run.bind(this, () => {
         data.geojson.properties.label = data.feature.label;
         this.set('description', data.feature.label);
-      });
+      }));
 
       this.set('changeListener', changeListener);
     }
@@ -30,8 +37,8 @@ export default Ember.Component.extend({
 
   description: computed('data.mode', 'data.feature', {
     get() {
-      var mode = this.get('data.mode');
-      var data = this.get('data');
+      let mode = this.get('data.mode');
+      let data = this.get('data');
 
       if (mode === MODE.measure.id) {
         let m = getMeasurement(data.type, data.feature);
@@ -47,16 +54,16 @@ export default Ember.Component.extend({
 
   actions: {
     edit(position) {
-      var data = this.get('data');
-      var wormhole = this.get('wormhole');
+      let data = this.get('data');
+      let wormhole = this.get('wormhole');
 
       this.sendAction('onedit', data, wormhole, position);
     },
 
     toggleEditShape() {
-      var edit = this.toggleProperty('data.editingShape');
-      var data = this.get('data');
-      var listener;
+      let edit = this.toggleProperty('data.editingShape');
+      let data = this.get('data');
+      let listener;
 
       if (edit) {
         if (data.type === 'text') {
@@ -97,9 +104,9 @@ export default Ember.Component.extend({
     },
 
     cancelEditShape() {
-      var data = this.get('data');
-      var shapeModified = this.get('shapeModified');
-      var originalGeometry = this.get('originalFeatureGeometry');
+      let data = this.get('data');
+      let shapeModified = this.get('shapeModified');
+      let originalGeometry = this.get('originalFeatureGeometry');
 
       if (shapeModified && originalGeometry) {
         this.set('originalFeatureGeometry');
@@ -110,11 +117,6 @@ export default Ember.Component.extend({
     }
   },
 
-  register: on('init', function () {
-    var data = this.get('data');
-
-    Ember.set(data, 'listItem', this);
-  }),
 
   onOver: on('mouseEnter', function () {
     this.sendAction('onover', this.get('data'));
@@ -127,7 +129,7 @@ export default Ember.Component.extend({
   willDestroyElement() {
     this._super(...arguments);
 
-    var changeListener = this.get('changeListener');
+    let changeListener = this.get('changeListener');
 
     if (changeListener) {
       google.maps.event.removeListener(changeListener);
