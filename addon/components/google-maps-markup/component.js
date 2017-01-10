@@ -235,8 +235,12 @@ export default Ember.Component.extend(ParentMixin, {
           listeners.pushObjects([ mapListener, dataListener ]);
         } else if (tool.dataId) {
           activeLayer.data.setDrawingMode(tool.dataId);
+          activeLayer.data.setStyle(tool.style);
         } else if (tool.dmId) {
           dm.setDrawingMode(tool.dmId);
+          dm.setOptions({
+            [`${tool.id}Options`]: tool.style
+          });
           dm.setMap(map);
         }
       }
