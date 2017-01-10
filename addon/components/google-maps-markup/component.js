@@ -36,7 +36,7 @@ export default Ember.Component.extend(ParentMixin, {
 
   layout: layout,
   markupData: inject.service(),
-  classNames: ['knownasilya--google-maps-markup'],
+  classNames: ['google-maps-markup'],
   dataLayers: computed.alias('markupData.layers'),
   results: computed.alias('markupData.results'),
   mode: computed.alias('markupData.mode'),
