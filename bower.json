@@ -7,7 +7,7 @@
   },
   "devDependencies": {
     "bootstrap": "~3.3.5",
-    "fontawesome": "~4.3.0",
+    "fontawesome": "~4.7.0",
     "blanket": "5e94fc30f2e694bb5c3718ddcbf60d467f4b4d26"
   },
   "resolutions": {

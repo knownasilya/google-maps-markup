@@ -18,11 +18,12 @@ module.exports = function(defaults) {
   */
 
   // Copy fontawesome fonts
-  var fonts = pickFiles(path.join(app.bowerDirectory, 'fontawesome/fonts'), {
+  var fontsDir = path.join(app.bowerDirectory, 'fontawesome', 'fonts');
+  var fonts = pickFiles(fontsDir, {
     srcDir: '/',
     files: ['**/*'],
     destDir: '/assets/fonts'
   });
 
-  return app.toTree();
+  return mergeTrees([app.toTree(), fonts]);
 };

@@ -26,7 +26,7 @@
     "ember-cli-babel": "^5.1.7",
     "ember-cli-htmlbars": "^1.0.10",
     "ember-wormhole": "0.5.1",
-    "ember-palette": "^1.0.5",
+    "ember-palette": "^2.0.0",
     "ember-uuid": "1.0.0"
   },
   "devDependencies": {
