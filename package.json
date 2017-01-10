@@ -25,6 +25,7 @@
   "dependencies": {
     "ember-cli-babel": "^5.1.7",
     "ember-cli-htmlbars": "^1.0.10",
+    "ember-composability-tools": "0.0.7",
     "ember-wormhole": "0.5.1",
     "ember-palette": "^2.0.0",
     "ember-uuid": "1.0.0"
@@ -47,7 +48,6 @@
     "ember-cli-sri": "^2.1.0",
     "ember-cli-test-loader": "^1.1.0",
     "ember-cli-uglify": "^1.2.0",
-    "ember-composability-tools": "0.0.7",
     "ember-disable-prototype-extensions": "^1.1.0",
     "ember-export-application-global": "^1.0.5",
     "ember-load-initializers": "^0.6.3",
