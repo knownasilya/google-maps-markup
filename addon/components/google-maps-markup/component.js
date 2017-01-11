@@ -664,7 +664,7 @@ export default Ember.Component.extend(ParentMixin, {
         let drawFinished = this.get('drawFinished');
         let noPoints = !currentPoints.get('length');
 
-        if (noPoints && drawFinished) {
+        if (toolIsPan || (noPoints && drawFinished)) {
           return;
         }
 
