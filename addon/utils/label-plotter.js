@@ -82,7 +82,7 @@ export default function labelPlotter(label, points, type, event, map) {
 
     finish() {
       label.setMap(null);
-      points.clear();
+      points.removeObjects(points);
     }
   };
 }
