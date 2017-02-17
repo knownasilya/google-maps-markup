@@ -64,7 +64,8 @@ export default Ember.Component.extend(ParentMixin, {
     TOOLS.polyline,
     TOOLS.circle,
     TOOLS.rectangle,
-    TOOLS.polygon
+    TOOLS.polygon,
+    TOOLS.freeFormPolygon
   ]),
   measureTools: boundArray([
     TOOLS.pan,
@@ -175,6 +176,31 @@ export default Ember.Component.extend(ParentMixin, {
     return feature;
   },
 
+  enableFreeFormPolygon() {
+    let map = this.get('map');
+    let activeLayer = this.get('activeLayer');
+    let poly = new google.maps.Polyline({
+      map: map,
+      clickable: false
+    });
+    let move = google.maps.event.addListener(map, 'mousemove', (e) => {
+      poly.getPath().push(e.latLng);
+    });
+
+    google.maps.event.addListenerOnce(map, 'mouseup', (e) => {
+      google.maps.event.removeListener(move);
+      poly.setMap(null);
+
+      let path = poly.getPath();
+      let polygon = new google.maps.Data.Polygon([path.getArray()]);
+
+      activeLayer.data.add({
+        geometry: polygon
+      });
+      this.send('changeTool', TOOLS.pan.id);
+    });
+  },
+
   actions: {
     updateOptionValue(tool, prop, value) {
       set(tool, prop, value);
@@ -203,6 +229,7 @@ export default Ember.Component.extend(ParentMixin, {
         if (tool.id === 'pan') {
           activeLayer.data.setDrawingMode(null);
           dm.setDrawingMode(null);
+          map.setOptions({ draggableCursor: 'default' });
 
           let clickListener = activeLayer.data.addListener('click', event => {
             let childComponents = this.get('childComponents');
@@ -242,6 +269,8 @@ export default Ember.Component.extend(ParentMixin, {
             [`${tool.id}Options`]: tool.style
           });
           dm.setMap(map);
+        } else {
+          map.setOptions({ draggableCursor: 'default' });
         }
       }
 
@@ -570,6 +599,7 @@ export default Ember.Component.extend(ParentMixin, {
           style,
           isVisible: true,
           type: toolId,
+          name: tool.name,
           feature: event.feature
         };
 
@@ -652,14 +682,17 @@ export default Ember.Component.extend(ParentMixin, {
       let onClick = run.bind(this, (event) => {
         let toolId = this.get('toolId');
         let mode = this.get('mode');
-
-        if (mode === 'draw') {
-          return;
-        }
-
         let mapDiv = map.getDiv();
         let target = event.target;
         let withinMap = mapDiv.contains(target);
+
+        if (mode === 'draw') {
+          if (withinMap && toolId === 'freeFormPolygon') {
+            this.enableFreeFormPolygon();
+          }
+          return;
+        }
+
         let toolIsPan = toolId === 'pan';
         let drawFinished = this.get('drawFinished');
         let noPoints = !currentPoints.get('length');
