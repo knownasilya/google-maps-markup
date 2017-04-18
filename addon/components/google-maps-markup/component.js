@@ -238,6 +238,9 @@ export default Ember.Component.extend(ParentMixin, {
     },
 
     changeTool(toolId) {
+      this.resetAllLayers();
+      this.clearListeners();
+
       let markupDataService = this.get('markupData');
       let activeLayer = this.get('activeLayer');
       let map = this.get('map');
@@ -249,8 +252,7 @@ export default Ember.Component.extend(ParentMixin, {
       this.set('drawFinished', false);
       markupDataService.set('activeTool', tool.id);
 
-      this.resetAllLayers();
-      this.clearListeners();
+      
 
       if (activeLayer) {
         if (tool.id === 'pan') {
@@ -287,6 +289,8 @@ export default Ember.Component.extend(ParentMixin, {
             event.stop();
           });
           listeners.pushObjects([ mapListener, dataListener ]);
+        }else if (tool.dataId === 'Point') {
+          activeLayer.data.setDrawingMode(tool.dataId);
         } else if (tool.dataId) {
           activeLayer.data.setDrawingMode(tool.dataId);
           activeLayer.data.setStyle(tool.style);
@@ -731,6 +735,8 @@ export default Ember.Component.extend(ParentMixin, {
 
             if (! isDefaultIcon || ! isDefaultColor) {
               activeLayer.data.setStyle(style);
+            } else {
+              activeLayer.data.setStyle();
             }
           }
 
