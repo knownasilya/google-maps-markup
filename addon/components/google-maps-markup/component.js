@@ -204,10 +204,14 @@ export default Ember.Component.extend(ParentMixin, {
   getMarkerIcon(marker){
     let icon = {
       point: {
+        blue: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
+        green: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
         red: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
         yellow: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
       },
       pin: {
+        blue: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
+        green: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
         red: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
         yellow: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
       }
@@ -221,6 +225,10 @@ export default Ember.Component.extend(ParentMixin, {
 
 
   actions: {
+    toggleDropdown(name) {
+      this.toggleProperty(name);
+    },
+
     updateOptionValue(tool, prop, value) {
       set(tool, prop, value);
     },
@@ -713,12 +721,17 @@ export default Ember.Component.extend(ParentMixin, {
           } else if (withinMap && toolId === 'marker') {
             let style = {
               icon: this.getMarkerIcon({
-                icon: 'point',
-                color: 'red',
+                icon: tool.icon.id,
+                color: tool.customColor.id,
               })
             };
 
-            activeLayer.data.setStyle(style);
+            let isDefaultIcon = tool.icon.id === tool.default.icon.id;
+            let isDefaultColor = tool.customColor.id === tool.default.customColor.id;
+
+            if (! isDefaultIcon || ! isDefaultColor) {
+              activeLayer.data.setStyle(style);
+            }
           }
 
           return;
