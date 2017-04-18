@@ -201,6 +201,25 @@ export default Ember.Component.extend(ParentMixin, {
     });
   },
 
+  getMarkerIcon(marker){
+    let icon = {
+      point: {
+        red: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
+        yellow: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
+      },
+      pin: {
+        red: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
+        yellow: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
+      }
+    };
+
+    return {
+      url: icon[marker.icon][marker.color],
+    };
+  },
+
+
+
   actions: {
     updateOptionValue(tool, prop, value) {
       set(tool, prop, value);
@@ -680,7 +699,9 @@ export default Ember.Component.extend(ParentMixin, {
       let plotter;
 
       let onClick = run.bind(this, (event) => {
+        let activeLayer = this.get('activeLayer');
         let toolId = this.get('toolId');
+        let tool = this.getTool(toolId);
         let mode = this.get('mode');
         let mapDiv = map.getDiv();
         let target = event.target;
@@ -689,7 +710,17 @@ export default Ember.Component.extend(ParentMixin, {
         if (mode === 'draw') {
           if (withinMap && toolId === 'freeFormPolygon') {
             this.enableFreeFormPolygon();
+          } else if (withinMap && toolId === 'marker') {
+            let style = {
+              icon: this.getMarkerIcon({
+                icon: 'point',
+                color: 'red',
+              })
+            };
+
+            activeLayer.data.setStyle(style);
           }
+
           return;
         }
 

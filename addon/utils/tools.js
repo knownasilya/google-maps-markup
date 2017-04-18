@@ -19,7 +19,13 @@ export default {
     id: 'marker',
     dataId: 'Point',
     name: 'Marker',
-    title: 'Marker Tool'
+    title: 'Marker Tool',
+    options: [
+      { name: 'Color', type: 'color', id: 'style.color' }
+    ],
+    style: {
+      color: '#374046'
+    }
   },
   polyline: {
     id: 'polyline',
