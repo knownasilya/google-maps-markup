@@ -726,18 +726,14 @@ export default Ember.Component.extend(ParentMixin, {
             let style = {
               icon: this.getMarkerIcon({
                 icon: tool.icon.id,
-                color: tool.customColor.id,
               })
             };
 
-            let isDefaultIcon = tool.icon.id === tool.default.icon.id;
-            let isDefaultColor = tool.customColor.id === tool.default.customColor.id;
-
-            if (! isDefaultIcon || ! isDefaultColor) {
+            /*if (! isDefaultIcon || ! isDefaultColor) {
               activeLayer.data.setStyle(style);
             } else {
               activeLayer.data.setStyle();
-            }
+            }*/
           }
 
           return;

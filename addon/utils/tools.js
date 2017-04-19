@@ -21,8 +21,8 @@ export default {
     name: 'Marker',
     title: 'Marker Tool',
     options: [
+      { name: 'Color', type: 'color', id: 'style.color' },
       { name: 'Icon', type: 'icon', id: 'icon.id', display: 'icon.display' },
-      { name: 'Icon', type: 'customColor', id: 'icon.id', display: 'icon.display' }
     ],
     style: {
       color: '#374046'
@@ -38,33 +38,6 @@ export default {
       id: 'point',
       display: 'Point'
     },
-    customColors: [{
-      id: 'red',
-      display: 'Red',
-    }, {
-      id: 'green',
-      display: 'Green',
-    }, {
-      id: 'blue',
-      display: 'BLue',
-    }, {
-      id: 'yellow',
-      display: 'Yellow',
-    }],
-    customColor: {
-      id: 'red',
-      display: 'Red',
-    },
-    default: {
-      customColor: {
-        id: 'red',
-        display: 'Red',
-      },
-      icon:{
-        id: 'point',
-        display: 'Point'
-      }
-    }
   },
   polyline: {
     id: 'polyline',

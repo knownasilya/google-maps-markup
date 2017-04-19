@@ -51,19 +51,6 @@
           </ul>
         </div>
       {{/if}}
-      {{#if (is-equal opt.type 'customColor')}}
-        <div class="dropdown {{if customColorMenu 'open'}}">
-          <button class="btn btn-default dropdown-toggle" type="button" id="customColorMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" {{action 'toggleDropdown' 'customColorMenu'}}>
-            {{activeTool.customColor.display}}
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="customColorMenu" {{action 'toggleDropdown' 'customColorMenu'}}>
-            {{#each activeTool.customColors as |icon|}}
-              <li {{action 'updateOptionValue' activeTool 'customColor' icon}}><a>{{icon.display}}</a></li>
-            {{/each}}
-          </ul>
-        </div>
-      {{/if}}
     {{/each}}
     </form>
   {{/if}}
