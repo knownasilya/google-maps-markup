@@ -28,15 +28,22 @@ export default {
       color: '#374046'
     },
     icons: [{
+      id: 'default',
+      display: 'Default',
+      path: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png'
+    },{
       id: 'point',
-      display: 'Point'
+      display: 'Point',
+      path: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png'
     }, {
       id: 'pin',
-      display: 'Pin'
+      display: 'Pin',
+      path: 'google-maps-markup/images/ic_place_black_24px.svg'
     }],
-    icon:{
-      id: 'point',
-      display: 'Point'
+    icon: {
+      id: 'default',
+      display: 'Default',
+      path: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png'
     },
   },
   polyline: {

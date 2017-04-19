@@ -39,16 +39,20 @@
         </div>
       {{/if}}
       {{#if (is-equal opt.type 'icon')}}
-        <div class="dropdown {{if iconDropDown 'open'}}">
-          <button class="btn btn-default dropdown-toggle" type="button" id="iconDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" {{action 'toggleDropdown' 'iconDropDown'}}>
-            {{activeTool.icon.display}}
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="iconDropDown" {{action 'toggleDropdown' 'iconDropDown'}}>
-            {{#each activeTool.icons as |icon|}}
-              <li {{action 'updateOptionValue' activeTool 'icon' icon}}><a>{{icon.display}}</a></li>
-            {{/each}}
-          </ul>
+        <div class="form-group">
+          <label>{{opt.name}}</label>
+          {{#bs-dropdown as |dd|}}
+            {{#dd.button}}{{activeTool.icon.display}} <img src={{activeTool.icon.path}} height="10px" width="10px"/>{{/dd.button}}
+            {{#dd.menu as |ddm|}}
+              {{#each activeTool.icons as |icon|}}
+                <div {{action 'updateOptionValue' activeTool 'icon' icon}}>
+                  <img src={{icon.path}} height="10px" width="10px">
+                  {{#ddm.item}}{{icon.display}}{{/ddm.item}}
+                  {{ddm.divider}}
+                </div>
+              {{/each}}
+            {{/dd.menu}}
+          {{/bs-dropdown}}
         </div>
       {{/if}}
     {{/each}}

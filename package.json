@@ -31,9 +31,11 @@
     "ember-uuid": "1.0.0"
   },
   "devDependencies": {
+    "bootstrap": "3.3.7",
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-merge-trees": "^1.2.1",
     "broccoli-static-compiler": "^0.2.1",
+    "ember-bootstrap": "1.0.0-alpha.10",
     "ember-cli": "2.10.0",
     "ember-cli-app-version": "^2.0.0",
     "ember-cli-blanket": "^0.9.9",
