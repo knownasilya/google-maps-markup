@@ -289,7 +289,7 @@ export default Ember.Component.extend(ParentMixin, {
             event.stop();
           });
           listeners.pushObjects([ mapListener, dataListener ]);
-        }else if (tool.dataId === 'Point') {
+        } else if (tool.dataId === 'Point') {
           activeLayer.data.setDrawingMode(tool.dataId);
         } else if (tool.dataId) {
           activeLayer.data.setDrawingMode(tool.dataId);
@@ -723,17 +723,12 @@ export default Ember.Component.extend(ParentMixin, {
           if (withinMap && toolId === 'freeFormPolygon') {
             this.enableFreeFormPolygon();
           } else if (withinMap && toolId === 'marker') {
-            let style = {
+            //Todo : Need to crete the functionality here to update the marker style
+            /*let style = {
               icon: this.getMarkerIcon({
                 icon: tool.icon.id,
               })
-            };
-
-            /*if (! isDefaultIcon || ! isDefaultColor) {
-              activeLayer.data.setStyle(style);
-            } else {
-              activeLayer.data.setStyle();
-            }*/
+            };*/
           }
 
           return;
