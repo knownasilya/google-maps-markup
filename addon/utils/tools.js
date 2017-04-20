@@ -40,11 +40,7 @@ export default {
       display: 'Pin',
       path: 'google-maps-markup/images/ic_place_black_24px.svg'
     }],
-    icon: {
-      id: 'default',
-      display: 'Default',
-      path: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png'
-    },
+    icon: 'default',
   },
   polyline: {
     id: 'polyline',

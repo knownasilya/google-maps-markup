@@ -201,36 +201,14 @@ export default Ember.Component.extend(ParentMixin, {
     });
   },
 
-  getMarkerIcon(marker){
-    let icon = {
-      point: {
-        blue: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
-        green: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
-        red: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
-        yellow: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
-      },
-      pin: {
-        blue: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
-        green: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
-        red: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
-        yellow: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
-      }
-    };
-
-    return {
-      url: icon[marker.icon][marker.color],
-    };
-  },
-
-
-
   actions: {
-    toggleDropdown(name) {
-      this.toggleProperty(name);
-    },
 
     updateOptionValue(tool, prop, value) {
       set(tool, prop, value);
+    },
+
+    updateSelectedIcon(icon) {
+      set(this.activeTool, 'icon', icon);
     },
 
     changeMode(mode) {
@@ -718,17 +696,30 @@ export default Ember.Component.extend(ParentMixin, {
         let mapDiv = map.getDiv();
         let target = event.target;
         let withinMap = mapDiv.contains(target);
+        let results = this.get('results');
 
         if (mode === 'draw') {
           if (withinMap && toolId === 'freeFormPolygon') {
             this.enableFreeFormPolygon();
           } else if (withinMap && toolId === 'marker') {
             //Todo : Need to crete the functionality here to update the marker style
-            /*let style = {
-              icon: this.getMarkerIcon({
-                icon: tool.icon.id,
-              })
-            };*/
+            var length = results.get('length');
+            var arrayIndexOffSet = 1;
+            var lastObjectIndex = length - arrayIndexOffSet;
+            var data = results.get('lastObject');
+
+            if (tool.icon !== 'default') {
+              let style = {
+                icon: {
+                  url: tool.icon,
+                  scaledSize: new google.maps.Size(22, 40)
+                }
+              };
+
+              data.style = style;
+              results[lastObjectIndex] = data;
+              activeLayer.data.overrideStyle(data.feature, style);
+            }
           }
 
           return;

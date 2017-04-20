@@ -41,13 +41,10 @@
       {{#if (is-equal opt.type 'icon')}}
         <div class="form-group">
           <label>{{opt.name}}</label>
-          <select onchange={{action "updateOptionValue" activeTool 'icon' value="target.value"}}>
+          <select onchange={{action "updateSelectedIcon" value="target.value"}}>
             {{#each activeTool.icons as |icon|}}
-              <option value={{icon.display}}>
-                <div>
-                  <img src={{icon.path}} height="10px" width="10px">
+              <option value={{icon.path}}>
                   {{icon.display}}
-                </div>
               </option>
             {{/each}}
           </select>
