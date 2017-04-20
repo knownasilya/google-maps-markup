@@ -41,18 +41,16 @@
       {{#if (is-equal opt.type 'icon')}}
         <div class="form-group">
           <label>{{opt.name}}</label>
-          {{#bs-dropdown as |dd|}}
-            {{#dd.button}}{{activeTool.icon.display}} <img src={{activeTool.icon.path}} height="10px" width="10px"/>{{/dd.button}}
-            {{#dd.menu as |ddm|}}
-              {{#each activeTool.icons as |icon|}}
-                <div {{action 'updateOptionValue' activeTool 'icon' icon}}>
+          <select onchange={{action "updateOptionValue" activeTool 'icon' value="target.value"}}>
+            {{#each activeTool.icons as |icon|}}
+              <option value={{icon.display}}>
+                <div>
                   <img src={{icon.path}} height="10px" width="10px">
-                  {{#ddm.item}}{{icon.display}}{{/ddm.item}}
-                  {{ddm.divider}}
+                  {{icon.display}}
                 </div>
-              {{/each}}
-            {{/dd.menu}}
-          {{/bs-dropdown}}
+              </option>
+            {{/each}}
+          </select>
         </div>
       {{/if}}
     {{/each}}
