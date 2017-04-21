@@ -43,7 +43,7 @@
           <label>{{opt.name}}</label>
           <select onchange={{action "updateSelectedIcon" value="target.value"}}>
             {{#each activeTool.icons as |icon|}}
-              <option value={{icon.path}}>
+              <option value={{icon.id}}>
                   {{icon.display}}
               </option>
             {{/each}}

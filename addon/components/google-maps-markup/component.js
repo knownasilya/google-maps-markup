@@ -446,6 +446,11 @@ export default Ember.Component.extend(ParentMixin, {
             scaledSize: new google.maps.Size(22, 40)
           }
         };
+
+        if(data.hoverStyle){
+          style = data.hoverStyle;
+        }
+
       } else if (data.type === 'text') {
         data.feature.highlight();
       } else {
@@ -709,14 +714,26 @@ export default Ember.Component.extend(ParentMixin, {
             var lastObjectIndex = length - arrayIndexOffSet;
             var data = results.get('lastObject');
 
+            var iconObj = tool.icons.find(function(iconObj){
+              return iconObj.id === tool.icon;
+            });
+
             if (tool.icon !== 'default') {
               let style = {
                 icon: {
-                  url: tool.icon,
+                  url: iconObj.path,
                   scaledSize: new google.maps.Size(22, 40)
                 }
               };
 
+              let hoverStyle = {
+                icon: {
+                  url: iconObj.hoverPath,
+                  scaledSize: new google.maps.Size(22, 40)
+                }
+              };
+
+              data.hoverStyle = hoverStyle;
               data.style = style;
               results[lastObjectIndex] = data;
               activeLayer.data.overrideStyle(data.feature, style);

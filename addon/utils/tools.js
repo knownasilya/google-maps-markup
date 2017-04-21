@@ -30,15 +30,18 @@ export default {
     icons: [{
       id: 'default',
       display: 'Default',
-      path: 'default'
+      path: 'default',
+      hoverPath: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
     },{
       id: 'point',
       display: 'Point',
-      path: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png'
+      path: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
+      hoverPath: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
     }, {
       id: 'pin',
       display: 'Pin',
-      path: 'google-maps-markup/images/ic_place_black_24px.svg'
+      path: 'google-maps-markup/images/ic_place_black_24px.svg',
+      hoverPath: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
     }],
     icon: 'default',
   },
