@@ -31,14 +31,14 @@ export default {
       id: 'default',
       display: 'Default',
       path: 'default'
-    },{
-      id: 'point',
-      display: 'Point',
-      path: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png'
     }, {
       id: 'pin',
       display: 'Pin',
-      path: 'google-maps-markup/images/ic_place_black_24px.svg'
+      path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z'
+    }, {
+      id: 'squarePin',
+      display: 'Square Pin',
+      path: 'M22-48h-44v43h16l6 5 6-5h16z'
     }],
     icon: 'default',
   },

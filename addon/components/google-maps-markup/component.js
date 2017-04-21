@@ -712,9 +712,13 @@ export default Ember.Component.extend(ParentMixin, {
             if (tool.icon !== 'default') {
               let style = {
                 icon: {
-                  url: tool.icon,
-                  scaledSize: new google.maps.Size(22, 40)
-                }
+                  path: tool.icon,
+                  fillColor: tool.style.color,
+                  fillOpacity: 1,
+                  strokeColor: '',
+                  strokeWeight: 0
+                },
+                scaledSize: new google.maps.Size(22, 40)
               };
 
               data.style = style;
