@@ -27,7 +27,7 @@ export default {
     ],
     style: {
       color: '#374046',
-      hoverColor: '#374046',
+      hoverColor: '#f44336',
     },
     icons: [{
       id: 'default',
