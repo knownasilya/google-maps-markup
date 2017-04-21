@@ -40,7 +40,7 @@
       {{/if}}
       {{#if (is-equal opt.type 'icon')}}
         <div class="form-group">
-          <label>{{opt.name}}</label>
+          <div><label>{{opt.name}}</label></div>
           <select onchange={{action "updateSelectedIcon" value="target.value"}}>
             {{#each activeTool.icons as |icon|}}
               <option value={{icon.id}}>
