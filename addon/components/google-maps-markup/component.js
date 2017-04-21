@@ -708,13 +708,12 @@ export default Ember.Component.extend(ParentMixin, {
           if (withinMap && toolId === 'freeFormPolygon') {
             this.enableFreeFormPolygon();
           } else if (withinMap && toolId === 'marker') {
-            //Todo : Need to crete the functionality here to update the marker style
-            var length = results.get('length');
-            var arrayIndexOffSet = 1;
-            var lastObjectIndex = length - arrayIndexOffSet;
-            var data = results.get('lastObject');
+            let length = results.get('length');
+            let arrayIndexOffSet = 1;
+            let lastObjectIndex = length - arrayIndexOffSet;
+            let data = results.get('lastObject');
 
-            var iconObj = tool.icons.find(function(iconObj){
+            let iconObj = tool.icons.find(function(iconObj){
               return iconObj.id === tool.icon;
             });
 
