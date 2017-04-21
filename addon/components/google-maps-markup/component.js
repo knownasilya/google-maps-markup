@@ -269,6 +269,7 @@ export default Ember.Component.extend(ParentMixin, {
           listeners.pushObjects([ mapListener, dataListener ]);
         } else if (tool.dataId === 'Point') {
           activeLayer.data.setDrawingMode(tool.dataId);
+          set(this.activeTool, 'icon', 'default');
         } else if (tool.dataId) {
           activeLayer.data.setDrawingMode(tool.dataId);
           activeLayer.data.setStyle(tool.style);

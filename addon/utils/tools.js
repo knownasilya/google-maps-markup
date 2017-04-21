@@ -30,7 +30,7 @@ export default {
     icons: [{
       id: 'default',
       display: 'Default',
-      path: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png'
+      path: 'default'
     },{
       id: 'point',
       display: 'Point',
