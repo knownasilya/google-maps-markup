@@ -21,16 +21,18 @@ export default {
     name: 'Marker',
     title: 'Marker Tool',
     options: [
-      { name: 'Color', type: 'color', id: 'style.color' },
       { name: 'Icon', type: 'icon', id: 'icon.id', display: 'icon.display' },
+      { name: 'Color', type: 'color', id: 'style.color' },
+      { name: 'Color', type: 'color', id: 'style.hoverColor' },
     ],
     style: {
-      color: '#374046'
+      color: '#374046',
+      hoverColor: '#374046',
     },
     icons: [{
       id: 'default',
       display: 'Default',
-      path: 'default'
+      path: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
     }, {
       id: 'pin',
       display: 'Pin',

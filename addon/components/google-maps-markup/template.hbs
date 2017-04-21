@@ -32,22 +32,22 @@
     <h4>Options</h4>
     <form class="form options-group" onsubmit="return false">
     {{#each activeTool.options as |opt|}}
+      {{#if (is-equal opt.type 'color')}}
+        <div class="form-group">
+          <label>{{opt.name}}</label>
+          {{color-palette selected=(get activeTool opt.id) onselect=(action 'updateOptionValue' activeTool opt.id)}}
+        </div>
+      {{/if}}
       {{#if (is-equal opt.type 'icon')}}
         <div class="form-group">
           <label>{{opt.name}}</label>
           <select onchange={{action "updateSelectedIcon" value="target.value"}}>
             {{#each activeTool.icons as |icon|}}
-              <option value={{icon.path}}>
+              <option value={{icon.id}}>
                   {{icon.display}}
               </option>
             {{/each}}
           </select>
-        </div>
-      {{/if}}
-      {{#if (is-equal opt.type 'color')  (is-equal activeTool.icon 'default')}}
-        <div class="form-group">
-          <label>{{opt.name}}</label>
-          {{color-palette selected=(get activeTool opt.id) onselect=(action 'updateOptionValue' activeTool opt.id)}}
         </div>
       {{/if}}
     {{/each}}
