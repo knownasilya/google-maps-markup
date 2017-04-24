@@ -43,7 +43,7 @@
           <div><label>{{opt.name}}</label></div>
           <select onchange={{action "updateSelectedIcon" value="target.value"}}>
             {{#each activeTool.icons as |icon|}}
-              <option value={{icon.id}}>
+              <option value={{icon.id}} selected={{is-equal icon.id activeTool.icon}}>
                   {{icon.display}}
               </option>
             {{/each}}
