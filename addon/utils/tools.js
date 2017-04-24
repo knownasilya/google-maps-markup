@@ -23,11 +23,9 @@ export default {
     options: [
       { name: 'Icon', type: 'icon', id: 'icon.id', display: 'icon.display' },
       { name: 'Color', type: 'color', id: 'style.color' },
-      { name: 'Color Hover', type: 'color', id: 'style.hoverColor' },
     ],
     style: {
       color: '#374046',
-      hoverColor: '#f44336',
     },
     icons: [{
       id: 'default',

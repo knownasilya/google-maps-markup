@@ -732,7 +732,7 @@ export default Ember.Component.extend(ParentMixin, {
               let hoverStyle = {
                 icon: {
                   path: iconObj.path,
-                  fillColor: tool.style.hoverColor,
+                  fillColor: 'red',
                   fillOpacity: 1,
                   strokeColor: '',
                   strokeWeight: 0,
