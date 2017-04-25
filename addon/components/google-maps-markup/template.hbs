@@ -31,14 +31,16 @@
   {{#if activeTool.options}}
     <h4>Options</h4>
     <form class="form options-group" onsubmit="return false">
-      <span {{action "noFillChecked" on="change"}}>
-        <input type="checkbox"/> No Fill Color
-      </span>
     {{#each activeTool.options as |opt|}}
       {{#if (is-equal opt.type 'color')}}
         <div class="form-group">
           <label>{{opt.name}}</label>
           {{color-palette selected=(get activeTool opt.id) onselect=(action 'updateOptionValue' activeTool opt.id)}}
+        </div>
+      {{/if}}
+      {{#if (is-equal opt.type 'checkbox')}}
+        <div class="form-group">
+          {{input type="checkbox" action="noFillChecked" checked=(get activeTool opt.id)}} {{opt.name}}
         </div>
       {{/if}}
     {{/each}}

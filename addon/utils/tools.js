@@ -66,13 +66,15 @@ export default {
     name: 'Circle',
     title: 'Circle Tool',
     options: [
+      { name: 'Fill Color', type: 'checkbox', id: 'fillColorChecked'},
       { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
       strokeColor: '#374046',
       fillColor: '#374046'
-    }
+    },
+    fillColorChecked: false,
   },
   rectangle: {
     id: 'rectangle',
