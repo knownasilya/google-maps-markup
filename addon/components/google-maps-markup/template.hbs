@@ -31,6 +31,9 @@
   {{#if activeTool.options}}
     <h4>Options</h4>
     <form class="form options-group" onsubmit="return false">
+      <span {{action "noFillChecked" on="change"}}>
+        <input type="checkbox"/> No Fill Color
+      </span>
     {{#each activeTool.options as |opt|}}
       {{#if (is-equal opt.type 'color')}}
         <div class="form-group">

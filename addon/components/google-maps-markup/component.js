@@ -210,6 +210,10 @@ export default Ember.Component.extend(ParentMixin, {
       this.set('mode', mode.id);
     },
 
+    noFillChecked() {
+      set(this.activeTool, 'style.fillOpacity', 0);
+    },
+
     changeTool(toolId) {
       let markupDataService = this.get('markupData');
       let activeLayer = this.get('activeLayer');
