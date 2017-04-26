@@ -8,7 +8,7 @@ const {
   computeDistanceBetween
 } = google.maps.geometry.spherical;
 
-export default function labelPlotter(label, points, type, event, map) {
+export default function labelPlotter(label, points, type, event, map, distanceUnit) {
   if (type === 'circle') {
     label.position = points[0];
   }
@@ -33,7 +33,7 @@ export default function labelPlotter(label, points, type, event, map) {
           if (points.length >= 2) {
             let bounds = pathsToBounds(points);
             let distance = pathDistance(points);
-            let result = measureTypeResult(type, distance);
+            let result = measureTypeResult(type, distance, distanceUnit);
             label.label = `${result.value} ${result.unit}`;
             label.position = bounds.getCenter();
             label.setMap(map);

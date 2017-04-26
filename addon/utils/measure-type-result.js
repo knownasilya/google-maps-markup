@@ -2,10 +2,10 @@ import commaifyNumber from './number-commas';
 import acres from './acres';
 import miles from './miles';
 
-export default function measureTypeResult(type, value) {
+export default function measureTypeResult(type, value, distanceUnit) {
   var result = {
     measurementType: 'Distance',
-    unit: 'ft',
+    unit: distanceUnit,
     value: 0
   };
 

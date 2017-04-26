@@ -27,11 +27,26 @@ export default {
     name: 'Line',
     title: 'Multi segmented line tool',
     options: [
+      { name: 'Distance Unit', type: 'distanceUnit', id: 'distanceUnit' },
       { name: 'Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
       strokeColor: '#374046'
-    }
+    },
+    distanceUnits: [{
+      id: 'ft',
+      display: 'Feet'
+    }, {
+      id: 'meter',
+      display: 'Meters'
+    }, {
+      id: 'mi',
+      display: 'Miles'
+    }, {
+      id: 'km',
+      display: 'Kilometers'
+    }],
+    distanceUnit: 'ft',
   },
   polygon: {
     id: 'polygon',
