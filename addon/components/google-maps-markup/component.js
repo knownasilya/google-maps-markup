@@ -210,7 +210,7 @@ export default Ember.Component.extend(ParentMixin, {
       this.set('mode', mode.id);
     },
 
-    noFillChecked() {
+    fillColorChecked() {
       set(this.activeTool, 'fillColorChecked', ! this.activeTool.fillColorChecked)
 
       if (this.activeTool.fillColorChecked) {
