@@ -9,11 +9,14 @@ export default {
     name: 'Text',
     title: 'Text Label Tool',
     options: [
+      { name: 'Font Size', type: 'size', id: 'style.fontSize' },
       { name: 'Color', type: 'color', id: 'style.color' }
     ],
     style: {
-      color: '#374046'
-    }
+      color: '#374046',
+      fontSize: '12'
+    },
+    fontSizes: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
   },
   marker: {
     id: 'marker',
