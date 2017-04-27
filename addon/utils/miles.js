@@ -1,6 +1,6 @@
 export default function miles(result) {
   var output = {};
-  var FEET_TO_CONVERT_MAP = {
+  var FEET_DISTANCE_CONVERT_MAP = {
     mi: 0.000189394,
     km: 0.0003048,
     meter: 0.3048,
@@ -10,7 +10,7 @@ export default function miles(result) {
     output.value = Math.round(result.value);
     output.unit = result.unit;
   } else {
-    output.value = result.value * FEET_TO_CONVERT_MAP[result.unit];
+    output.value = result.value * FEET_DISTANCE_CONVERT_MAP[result.unit];
     output.unit = result.unit;
 
     if (output.value < 1) {

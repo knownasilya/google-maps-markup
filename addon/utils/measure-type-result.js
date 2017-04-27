@@ -23,7 +23,6 @@ export default function measureTypeResult(type, value, distanceUnit) {
       // sq. meters-> sq. feet
       result.value = value * 10.7639;
       result.measurementType = 'Area';
-      result.unit = 'sq. ft.';
       result = acres(result);
       break;
     }

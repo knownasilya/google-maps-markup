@@ -22,7 +22,7 @@ export default function labelPlotter(label, points, type, event, map, distanceUn
           if (points.length === 2) {
             let radius = computeDistanceBetween(points[0], points[1]);
             let area = Math.PI * (radius * radius);
-            let result = measureTypeResult(type, area);
+            let result = measureTypeResult(type, area, distanceUnit);
             label.label = `${result.value} ${result.unit}`;
             label.setMap(map);
           }
@@ -51,7 +51,7 @@ export default function labelPlotter(label, points, type, event, map, distanceUn
             ];
             let bounds = pathsToBounds(calcPoints);
             let area = computeArea(calcPoints);
-            let result = measureTypeResult(type, area);
+            let result = measureTypeResult(type, area, distanceUnit);
             label.label = `${result.value} ${result.unit}`;
             label.position = bounds.getCenter();
             label.setMap(map);
@@ -71,7 +71,7 @@ export default function labelPlotter(label, points, type, event, map, distanceUn
           if (points.length > 1) {
             let bounds = pathsToBounds(points);
             let area = computeArea(points);
-            let result = measureTypeResult(type, area);
+            let result = measureTypeResult(type, area, distanceUnit);
             label.label = `${result.value} ${result.unit}`;
             label.position = bounds.getCenter();
             label.setMap(map);
