@@ -210,6 +210,10 @@ export default Ember.Component.extend(ParentMixin, {
       this.set('mode', mode.id);
     },
 
+    changeWidth(width) {
+      set(this.activeTool, 'style.strokeWeight', width);
+    },
+
     changeTool(toolId) {
       let markupDataService = this.get('markupData');
       let activeLayer = this.get('activeLayer');

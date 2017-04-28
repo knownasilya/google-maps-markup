@@ -27,11 +27,14 @@ export default {
     name: 'Line',
     title: 'Multi segmented line tool',
     options: [
-      { name: 'Color', type: 'color', id: 'style.strokeColor' }
+      { name: 'Line Width', type: 'width' },
+      { name: 'Color', type: 'color', id: 'style.strokeColor' },
     ],
     style: {
-      strokeColor: '#374046'
-    }
+      strokeColor: '#374046',
+      strokeWeight: 1
+    },
+    width: [2, 4, 6, 8, 10]
   },
   polygon: {
     id: 'polygon',
@@ -39,26 +42,32 @@ export default {
     name: 'Polygon',
     title: 'Polygon Tool',
     options: [
+      { name: 'Line Width', type: 'width' },
       { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
-      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
+      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
-    }
+      fillColor: '#374046',
+      strokeWeight: 2
+    },
+    width: [2, 4, 6, 8, 10]
   },
   freeFormPolygon: {
     id: 'freeFormPolygon',
     name: 'Freeform Polygon',
     title: 'Freeform Polygon Tool',
     options: [
+      { name: 'Line Width', type: 'width' },
       { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
-      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
+      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
-    }
+      fillColor: '#374046',
+      strokeWeight: 2
+    },
+    width: [2, 4, 6, 8, 10]
   },
   circle: {
     id: 'circle',
@@ -66,13 +75,16 @@ export default {
     name: 'Circle',
     title: 'Circle Tool',
     options: [
+      { name: 'Line Width', type: 'width' },
       { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
-      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
+      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
-    }
+      fillColor: '#374046',
+      strokeWeight: 2
+    },
+    width: [2, 4, 6, 8, 10]
   },
   rectangle: {
     id: 'rectangle',
@@ -80,12 +92,15 @@ export default {
     name: 'Rectangle',
     title: 'Rectangle Tool',
     options: [
+      { name: 'Line Width', type: 'width' },
       { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
-      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
+      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
-    }
+      fillColor: '#374046',
+      strokeWeight: 2
+    },
+    width: [2, 4, 6, 8, 10 ]
   }
 };

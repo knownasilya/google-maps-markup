@@ -38,6 +38,16 @@
           {{color-palette selected=(get activeTool opt.id) onselect=(action 'updateOptionValue' activeTool opt.id)}}
         </div>
       {{/if}}
+      {{#if (is-equal opt.type 'width')}}
+        <div class="form-group">
+          <label>{{opt.name}}</label>
+          <select onchange={{action 'changeWidth' value="target.value"}}>
+            {{#each activeTool.width as |width|}}
+              <option value="{{width}}" selected={{is-equal width activeTool.style.strokeWeight}}>{{width}}</option>
+            {{/each}}
+          </select>
+        </div>
+      {{/if}}
     {{/each}}
     </form>
   {{/if}}
