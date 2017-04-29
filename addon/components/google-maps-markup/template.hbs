@@ -43,13 +43,21 @@
       {{#if (is-equal opt.type 'icon')}}
         <div class="form-group">
           <div><label>{{opt.name}}</label></div>
-          <select onchange={{action "updateSelectedIcon" value="target.value"}}>
+          {{#power-select
+            options=activeTool.icons
+            selected=activeTool.icon
+            onchange=(action "updateSelectedIcon" )
+            as |icon|
+          }}
+          <strong>{{icon.display}}</strong>
+          {{/power-select}}
+        <!--   <select onchange={{action "updateSelectedIcon" value="target.value"}}>
             {{#each activeTool.icons as |icon|}}
               <option value={{icon.id}} selected={{is-equal icon.id activeTool.icon}}>
                   {{icon.display}}
               </option>
             {{/each}}
-          </select>
+          </select> -->
         </div>
       {{/if}}
     {{/each}}
