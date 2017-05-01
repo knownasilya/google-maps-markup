@@ -208,7 +208,6 @@ export default Ember.Component.extend(ParentMixin, {
     },
 
     updateSelectedIcon(icon) {
-      console.log('in updateSelectedIcon',this.get('activeTool.icon'),icon.id);
       set(this.activeTool, 'icon', icon.id);
     },
 
