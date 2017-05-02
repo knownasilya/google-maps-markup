@@ -21,7 +21,7 @@ export default {
     name: 'Marker',
     title: 'Marker Tool',
     options: [
-      { name: 'Icon', type: 'icon', id: 'icon.id', display: 'icon.display' },
+      { name: 'Icon', type: 'icon', id: 'icon', display: 'icon.display' },
       { name: 'Color', type: 'color', id: 'style.color' },
     ],
     style: {
