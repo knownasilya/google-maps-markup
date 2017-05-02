@@ -34,8 +34,8 @@
     {{#each activeTool.options as |opt|}}
       {{#if (is-equal opt.type 'color')}}
         <div class="form-group">
-          {{#if opt.isCheckbox}}
-              {{input type="checkbox" click=(action "fillColorChecked") checked=(get activeTool opt.id)}}
+          {{#if opt.fillOptional}}
+              {{input type="checkbox" click=(action "fillColorTransparent") checked=(get activeTool opt.id)}}
           {{/if}}
           <label>{{opt.name}}</label>
           {{color-palette selected=(get activeTool opt.id) onselect=(action 'updateOptionValue' activeTool opt.id)}}
