@@ -8,6 +8,7 @@ export default Ember.Component.extend({
 
     sortEndAction() {
       let results = this.get('results');
+
       results.forEach((result) => {
         result.style.zIndex = 0;
       });
