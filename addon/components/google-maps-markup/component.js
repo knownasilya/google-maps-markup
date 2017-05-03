@@ -208,8 +208,8 @@ export default Ember.Component.extend(ParentMixin, {
       set(tool, prop, value);
     },
 
-    updateSelectedIcon(icon) {
-      set(this.activeTool, 'icon', icon);
+    updateSelectedIcon(tool, id, icon) {
+      set(tool, id, icon.id);
     },
 
     changeMode(mode) {
