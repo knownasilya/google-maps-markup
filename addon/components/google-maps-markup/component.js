@@ -207,10 +207,6 @@ export default Ember.Component.extend(ParentMixin, {
       set(tool, prop, value);
     },
 
-    updateSelectedIcon(tool, id, icon) {
-      set(tool, id, icon.id);
-    },
-
     changeMode(mode) {
       this.set('mode', mode.id);
     },
@@ -713,10 +709,10 @@ export default Ember.Component.extend(ParentMixin, {
             let data = results.get('lastObject');
 
             let iconObj = tool.icons.find(function(iconObj){
-              return iconObj.id === tool.icon;
+              return iconObj.id === tool.icon.id;
             });
 
-            if (tool.icon !== 'default') {
+            if (tool.icon.id !== 'default') {
               let style = {
                 icon: {
                   path: iconObj.path,

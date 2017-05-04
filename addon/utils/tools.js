@@ -40,7 +40,11 @@ export default {
       display: 'Square Pin',
       path: 'M22-48h-44v43h16l6 5 6-5h16z'
     }],
-    icon: 'default',
+    icon: {
+      id: 'default',
+      display: 'Default',
+      path: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
+    },
   },
   polyline: {
     id: 'polyline',

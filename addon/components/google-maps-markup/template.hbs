@@ -46,7 +46,7 @@
           {{#power-select
             options=activeTool.icons
             selected=activeTool.icon
-            onchange=(action "updateSelectedIcon" activeTool opt.id)
+            onchange=(action "updateOptionValue" activeTool opt.id)
             as |icon|
           }}
           <strong>{{icon.display}}</strong>
