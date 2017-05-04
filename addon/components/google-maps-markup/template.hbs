@@ -41,11 +41,14 @@
       {{#if (is-equal opt.type 'width')}}
         <div class="form-group">
           <label>{{opt.name}}</label>
-          <select onchange={{action 'changeWidth' value="target.value"}}>
-            {{#each activeTool.width as |width|}}
-              <option value="{{width}}" selected={{is-equal width activeTool.style.strokeWeight}}>{{width}}</option>
-            {{/each}}
-          </select>
+          {{#power-select
+          options=activeTool.strokeWeights
+          selected=activeTool.style.strokeWeight
+          onchange=(action "updateOptionValue" activeTool opt.id)
+          as |width|
+          }}
+         {{width}}
+         {{/power-select}}
         </div>
       {{/if}}
     {{/each}}
