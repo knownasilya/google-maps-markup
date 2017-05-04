@@ -41,13 +41,14 @@
       {{#if (is-equal opt.type 'size')}}
         <div class="form-group">
           <div><label>{{opt.name}}</label></div>
-          <select onchange={{action "updateFontSize" value="target.value" }}>
-            {{#each activeTool.fontSizes as |fontSize|}}
-              <option value={{fontSize}} selected={{is-equal fontSize activeTool.style.fontSize}}>
-                  {{fontSize}}
-              </option>
-            {{/each}}
-          </select>
+          {{#power-select
+            options=activeTool.fontSizes
+            selected=activeTool.style.fontSize
+            onchange=(action "updateOptionValue" activeTool opt.id)
+            as |size|
+          }}
+          {{size}}
+          {{/power-select}}
         </div>
       {{/if}}
     {{/each}}

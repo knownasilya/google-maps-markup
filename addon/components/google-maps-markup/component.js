@@ -203,10 +203,6 @@ export default Ember.Component.extend(ParentMixin, {
   },
 
   actions: {
-    updateFontSize(fontSize) {
-      set(this.activeTool, 'style.fontSize', fontSize);
-    },
-
     updateOptionValue(tool, prop, value) {
       set(tool, prop, value);
     },
