@@ -46,7 +46,10 @@ export default {
       id: 'km',
       display: 'Kilometers'
     }],
-    distanceUnit: 'ft',
+    distanceUnit: {
+      id: 'ft',
+      display: 'Feet'
+    }
   },
   polygon: {
     id: 'polygon',
@@ -75,7 +78,10 @@ export default {
       id: 'sq km',
       display: 'Sq Km'
     }],
-    distanceUnit: 'sq ft',
+    distanceUnit: {
+      id: 'sq ft',
+      display: 'Sq Ft'
+    }
   },
   freeFormPolygon: {
     id: 'freeFormPolygon',
@@ -117,7 +123,10 @@ export default {
       id: 'sq km',
       display: 'Sq Km'
     }],
-    distanceUnit: 'sq ft',
+    distanceUnit: {
+      id: 'sq ft',
+      display: 'Sq Ft'
+    }
   },
   rectangle: {
     id: 'rectangle',
@@ -146,6 +155,9 @@ export default {
       id: 'sq km',
       display: 'Sq Km'
     }],
-    distanceUnit: 'sq ft',
+    distanceUnit: {
+      id: 'sq ft',
+      display: 'Sq Ft'
+    }
   }
 };
