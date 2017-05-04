@@ -39,11 +39,12 @@
         </div>
       {{/if}}
       {{#if (is-equal opt.type 'size')}}
-        <div class="form-group">
+        <div class="form-group drop_down">
           <div><label>{{opt.name}}</label></div>
           {{#power-select
             options=activeTool.fontSizes
             selected=activeTool.style.fontSize
+            searchEnabled=false
             onchange=(action "updateOptionValue" activeTool opt.id)
             as |size|
           }}
