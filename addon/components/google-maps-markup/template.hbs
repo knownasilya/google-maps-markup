@@ -40,11 +40,12 @@
       {{/if}}
       {{#if (is-equal mode 'measure')}}
         {{#if (is-equal opt.type 'distanceUnit')}}
-          <div class="form-group">
+          <div class="form-group drop_down">
             <div><label>{{opt.name}}</label></div>
             {{#power-select
               options=activeTool.distanceUnits
               selected=activeTool.distanceUnit
+              searchEnabled=false
               onchange=(action "updateOptionValue" activeTool opt.id)
               as |unit|
             }}
