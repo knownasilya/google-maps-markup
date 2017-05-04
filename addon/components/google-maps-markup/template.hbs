@@ -39,11 +39,12 @@
         </div>
       {{/if}}
       {{#if (is-equal opt.type 'width')}}
-        <div class="form-group">
+        <div class="form-group drop_down">
           <label>{{opt.name}}</label>
           {{#power-select
           options=activeTool.strokeWeights
           selected=activeTool.style.strokeWeight
+          searchEnabled=false
           onchange=(action "updateOptionValue" activeTool opt.id)
           as |width|
           }}
