@@ -46,18 +46,11 @@
           {{#power-select
             options=activeTool.icons
             selected=activeTool.icon
-            onchange=(action "updateSelectedIcon" activeTool opt.id)
+            onchange=(action "updateOptionValue" activeTool opt.id)
             as |icon|
           }}
           <strong>{{icon.display}}</strong>
           {{/power-select}}
-        <!--   <select onchange={{action "updateSelectedIcon" value="target.value"}}>
-            {{#each activeTool.icons as |icon|}}
-              <option value={{icon.id}} selected={{is-equal icon.id activeTool.icon}}>
-                  {{icon.display}}
-              </option>
-            {{/each}}
-          </select> -->
         </div>
       {{/if}}
     {{/each}}
