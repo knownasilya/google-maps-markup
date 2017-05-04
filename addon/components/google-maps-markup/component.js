@@ -188,7 +188,7 @@ export default Ember.Component.extend(ParentMixin, {
       poly.getPath().push(e.latLng);
     });
 
-    google.maps.event.addListenerOnce(map, 'mouseup', (e) => {
+    google.maps.event.addListenerOnce(map, 'mouseup', () => {
       google.maps.event.removeListener(move);
       poly.setMap(null);
 
@@ -237,7 +237,6 @@ export default Ember.Component.extend(ParentMixin, {
 
           let clickListener = activeLayer.data.addListener('click', event => {
             let childComponents = this.get('childComponents');
-            let results = this.get('results');
             let found = childComponents.find(function (comp) {
               return comp.get('data').feature.getId() === event.feature.getId();
             });
