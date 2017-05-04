@@ -38,18 +38,20 @@
           {{color-palette selected=(get activeTool opt.id) onselect=(action 'updateOptionValue' activeTool opt.id)}}
         </div>
       {{/if}}
-      {{#if (is-equal opt.type 'distanceUnit')}}
-        <div class="form-group">
-          <div><label>{{opt.name}}</label></div>
-          {{#power-select
-            options=activeTool.distanceUnits
-            selected=activeTool.distanceUnit
-            onchange=(action "updateOptionValue" activeTool opt.id)
-            as |unit|
-          }}
-          <strong>{{unit.display}}</strong>
-          {{/power-select}}
-        </div>
+      {{#if (is-equal mode 'measure')}}
+        {{#if (is-equal opt.type 'distanceUnit')}}
+          <div class="form-group">
+            <div><label>{{opt.name}}</label></div>
+            {{#power-select
+              options=activeTool.distanceUnits
+              selected=activeTool.distanceUnit
+              onchange=(action "updateOptionValue" activeTool opt.id)
+              as |unit|
+            }}
+            <strong>{{unit.display}}</strong>
+            {{/power-select}}
+          </div>
+        {{/if}}
       {{/if}}
     {{/each}}
     </form>
