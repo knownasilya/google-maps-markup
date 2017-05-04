@@ -41,11 +41,12 @@
         </div>
       {{/if}}
       {{#if (is-equal opt.type 'icon')}}
-        <div class="form-group">
+        <div class="form-group drop_down">
           <div><label>{{opt.name}}</label></div>
           {{#power-select
             options=activeTool.icons
             selected=activeTool.icon
+            searchEnabled=false
             onchange=(action "updateOptionValue" activeTool opt.id)
             as |icon|
           }}

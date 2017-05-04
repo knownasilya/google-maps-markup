@@ -55,3 +55,7 @@
 .google-maps-markup-map-label:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
   color: #444;
 }
+
+.drop_down .ember-power-select-trigger{
+  width: 200px;
+}
