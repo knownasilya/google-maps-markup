@@ -6,12 +6,10 @@ export default function miles(result) {
     meter: 0.3048,
   };
 
-  if(result.unit === 'ft') {
+  if(result.unit.id === 'ft') {
     output.value = Math.round(result.value);
-    output.unit = result.unit;
   } else {
-    output.value = result.value * FEET_DISTANCE_CONVERT_MAP[result.unit];
-    output.unit = result.unit;
+    output.value = result.value * FEET_DISTANCE_CONVERT_MAP[result.unit.id];
 
     if (output.value < 1) {
       // 4 decimal places
@@ -24,6 +22,7 @@ export default function miles(result) {
     }
   }
 
+  output.unit = result.unit;
   output.measurementType = result.measurementType;
 
   return output.value !== undefined ? output : result;

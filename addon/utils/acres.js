@@ -12,7 +12,7 @@ export default function acres(result) {
   if (result.unit === 'sq ft') {
     output.value = Math.round(result.value);
   } else {
-    output.value = result.value * SQUARE_FEET_AREA_CONVERT_MAP[result.unit];
+    output.value = result.value * SQUARE_FEET_AREA_CONVERT_MAP[result.unit.id];
 
     if (output.value < 1) {
       // 4 decimal places

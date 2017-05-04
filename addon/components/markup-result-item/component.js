@@ -40,9 +40,9 @@ export default Ember.Component.extend(ChildMixin, {
       if (mode === MODE.measure.id) {
         let m = getMeasurement(data.type, data.feature, data.distanceUnit);
         // update the measure label
-        data.label.label = `${m.value} ${m.unit}`;
+        data.label.label = `${m.value} ${m.unit.display}`;
 
-        return `${m.measurementType}: ${m.value} ${m.unit}`;
+        return `${m.measurementType}: ${m.value} ${m.unit.display}`;
       } else if (data.type === 'text') {
         return data.feature.label;
       }

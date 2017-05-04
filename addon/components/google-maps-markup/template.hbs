@@ -41,13 +41,14 @@
       {{#if (is-equal opt.type 'distanceUnit')}}
         <div class="form-group">
           <div><label>{{opt.name}}</label></div>
-          <select onchange={{action "updateDistanceUnit" value="target.value"}}>
-            {{#each activeTool.distanceUnits as |unit|}}
-              <option value={{unit.id}} selected={{is-equal unit.id activeTool.distanceUnit}}>
-                  {{unit.display}}
-              </option>
-            {{/each}}
-          </select>
+          {{#power-select
+            options=activeTool.distanceUnits
+            selected=activeTool.distanceUnit
+            onchange=(action "updateOptionValue" activeTool opt.id)
+            as |unit|
+          }}
+          <strong>{{unit.display}}</strong>
+          {{/power-select}}
         </div>
       {{/if}}
     {{/each}}

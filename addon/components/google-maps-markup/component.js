@@ -206,10 +206,6 @@ export default Ember.Component.extend(ParentMixin, {
       set(tool, prop, value);
     },
 
-    updateDistanceUnit(distanceUnit) {
-      set(this.activeTool, 'distanceUnit', distanceUnit);
-    },
-
     changeMode(mode) {
       this.set('mode', mode.id);
     },

@@ -12,7 +12,7 @@ export default function initMeasureLabel(result, map) {
     let measurement = getMeasurement(result.type, result.feature, result.distanceUnit);
 
     result.label = new MapLabel(center);
-    result.label.label = `${measurement.value} ${measurement.unit}`;
+    result.label.label = `${measurement.value} ${measurement.unit.display}`;
 
     if (map) {
       result.label.setMap(map);
