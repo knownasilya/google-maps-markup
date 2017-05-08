@@ -178,8 +178,10 @@ export default Ember.Component.extend(ParentMixin, {
   },
 
   enableFreeFormPolygon() {
+    let toolId = this.get('toolId');
     let map = this.get('map');
     let activeLayer = this.get('activeLayer');
+    let tool = this.getTool(toolId);
     let poly = new google.maps.Polyline({
       map: map,
       clickable: false
@@ -194,10 +196,13 @@ export default Ember.Component.extend(ParentMixin, {
 
       let path = poly.getPath();
       let polygon = new google.maps.Data.Polygon([path.getArray()]);
-
-      activeLayer.data.add({
+      let feature = activeLayer.data.add({
         geometry: polygon
       });
+      let style = Ember.copy(tool.style);
+
+      feature.setProperty('style', style);
+      activeLayer.data.overrideStyle(feature, style);
       this.send('changeTool', TOOLS.pan.id);
     });
   },

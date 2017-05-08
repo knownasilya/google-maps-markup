@@ -53,13 +53,14 @@ export default {
     name: 'Freeform Polygon',
     title: 'Freeform Polygon Tool',
     options: [
-      { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
+      { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
       strokeColor: '#374046',
       fillColor: '#374046'
-    }
+    },
+    fillColorTransparent: true,
   },
   circle: {
     id: 'circle',
