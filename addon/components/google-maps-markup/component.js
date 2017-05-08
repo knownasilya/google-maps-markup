@@ -123,6 +123,7 @@ export default Ember.Component.extend(ParentMixin, {
       style,
       isVisible: true,
       type: tool.id,
+      name: tool.name,
       feature: labelMarker
     };
 
