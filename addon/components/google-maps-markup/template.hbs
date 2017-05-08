@@ -31,17 +31,19 @@
   {{#if activeTool.options}}
     <h4>Options</h4>
     <form class="form options-group" onsubmit="return false">
-    {{#each activeTool.options as |opt|}}
-      {{#if (is-equal opt.type 'color')}}
-        <div class="form-group">
-          {{#if opt.fillOptional}}
-              {{input type="checkbox" click=(action "fillColorTransparent") checked=(get activeTool opt.id)}}
-          {{/if}}
-          <label>{{opt.name}}</label>
-          {{color-palette selected=(get activeTool opt.id) onselect=(action 'updateOptionValue' activeTool opt.id)}}
-        </div>
-      {{/if}}
-    {{/each}}
+      {{#each activeTool.options as |opt|}}
+        {{#if (is-equal opt.type 'color')}}
+          <div class="form-group">
+            <label>
+              {{#if opt.fillOptional}}
+                {{input type="checkbox" click=(action "fillColorTransparent") checked=(get activeTool opt.id)}}
+              {{/if}}
+              {{opt.name}}
+            </label>
+            {{color-palette selected=(get activeTool opt.id) onselect=(action 'updateOptionValue' activeTool opt.id)}}
+          </div>
+        {{/if}}
+      {{/each}}
     </form>
   {{/if}}
 {{/unless}}
