@@ -44,7 +44,8 @@ export default {
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
+      fillColor: '#374046',
+      fillOpacity: 0.5
     },
     fillColorTransparent: true,
   },
@@ -73,7 +74,8 @@ export default {
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
+      fillColor: '#374046',
+      fillOpacity: 0.5
     },
     fillColorTransparent: true,
   },
@@ -88,7 +90,8 @@ export default {
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
+      fillColor: '#374046',
+      fillOpacity: 0.5
     },
     fillColorTransparent: true,
   }
