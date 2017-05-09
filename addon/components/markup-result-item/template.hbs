@@ -7,10 +7,18 @@
 
 <div class="pull-right">
   {{#if editable}}
-    <button type="button" class="btn btn-default btn-xs" onclick={{action 'edit' data.feature.position}}>
-      Edit
-    </button>
+    {{#if data.editing}}
+      <button type="button" class="btn btn-default btn-xs" onclick={{action 'ok' data.feature.position}}>
+        OK
+      </button>
+    {{/if}}
+   {{#unless data.editing}}
+      <button type="button" class="btn btn-default btn-xs" onclick={{action 'edit' data.feature.position}}>
+        Edit
+      </button>
+   {{/unless}}
   {{/if}}
+
   <button type="button" class="btn btn-danger btn-xs" onclick={{action onremove data}}>
     Remove
   </button>
@@ -35,6 +43,10 @@
           <label>{{opt.name}}</label>
           {{color-palette selected=(get data opt.id) onselect=(action 'updateOptionValue' data opt.id)}}
         </div>
+      {{/if}}
+      {{#if opt.fillOptional}}
+        <label>{{opt.name}}</label>
+        {{input type="checkbox" click=(action "fillOpacity") checked=(get data opt.id)}}
       {{/if}}
     {{/each}}
   {{/if}}
