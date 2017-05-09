@@ -600,7 +600,8 @@ export default Ember.Component.extend(ParentMixin, {
           isVisible: true,
           type: toolId,
           name: tool.name,
-          feature: event.feature
+          feature: event.feature,
+          options: tool.options
         };
 
         if (item.style) {

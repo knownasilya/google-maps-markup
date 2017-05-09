@@ -57,6 +57,10 @@ export default Ember.Component.extend(ChildMixin, {
       this.sendAction('onedit', data, wormhole, position);
     },
 
+    updateOptionValue(tool, prop, value) {
+      set(tool, prop, value);
+    },
+
     toggleEditShape() {
       let edit = this.toggleProperty('data.editingShape');
       let data = this.get('data');
