@@ -211,6 +211,16 @@ export default Ember.Component.extend(ParentMixin, {
       this.set('mode', mode.id);
     },
 
+    fillColorTransparent() {
+      set(this.activeTool, 'fillColorTransparent', ! this.activeTool.fillColorTransparent)
+
+      if (this.activeTool.fillColorTransparent) {
+        set(this.activeTool, 'style.fillOpacity', 0.5);
+      } else {
+        set(this.activeTool, 'style.fillOpacity', 0);
+      }
+    },
+
     changeTool(toolId) {
       let markupDataService = this.get('markupData');
       let activeLayer = this.get('activeLayer');
@@ -434,15 +444,16 @@ export default Ember.Component.extend(ParentMixin, {
         style = {
           icon: {
             url: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
-            scaledSize: new google.maps.Size(22, 40)
+            scaledSize: new google.maps.Size(22, 40),
           }
         };
       } else if (data.type === 'text') {
         data.feature.highlight();
       } else {
-        style = {
-          strokeColor: 'red'
-        };
+          style = {
+            strokeColor: 'red',
+            zIndex:99999
+          };
       }
 
       if (data.label) {
