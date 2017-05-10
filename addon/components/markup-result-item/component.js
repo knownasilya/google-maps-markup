@@ -77,9 +77,15 @@ export default Ember.Component.extend(ChildMixin, {
     },
 
     updateOptionValue(tool, prop, value) {
-      let data = this.get('data');
-      set(tool, prop, value);
-      data.layer.data.overrideStyle(data.feature, data.style);
+      if (tool.type === 'text') {
+        this.data.feature.updateStyle(value);
+        set(tool, prop, value);
+      } else {
+        let data = this.get('data');
+        set(tool, prop, value);
+
+        data.layer.data.overrideStyle(data.feature, data.style);
+      }
     },
 
     toggleEditShape() {
