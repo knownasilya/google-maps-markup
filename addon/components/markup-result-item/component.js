@@ -50,7 +50,6 @@ export default Ember.Component.extend(ChildMixin, {
   }),
 
   actions: {
-
     edit(position) {
       let data = this.get('data');
       let wormhole = this.get('wormhole');
