@@ -39,12 +39,14 @@
   {{#unless data.isEditable}}
     {{#if data.options}}
       {{#each data.options as |opt|}}
-        {{#if opt.fillOptional}}
-          {{input type="checkbox" click=(action "fillOpacity") checked=(get data opt.id)}}
-        {{/if}}
         {{#if (is-equal opt.type 'color')}}
           <div class="form-group">
-            <label>{{opt.name}}</label>
+            <label>
+              {{#if opt.fillOptional}}
+                {{input type="checkbox" click=(action "fillOpacity") checked=(get data opt.id)}}
+              {{/if}}
+              {{opt.name}}
+            </label>
             {{color-palette selected=(get data opt.id) onselect=(action 'updateOptionValue' data opt.id)}}
           </div>
         {{/if}}
