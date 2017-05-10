@@ -59,25 +59,22 @@ export default Ember.Component.extend(ChildMixin, {
       this.sendAction('onedit', data, wormhole, position);
     },
 
-    ok(position) {
+    ok() {
       let data = this.get('data');
-      let wormhole = this.get('wormhole');
-      let isEditable = false
+      set(this.data, 'isEditable', true);
     },
 
     fillOpacity() {
       let data = this.get('data');
-      set(this.data, 'fillColorTransparent', ! this.data.fillColorTransparent)
 
       if (this.data.fillColorTransparent) {
-        set(this.data, 'style.fillOpacity', 0.5);
-      } else {
         set(this.data, 'style.fillOpacity', 0);
-       }
+      }
     },
 
     updateOptionValue(tool, prop, value) {
       let data = this.get('data');
+      set(this.data, 'style.fillOpacity', 0.5);
       set(tool, prop, value);
       data.layer.data.overrideStyle(data.feature, data.style);
     },

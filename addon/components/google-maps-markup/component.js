@@ -587,21 +587,25 @@ export default Ember.Component.extend(ParentMixin, {
       });
 
       if (!found) {
+        let fillColorTransparent = Ember.copy(tool.fillColorTransparent);
         let style = Ember.copy(tool.style);
         event.feature.setProperty('mode', mode);
         event.feature.setProperty('type', toolId);
         event.feature.setProperty('isVisible', true);
         event.feature.setProperty('style', style);
+        event.feature.setProperty('fillColorTransparent',fillColorTransparent);
 
         let item = {
           mode,
           layer,
           style,
+          fillColorTransparent,
           isVisible: true,
           type: toolId,
           name: tool.name,
           feature: event.feature,
-          options: tool.options
+          options: tool.options,
+          isEditable: false
         };
 
         if (item.style) {
