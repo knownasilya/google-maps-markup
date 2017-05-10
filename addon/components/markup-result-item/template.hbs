@@ -40,7 +40,6 @@
     {{#if data.options}}
       {{#each data.options as |opt|}}
         {{#if opt.fillOptional}}
-          <label>{{opt.name}}</label>
           {{input type="checkbox" click=(action "fillOpacity") checked=(get data opt.id)}}
         {{/if}}
         {{#if (is-equal opt.type 'color')}}
