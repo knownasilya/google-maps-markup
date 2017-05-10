@@ -123,7 +123,8 @@ export default Ember.Component.extend(ParentMixin, {
       style,
       isVisible: true,
       type: tool.id,
-      feature: labelMarker
+      feature: labelMarker,
+      options: tool.options
     };
 
     labelMarker.setMap(map);

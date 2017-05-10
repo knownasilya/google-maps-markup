@@ -52,7 +52,6 @@ export default Ember.Component.extend(ChildMixin, {
   actions: {
 
     edit(position) {
-      let isEditable = true
       let data = this.get('data');
       let wormhole = this.get('wormhole');
 
@@ -61,7 +60,7 @@ export default Ember.Component.extend(ChildMixin, {
 
     ok() {
       let data = this.get('data');
-      set(this.data, 'isEditable', true);
+       set(this.data, 'editing', false);
     },
 
     fillOpacity() {
@@ -73,10 +72,16 @@ export default Ember.Component.extend(ChildMixin, {
     },
 
     updateOptionValue(tool, prop, value) {
-      let data = this.get('data');
-      set(this.data, 'style.fillOpacity', 0.5);
-      set(tool, prop, value);
-      data.layer.data.overrideStyle(data.feature, data.style);
+      if (tool.type === 'text') {
+        this.data.feature.updateStyle(value);
+        set(tool, prop, value);
+      } else {
+        let data = this.get('data');
+        set(tool, prop, value);
+        set(this.data, 'style.fillOpacity', 0.5);
+
+        data.layer.data.overrideStyle(data.feature, data.style);
+      }
     },
 
     toggleEditShape() {
