@@ -42,26 +42,29 @@ export default {
     name: 'Polygon',
     title: 'Polygon Tool',
     options: [
-      { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
+      { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
-    }
+      fillColor: '#374046',
+      fillOpacity: 0.5
+    },
+    fillColorTransparent: true,
   },
   freeFormPolygon: {
     id: 'freeFormPolygon',
     name: 'Freeform Polygon',
     title: 'Freeform Polygon Tool',
     options: [
-      { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
+      { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
       strokeColor: '#374046',
       fillColor: '#374046'
-    }
+    },
+    fillColorTransparent: true,
   },
   circle: {
     id: 'circle',
@@ -69,13 +72,15 @@ export default {
     name: 'Circle',
     title: 'Circle Tool',
     options: [
-      { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
+      { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
-    }
+      fillColor: '#374046',
+      fillOpacity: 0.5
+    },
+    fillColorTransparent: true,
   },
   rectangle: {
     id: 'rectangle',
@@ -83,12 +88,14 @@ export default {
     name: 'Rectangle',
     title: 'Rectangle Tool',
     options: [
-      { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
+      { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
-    }
+      fillColor: '#374046',
+      fillOpacity: 0.5
+    },
+    fillColorTransparent: true,
   }
 };
