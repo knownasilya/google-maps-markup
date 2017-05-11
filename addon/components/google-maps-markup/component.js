@@ -126,6 +126,7 @@ export default Ember.Component.extend(ParentMixin, {
       style,
       isVisible: true,
       type: tool.id,
+      name: tool.name,
       feature: labelMarker
     };
 
@@ -134,7 +135,7 @@ export default Ember.Component.extend(ParentMixin, {
     map.setOptions({ draggableCursor: undefined });
     // TODO: convert to geojson and add to active layer
     // later load during results process
-    let feature = this.markerToFeature(item, labelMarker);
+    let feature = this.createFeature(item, labelMarker.position);
     let textGeoJson = this.get('textGeoJson');
 
     feature.toGeoJson(data => {
@@ -162,7 +163,7 @@ export default Ember.Component.extend(ParentMixin, {
     this.set('drawFinished', true);
   },
 
-  markerToFeature(result, marker) {
+  createFeature(result, geometry) {
     let id = v1();
     let properties = {
       mode: result.mode,
@@ -171,7 +172,7 @@ export default Ember.Component.extend(ParentMixin, {
       isVisible: true
     };
     let feature = new google.maps.Data.Feature({
-      geometry: marker.position,
+      geometry,
       properties,
       id
     });
@@ -180,8 +181,11 @@ export default Ember.Component.extend(ParentMixin, {
   },
 
   enableFreeFormPolygon() {
+    let toolId = this.get('toolId');
     let map = this.get('map');
+    let mode = this.get('mode');
     let activeLayer = this.get('activeLayer');
+    let tool = this.getTool(toolId);
     let poly = new google.maps.Polyline({
       map: map,
       clickable: false
@@ -196,10 +200,18 @@ export default Ember.Component.extend(ParentMixin, {
 
       let path = poly.getPath();
       let polygon = new google.maps.Data.Polygon([path.getArray()]);
+      let style = Ember.copy(tool.style);
+      let item = {
+        mode,
+        style,
+        isVisible: true,
+        type: tool.id,
+        name: tool.name
+      };
+      let feature = this.createFeature(item, polygon);
 
-      activeLayer.data.add({
-        geometry: polygon
-      });
+      activeLayer.data.add(feature);
+      activeLayer.data.overrideStyle(feature, style);
       this.send('changeTool', TOOLS.pan.id);
     });
   },
@@ -278,12 +290,16 @@ export default Ember.Component.extend(ParentMixin, {
         } else if (tool.dataId === 'Point') {
           activeLayer.data.setDrawingMode(tool.dataId);
         } else if (tool.dataId) {
+          let style = Ember.copy(tool.style);
+
           activeLayer.data.setDrawingMode(tool.dataId);
-          activeLayer.data.setStyle(tool.style);
+          activeLayer.data.setStyle(style);
         } else if (tool.dmId) {
+          let style = Ember.copy(tool.style);
+          
           dm.setDrawingMode(tool.dmId);
           dm.setOptions({
-            [`${tool.id}Options`]: tool.style
+            [`${tool.id}Options`]: style
           });
           dm.setMap(map);
         } else {
