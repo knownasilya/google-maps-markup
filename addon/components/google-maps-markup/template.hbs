@@ -53,7 +53,8 @@
             onchange=(action "updateOptionValue" activeTool opt.id)
             as |icon|
           }}
-          <strong>{{icon.display}}</strong>
+          <span>{{icon.display}}</span>
+          <i class="material-icons">{{ icon.id }}</i>
           {{/power-select}}
         </div>
       {{/if}}
