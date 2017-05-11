@@ -129,7 +129,7 @@ export default Ember.Component.extend(ParentMixin, {
     };
 
     labelMarker.setMap(map);
-    results.pushObject(item);
+    results.insertAt(0, item);
     map.setOptions({ draggableCursor: undefined });
     // TODO: convert to geojson and add to active layer
     // later load during results process
@@ -637,7 +637,8 @@ export default Ember.Component.extend(ParentMixin, {
         }
 
         initMeasureLabel(item, map);
-        results.pushObject(item);
+        results.insertAt(0, item);
+        results[0].style.zIndex = 111;
 
         if (this.get('afterAddFeature')) {
           this.sendAction('afterAddFeature', item);
