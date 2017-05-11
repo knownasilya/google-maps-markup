@@ -9,11 +9,14 @@ export default {
     name: 'Text',
     title: 'Text Label Tool',
     options: [
+      { name: 'Font Size', type: 'size', id: 'style.fontSize' },
       { name: 'Color', type: 'color', id: 'style.color' }
     ],
     style: {
-      color: '#374046'
-    }
+      color: '#374046',
+      fontSize: '12'
+    },
+    fontSizes: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
   },
   marker: {
     id: 'marker',
@@ -28,11 +31,14 @@ export default {
     title: 'Multi segmented line tool',
     options: [
       { name: 'Distance Unit', type: 'distanceUnit', id: 'distanceUnit' },
+      { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
       { name: 'Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
-      strokeColor: '#374046'
+      strokeColor: '#374046',
+      strokeWeight: 2
     },
+    strokeWeights: [2, 4, 6, 8, 10]
     distanceUnits: [{
       id: 'ft',
       display: 'Feet'
@@ -58,13 +64,18 @@ export default {
     title: 'Polygon Tool',
     options: [
       { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
-      { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
+      { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
+      { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
+      fillColor: '#374046',
+      strokeWeight: 2,
+      fillOpacity: 0.5
     },
+    fillColorTransparent: true,
+    strokeWeights: [2, 4, 6, 8, 10],
     distanceUnits: [{
       id: 'sq ft',
       display: 'Sq Ft'
@@ -88,13 +99,17 @@ export default {
     name: 'Freeform Polygon',
     title: 'Freeform Polygon Tool',
     options: [
-      { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
-      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
+      { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
+      { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
+      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
-    }
+      fillColor: '#374046',
+      strokeWeight: 2
+    },
+    fillColorTransparent: true,
+    strokeWeights: [2, 4, 6, 8, 10]
   },
   circle: {
     id: 'circle',
@@ -103,13 +118,18 @@ export default {
     title: 'Circle Tool',
     options: [
       { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
-      { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
+      { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
+      { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
+      fillColor: '#374046',
+      fillOpacity: 0.5,
+      strokeWeight: 2
     },
+    fillColorTransparent: true,
+    strokeWeights: [2, 4, 6, 8, 10],
     distanceUnits: [{
       id: 'sq ft',
       display: 'Sq Ft'
@@ -135,13 +155,17 @@ export default {
     title: 'Rectangle Tool',
     options: [
       { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
-      { name: 'Fill Color', type: 'color', id: 'style.fillColor' },
+      { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
       strokeColor: '#374046',
-      fillColor: '#374046'
+      fillColor: '#374046',
+      fillOpacity: 0.5,
+      strokeWeight: 2
     },
+    fillColorTransparent: true,
+    strokeWeights: [2, 4, 6, 8, 10],
     distanceUnits: [{
       id: 'sq ft',
       display: 'Sq Ft'
