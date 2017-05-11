@@ -30,14 +30,32 @@ export default {
     name: 'Line',
     title: 'Multi segmented line tool',
     options: [
+      { name: 'Distance Unit', type: 'distanceUnit', id: 'distanceUnit' },
       { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
-      { name: 'Color', type: 'color', id: 'style.strokeColor' },
+      { name: 'Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
       strokeColor: '#374046',
       strokeWeight: 2
     },
     strokeWeights: [2, 4, 6, 8, 10]
+    distanceUnits: [{
+      id: 'ft',
+      display: 'Feet'
+    }, {
+      id: 'meter',
+      display: 'Meters'
+    }, {
+      id: 'mi',
+      display: 'Miles'
+    }, {
+      id: 'km',
+      display: 'Kilometers'
+    }],
+    distanceUnit: {
+      id: 'ft',
+      display: 'Feet'
+    }
   },
   polygon: {
     id: 'polygon',
@@ -45,6 +63,7 @@ export default {
     name: 'Polygon',
     title: 'Polygon Tool',
     options: [
+      { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
       { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
       { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
@@ -56,7 +75,24 @@ export default {
       fillOpacity: 0.5
     },
     fillColorTransparent: true,
-    strokeWeights: [2, 4, 6, 8, 10]
+    strokeWeights: [2, 4, 6, 8, 10],
+    distanceUnits: [{
+      id: 'sq ft',
+      display: 'Sq Ft'
+    }, {
+      id: 'acres',
+      display: 'Acres'
+    }, {
+      id: 'sq mi',
+      display: 'Sq Miles'
+    }, {
+      id: 'sq km',
+      display: 'Sq Km'
+    }],
+    distanceUnit: {
+      id: 'sq ft',
+      display: 'Sq Ft'
+    }
   },
   freeFormPolygon: {
     id: 'freeFormPolygon',
@@ -81,9 +117,10 @@ export default {
     name: 'Circle',
     title: 'Circle Tool',
     options: [
+      { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
       { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
       { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
-      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
+      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
       strokeColor: '#374046',
@@ -92,7 +129,24 @@ export default {
       strokeWeight: 2
     },
     fillColorTransparent: true,
-    strokeWeights: [2, 4, 6, 8, 10]
+    strokeWeights: [2, 4, 6, 8, 10],
+    distanceUnits: [{
+      id: 'sq ft',
+      display: 'Sq Ft'
+    }, {
+      id: 'acres',
+      display: 'Acres'
+    }, {
+      id: 'sq mi',
+      display: 'Sq Miles'
+    }, {
+      id: 'sq km',
+      display: 'Sq Km'
+    }],
+    distanceUnit: {
+      id: 'sq ft',
+      display: 'Sq Ft'
+    }
   },
   rectangle: {
     id: 'rectangle',
@@ -100,9 +154,9 @@ export default {
     name: 'Rectangle',
     title: 'Rectangle Tool',
     options: [
-      { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
+      { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
       { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
-      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
+      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
     ],
     style: {
       strokeColor: '#374046',
@@ -111,6 +165,23 @@ export default {
       strokeWeight: 2
     },
     fillColorTransparent: true,
-    strokeWeights: [2, 4, 6, 8, 10 ]
+    strokeWeights: [2, 4, 6, 8, 10],
+    distanceUnits: [{
+      id: 'sq ft',
+      display: 'Sq Ft'
+    }, {
+      id: 'acres',
+      display: 'Acres'
+    }, {
+      id: 'sq mi',
+      display: 'Sq Miles'
+    }, {
+      id: 'sq km',
+      display: 'Sq Km'
+    }],
+    distanceUnit: {
+      id: 'sq ft',
+      display: 'Sq Ft'
+    }
   }
 };
