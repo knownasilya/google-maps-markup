@@ -8,6 +8,7 @@ class DynamicLabel extends MapLabel {
     options.element.placeholder = options.placeholder || 'Text Here';
     options.element.rows = 1;
     options.element.wrap = 'hard';
+    options.element.style.fontSize = options.fontSize || '12px';
 
     super(latlng, options);
 

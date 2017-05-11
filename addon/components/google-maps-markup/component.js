@@ -116,7 +116,8 @@ export default Ember.Component.extend(ParentMixin, {
     let style = Ember.copy(tool.style);
     let labelMarker = new DynamicLabel(position, {
       color: style.color,
-      autoFocus: true
+      autoFocus: true,
+      fontSize: style.fontSize + 'px',
     });
     let item = {
       mode,
