@@ -8,6 +8,8 @@ import overlayToFeature from '../../utils/overlay-to-feature';
 import featureCenter from '../../utils/feature-center';
 import initMeasureLabel from '../../utils/init-measure-label';
 import MapLabel from '../../utils/map-label';
+// import MarkerLabel from '../../utils/marker-label';
+import Marker from '../../utils/marker';
 import DynamicLabel from '../../utils/dynamic-label';
 import labelPlotter from '../../utils/label-plotter';
 import hoverColor from '../../utils/hover-color';
@@ -723,8 +725,33 @@ export default Ember.Component.extend(ParentMixin, {
               return iconObj.id === tool.icon.id;
             });
 
+            let style = {
+              icon: {
+                path: iconObj.path,
+                fillColor: tool.style.color,
+                fillOpacity: 1,
+                strokeColor: '',
+                strokeWeight: 0,
+                scaledSize: new google.maps.Size(22, 40)
+              },
+              map_icon_label: '<i class="material-icons">home</i>'
+            };
+
+            let hoverStyle = {
+              icon: {
+                path: iconObj.path,
+                fillColor: hoverColor(tool.style.color),
+                fillOpacity: 1,
+                strokeColor: '',
+                strokeWeight: 0,
+                scaledSize: new google.maps.Size(22, 40)
+              }
+            };
+
             if (tool.icon.id !== 'default') {
-              let style = {
+              var marker = new Marker({
+                position: calculateLatLng(map, event),
+                map: map,
                 icon: {
                   path: iconObj.path,
                   fillColor: tool.style.color,
@@ -732,25 +759,18 @@ export default Ember.Component.extend(ParentMixin, {
                   strokeColor: '',
                   strokeWeight: 0,
                   scaledSize: new google.maps.Size(22, 40)
-                }
-              };
+                },
+                map_icon_label: '<i class="material-icons">' + iconObj.id + '</i>'
+              })
 
-              let hoverStyle = {
-                icon: {
-                  path: iconObj.path,
-                  fillColor: hoverColor(tool.style.color),
-                  fillOpacity: 1,
-                  strokeColor: '',
-                  strokeWeight: 0,
-                  scaledSize: new google.maps.Size(22, 40)
-                }
-              };
-
-              data.hoverStyle = hoverStyle;
-              data.style = style;
-              results[lastObjectIndex] = data;
-              activeLayer.data.overrideStyle(data.feature, style);
+              // To add the marker to the map, call setMap();
+              marker.setMap(map);
             }
+
+            data.hoverStyle = hoverStyle;
+            data.style = style;
+            results[lastObjectIndex] = data;
+            activeLayer.data.overrideStyle(data.feature, style);
           }
 
           return;
