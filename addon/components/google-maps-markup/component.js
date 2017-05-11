@@ -250,8 +250,6 @@ export default Ember.Component.extend(ParentMixin, {
       this.set('drawFinished', false);
       markupDataService.set('activeTool', tool.id);
 
-      
-
       if (activeLayer) {
         if (tool.id === 'pan') {
           activeLayer.data.setDrawingMode(null);
