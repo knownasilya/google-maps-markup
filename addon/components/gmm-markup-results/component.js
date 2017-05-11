@@ -5,7 +5,6 @@ export default Ember.Component.extend({
   layout: layout,
 
   actions: {
-
     sortEndAction() {
       let results = this.get('results');
 
@@ -13,6 +12,6 @@ export default Ember.Component.extend({
         result.style.zIndex = 0;
       });
       results[0].style.zIndex = 111;
-    },
+    }
   },
 });
