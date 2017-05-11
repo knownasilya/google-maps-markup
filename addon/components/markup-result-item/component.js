@@ -8,7 +8,6 @@ import featureCenter from '../../utils/feature-center';
 const {
   on,
   run,
-  set,
   computed
 } = Ember;
 

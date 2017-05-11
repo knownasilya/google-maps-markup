@@ -55,3 +55,45 @@
 .google-maps-markup-map-label:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
   color: #444;
 }
+
+.drop_down .ember-power-select-trigger{
+  width: 200px;
+}
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'), local('MaterialIcons-Regular'), url(https://fonts.gstatic.com/s/materialicons/v22/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2) format('woff2');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  width: 48px;
+  line-height: 48px;
+  line-height: 1;
+  color: #FFFFFF;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  -moz-font-feature-settings: 'liga';
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ember-power-select-option i.material-icons,
+.ember-power-select-selected-item i.material-icons {
+  color: #999999;
+  font-size: 15px;
+}
+
+.ember-power-select-option[aria-current="true"]:hover i.material-icons {
+  color: #FFFFFF;
+}

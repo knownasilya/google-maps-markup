@@ -8,8 +8,10 @@ import overlayToFeature from '../../utils/overlay-to-feature';
 import featureCenter from '../../utils/feature-center';
 import initMeasureLabel from '../../utils/init-measure-label';
 import MapLabel from '../../utils/map-label';
+import Marker from '../../utils/marker';
 import DynamicLabel from '../../utils/dynamic-label';
 import labelPlotter from '../../utils/label-plotter';
+import hoverColor from '../../utils/hover-color';
 
 if (!window.google) {
   throw new Error('Sorry, but `google` defined globally is required for this addon');
@@ -192,7 +194,7 @@ export default Ember.Component.extend(ParentMixin, {
       poly.getPath().push(e.latLng);
     });
 
-    google.maps.event.addListenerOnce(map, 'mouseup', (e) => {
+    google.maps.event.addListenerOnce(map, 'mouseup', () => {
       google.maps.event.removeListener(move);
       poly.setMap(null);
 
@@ -215,6 +217,7 @@ export default Ember.Component.extend(ParentMixin, {
   },
 
   actions: {
+
     updateOptionValue(tool, prop, value) {
       set(tool, prop, value);
     },
@@ -234,6 +237,9 @@ export default Ember.Component.extend(ParentMixin, {
     },
 
     changeTool(toolId) {
+      this.resetAllLayers();
+      this.clearListeners();
+
       let markupDataService = this.get('markupData');
       let activeLayer = this.get('activeLayer');
       let map = this.get('map');
@@ -245,9 +251,6 @@ export default Ember.Component.extend(ParentMixin, {
       this.set('drawFinished', false);
       markupDataService.set('activeTool', tool.id);
 
-      this.resetAllLayers();
-      this.clearListeners();
-
       if (activeLayer) {
         if (tool.id === 'pan') {
           activeLayer.data.setDrawingMode(null);
@@ -256,7 +259,6 @@ export default Ember.Component.extend(ParentMixin, {
 
           let clickListener = activeLayer.data.addListener('click', event => {
             let childComponents = this.get('childComponents');
-            let results = this.get('results');
             let found = childComponents.find(function (comp) {
               return comp.get('data').feature.getId() === event.feature.getId();
             });
@@ -283,6 +285,8 @@ export default Ember.Component.extend(ParentMixin, {
             event.stop();
           });
           listeners.pushObjects([ mapListener, dataListener ]);
+        } else if (tool.dataId === 'Point') {
+          activeLayer.data.setDrawingMode(tool.dataId);
         } else if (tool.dataId) {
           let style = Ember.copy(tool.style);
 
@@ -463,6 +467,11 @@ export default Ember.Component.extend(ParentMixin, {
             scaledSize: new google.maps.Size(22, 40),
           }
         };
+
+        if(data.hoverStyle){
+          style = data.hoverStyle;
+        }
+
       } else if (data.type === 'text') {
         data.feature.highlight();
       } else {
@@ -708,16 +717,76 @@ export default Ember.Component.extend(ParentMixin, {
       let plotter;
 
       let onClick = run.bind(this, (event) => {
+        let activeLayer = this.get('activeLayer');
         let toolId = this.get('toolId');
+        let tool = this.getTool(toolId);
         let mode = this.get('mode');
         let mapDiv = map.getDiv();
         let target = event.target;
         let withinMap = mapDiv.contains(target);
+        let results = this.get('results');
 
         if (mode === 'draw') {
           if (withinMap && toolId === 'freeFormPolygon') {
             this.enableFreeFormPolygon();
+          } else if (withinMap && toolId === 'marker') {
+            let length = results.get('length');
+            let arrayIndexOffSet = 1;
+            let lastObjectIndex = length - arrayIndexOffSet;
+            let data = results.get('lastObject');
+
+            let iconObj = tool.icons.find(function(iconObj){
+              return iconObj.id === tool.icon.id;
+            });
+
+            let style = {
+              icon: {
+                path: iconObj.path,
+                fillColor: tool.style.color,
+                fillOpacity: 1,
+                strokeColor: '',
+                strokeWeight: 0,
+                scaledSize: new google.maps.Size(22, 40)
+              },
+              map_icon_label: '<i class="material-icons">home</i>'
+            };
+
+            let hoverStyle = {
+              icon: {
+                path: iconObj.path,
+                fillColor: hoverColor(tool.style.color),
+                fillOpacity: 1,
+                strokeColor: '',
+                strokeWeight: 0,
+                scaledSize: new google.maps.Size(22, 40)
+              }
+            };
+
+            if (tool.icon.id !== 'default') {
+              var marker = new Marker({
+                position: calculateLatLng(map, event),
+                map: map,
+                icon: {
+                  path: iconObj.path,
+                  fillColor: tool.style.color,
+                  fillOpacity: 1,
+                  strokeColor: '',
+                  strokeWeight: 0,
+                  scaledSize: new google.maps.Size(22, 40)
+                },
+                map_icon_label: '<i class="material-icons">' + iconObj.id + '</i>'
+              })
+
+              // To add the marker to the map, call setMap();
+              marker.setMap(map);
+            }
+
+            data.hoverStyle = hoverStyle;
+            data.style = style;
+            results[lastObjectIndex] = data;
+            activeLayer.data.overrideStyle(data.feature, style);
           }
+
           return;
         }
 

@@ -22,7 +22,56 @@ export default {
     id: 'marker',
     dataId: 'Point',
     name: 'Marker',
-    title: 'Marker Tool'
+    title: 'Marker Tool',
+    options: [
+      { name: 'Icon', type: 'icon', id: 'icon', display: 'icon.display' },
+      { name: 'Color', type: 'color', id: 'style.color' },
+    ],
+    style: {
+      color: '#374046',
+    },
+    icons: [{
+      id: 'default',
+      display: 'Default',
+      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+    }, {
+      id: 'grade',
+      display: 'Grade',
+      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+    }, {
+      id: 'help',
+      display: 'Help',
+      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+    }, {
+      id: 'favorite',
+      display: 'Favorite',
+      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+    }, {
+      id: 'check_circle',
+      display: 'Check Circle',
+      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+    }, {
+      id: 'lens',
+      display: 'Lens',
+      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+    }, {
+      id: 'filter_vintage',
+      display: 'Filter Vintage',
+      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+    }, {
+      id: 'photo_camera',
+      display: 'Photo Camera',
+      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+    }, {
+      id: 'place',
+      display: 'Place',
+      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+    }],
+    icon: {
+      id: 'default',
+      display: 'Default',
+      path: 'M22-48h-44v43h16l6 5 6-5h16z',
+    },
   },
   polyline: {
     id: 'polyline',
