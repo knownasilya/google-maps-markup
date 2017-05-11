@@ -8,7 +8,6 @@ import overlayToFeature from '../../utils/overlay-to-feature';
 import featureCenter from '../../utils/feature-center';
 import initMeasureLabel from '../../utils/init-measure-label';
 import MapLabel from '../../utils/map-label';
-// import MarkerLabel from '../../utils/marker-label';
 import Marker from '../../utils/marker';
 import DynamicLabel from '../../utils/dynamic-label';
 import labelPlotter from '../../utils/label-plotter';
