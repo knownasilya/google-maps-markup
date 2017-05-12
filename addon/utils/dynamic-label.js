@@ -12,7 +12,7 @@ class DynamicLabel extends MapLabel {
 
     super(latlng, options);
 
-    this._hidden = document.createElement('pre');
+    this._hidden = document.createElement('div');
     this._hidden.className = 'google-maps-markup-map-hidden';
     this._hidden.innerHTML = '<span></span><br/>';
 
