@@ -94,6 +94,14 @@
   font-size: 15px;
 }
 
+.ember-power-select-selected-item, .ember-power-select-option{
+  display: flex;
+  align-items: center;
+}
+.ember-power-select-selected-item .material-icons, .ember-power-select-option .material-icons{
+  margin-left: 8px;
+}
+
 .ember-power-select-option[aria-current="true"]:hover i.material-icons {
   color: #FFFFFF;
 }
