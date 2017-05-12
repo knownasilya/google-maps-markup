@@ -45,21 +45,38 @@
         {{/unless}}
         </div>
       {{/if}}
-      {{#if (is-equal opt.type 'icon')}}
+      {{#if (is-equal opt.type 'Marker')}}
         <div class="form-group drop_down">
           <div><label>{{opt.name}}</label></div>
           {{#power-select
-            options=activeTool.icons
-            selected=activeTool.icon
+            options=activeTool.markers
+            selected=activeTool.marker
             searchEnabled=false
             onchange=(action "updateOptionValue" activeTool opt.id)
-            as |icon|
+            as |marker|
           }}
-          <span>{{icon.display}}</span>
-          <i class="material-icons">{{ icon.id }}</i>
+            <span>{{marker.display}}</span>
           {{/power-select}}
           </div>
+      {{/if}}
+      {{#unless (is-equal activeTool.marker.id 'default')}}
+        {{#if (is-equal opt.type 'icon')}}
+          <div class="form-group drop_down">
+            <div><label>{{opt.name}}</label></div>
+            {{#power-select
+              options=activeTool.icons
+              selected=activeTool.icon
+              searchEnabled=false
+              onchange=(action "updateOptionValue" activeTool opt.id)
+              as |icon|
+            }}
+            <span>{{icon.display}}</span>
+            <i class="material-icons">{{ icon.id }}</i>
+            {{/power-select}}
+            </div>
         {{/if}}
+      {{/unless}}
+
       {{/each}}
     </form>
   {{/if}}

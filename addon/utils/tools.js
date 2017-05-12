@@ -21,6 +21,7 @@ export default {
     name: 'Marker',
     title: 'Marker Tool',
     options: [
+      { name: 'Marker', type: 'Marker', id: 'marker', display: 'marker.display' },
       { name: 'Icon', type: 'icon', id: 'icon', display: 'icon.display' },
       { name: 'Color', type: 'color', id: 'style.color' },
     ],
@@ -29,46 +30,53 @@ export default {
     },
     icons: [{
       id: 'default',
-      display: 'Default',
-      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+      display: 'Default'
     }, {
       id: 'grade',
-      display: 'Grade',
-      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+      display: 'Grade'
     }, {
       id: 'help',
-      display: 'Help',
-      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+      display: 'Help'
     }, {
       id: 'favorite',
-      display: 'Favorite',
-      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+      display: 'Favorite'
     }, {
       id: 'check_circle',
-      display: 'Check Circle',
-      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+      display: 'Check Circle'
     }, {
       id: 'lens',
-      display: 'Lens',
-      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+      display: 'Lens'
     }, {
       id: 'filter_vintage',
-      display: 'Filter Vintage',
-      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+      display: 'Filter Vintage'
     }, {
       id: 'photo_camera',
-      display: 'Photo Camera',
-      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+      display: 'Photo Camera'
     }, {
       id: 'place',
-      display: 'Place',
-      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+      display: 'Place'
     }],
     icon: {
       id: 'default',
-      display: 'Default',
-      path: 'M22-48h-44v43h16l6 5 6-5h16z',
+      display: 'Default'
     },
+
+    markers: [{
+      id: 'default',
+      display: 'Default',
+    }, {
+      id: 'pin',
+      display: 'Pin',
+      path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z'
+    }, {
+      id: 'squarePin',
+      display: 'Square Pin',
+      path: 'M22-48h-44v43h16l6 5 6-5h16z'
+    }],
+    marker: {
+      id: 'default',
+      display: 'Default',
+    }
   },
   polyline: {
     id: 'polyline',
