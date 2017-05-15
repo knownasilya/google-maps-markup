@@ -52,7 +52,7 @@
 .google-maps-markup-map-label:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
   color: #444;
 }
-.google-maps-markup-map-label.set_width{
+.google-maps-markup-map-label.set-width{
   max-width: 300px;
   height: auto;
   min-height: 50px;
@@ -62,11 +62,11 @@
   line-height: 17px;
 }
 
-.google-maps-markup-map-label.set_width:focus{
+.google-maps-markup-map-label.set-width:focus{
   border: none;
 }
 
-.google-maps-markup-map-label.set_width .google-maps-markup-map-hidden{
+.google-maps-markup-map-label.set-width .google-maps-markup-map-hidden{
   width: 100%;
   word-break: keep-all;
 }
