@@ -73,8 +73,6 @@
   font-style: normal;
   font-size: 24px;
   width: 48px;
-  line-height: 48px;
-  line-height: 1;
   color: #FFFFFF;
   letter-spacing: normal;
   text-transform: none;
@@ -82,15 +80,13 @@
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
-  margin-top: 5px;
-  margin-bottom: 5px;
   -moz-font-feature-settings: 'liga';
   -moz-osx-font-smoothing: grayscale;
 }
 
 .ember-power-select-option i.material-icons,
 .ember-power-select-selected-item i.material-icons {
-  color: #999999;
+  color: #444444;
   font-size: 15px;
 }
 
@@ -98,10 +94,24 @@
   display: flex;
   align-items: center;
 }
-.ember-power-select-selected-item .material-icons, .ember-power-select-option .material-icons{
+.ember-power-select-selected-item .material-icons, .ember-power-select-option .material-icons,.ember-power-select-option svg{
   margin-left: 8px;
 }
 
 .ember-power-select-option[aria-current="true"]:hover i.material-icons {
   color: #FFFFFF;
 }
+
+.ember-power-select-selected-item svg {
+  margin-left: 8px;
+}
+
+.ember-power-select-selected-item svg path,.ember-power-select-option svg path {
+    fill: #444444;
+}
+
+.ember-power-select-selected-item:hover svg path,.ember-power-select-option:hover svg path {
+    fill: #FFFFFF;
+}
+
+
