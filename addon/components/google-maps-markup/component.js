@@ -413,6 +413,8 @@ export default Ember.Component.extend(ParentMixin, {
       let map = this.get('map');
       let editable = this.get('editable');
 
+      Ember.set(data, 'editing', true);
+
       if (!editable) {
         return;
       }
@@ -442,7 +444,6 @@ export default Ember.Component.extend(ParentMixin, {
         popup.setPosition(latlng);
         popup.open(map);
         popup.lastData = data;
-        Ember.set(data, 'editing', true);
 
         // see routable-site template for wormhole/infowindow layout
         if (wormhole && !wormhole.isDestroying && !wormhole.isDestroyed) {
