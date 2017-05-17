@@ -36,7 +36,7 @@ export default Ember.Component.extend(ChildMixin, {
       let data = this.get('data');
 
       if (mode === MODE.measure.id) {
-        let m = getMeasurement(data.type, data.feature, data.distanceUnit);
+        let m = getMeasurement(data.type, data.feature, data.distanceUnitId);
         // update the measure label
         data.label.label = `${m.value} ${m.unit.display}`;
 

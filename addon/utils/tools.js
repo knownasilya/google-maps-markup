@@ -15,8 +15,7 @@ export default {
     style: {
       color: '#374046',
       fontSize: '12'
-    },
-    fontSizes: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+    }
   },
   marker: {
     id: 'marker',
@@ -38,24 +37,7 @@ export default {
       strokeColor: '#374046',
       strokeWeight: 2
     },
-    strokeWeights: [2, 4, 6, 8, 10],
-    distanceUnits: [{
-      id: 'ft',
-      display: 'Feet'
-    }, {
-      id: 'meter',
-      display: 'Meters'
-    }, {
-      id: 'mi',
-      display: 'Miles'
-    }, {
-      id: 'km',
-      display: 'Kilometers'
-    }],
-    distanceUnit: {
-      id: 'ft',
-      display: 'Feet'
-    }
+    distanceUnitId: 'ft'
   },
   polygon: {
     id: 'polygon',
@@ -75,24 +57,7 @@ export default {
       fillOpacity: 0.5
     },
     fillColorTransparent: true,
-    strokeWeights: [2, 4, 6, 8, 10],
-    distanceUnits: [{
-      id: 'sq ft',
-      display: 'Sq Ft'
-    }, {
-      id: 'acres',
-      display: 'Acres'
-    }, {
-      id: 'sq mi',
-      display: 'Sq Miles'
-    }, {
-      id: 'sq km',
-      display: 'Sq Km'
-    }],
-    distanceUnit: {
-      id: 'sq ft',
-      display: 'Sq Ft'
-    }
+    distanceUnitId: 'sq ft'
   },
   freeFormPolygon: {
     id: 'freeFormPolygon',
@@ -109,7 +74,7 @@ export default {
       strokeWeight: 2
     },
     fillColorTransparent: true,
-    strokeWeights: [2, 4, 6, 8, 10]
+    distanceUnitId: 'sq ft'
   },
   circle: {
     id: 'circle',
@@ -129,24 +94,7 @@ export default {
       strokeWeight: 2
     },
     fillColorTransparent: true,
-    strokeWeights: [2, 4, 6, 8, 10],
-    distanceUnits: [{
-      id: 'sq ft',
-      display: 'Sq Ft'
-    }, {
-      id: 'acres',
-      display: 'Acres'
-    }, {
-      id: 'sq mi',
-      display: 'Sq Miles'
-    }, {
-      id: 'sq km',
-      display: 'Sq Km'
-    }],
-    distanceUnit: {
-      id: 'sq ft',
-      display: 'Sq Ft'
-    }
+    distanceUnitId: 'sq ft'
   },
   rectangle: {
     id: 'rectangle',
@@ -166,23 +114,6 @@ export default {
       strokeWeight: 2
     },
     fillColorTransparent: true,
-    strokeWeights: [2, 4, 6, 8, 10],
-    distanceUnits: [{
-      id: 'sq ft',
-      display: 'Sq Ft'
-    }, {
-      id: 'acres',
-      display: 'Acres'
-    }, {
-      id: 'sq mi',
-      display: 'Sq Miles'
-    }, {
-      id: 'sq km',
-      display: 'Sq Km'
-    }],
-    distanceUnit: {
-      id: 'sq ft',
-      display: 'Sq Ft'
-    }
+    distanceUnitId: 'sq ft'
   }
 };

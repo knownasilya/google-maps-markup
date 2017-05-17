@@ -1,11 +1,14 @@
 import commaifyNumber from './number-commas';
 import acres from './acres';
+import Ember from 'ember';
 import miles from './miles';
+import optionsData from './options-data';
 
-export default function measureTypeResult(type, value, distanceUnit) {
-  var result = {
+export default function measureTypeResult(type, value, distanceUnitId) {
+  let units = Ember.A(optionsData[type].distanceUnits);
+  let result = {
     measurementType: 'Distance',
-    unit: distanceUnit,
+    unit: units && units.findBy('id', distanceUnitId),
     value: 0
   };
 

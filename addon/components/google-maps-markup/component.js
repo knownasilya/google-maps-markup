@@ -635,7 +635,7 @@ export default Ember.Component.extend(ParentMixin, {
           name: tool.name,
           feature: event.feature,
           options: tool.options,
-          distanceUnit: tool.distanceUnit,
+          distanceUnitId: tool.distanceUnitId,
           isEditable: false
         };
 
@@ -731,7 +731,7 @@ export default Ember.Component.extend(ParentMixin, {
         let data = results.get('lastObject');
 
         if (data) {
-          data.distanceUnit = tool.distanceUnit;
+          data.distanceUnitId = tool.distanceUnitId;
         }
 
         if (mode === 'draw') {
@@ -752,7 +752,7 @@ export default Ember.Component.extend(ParentMixin, {
         if (withinMap && noPoints && !drawFinished) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
-          plotter = labelPlotter(currentLabel, currentPoints, toolId, event, map, tool.distanceUnit);
+          plotter = labelPlotter(currentLabel, currentPoints, toolId, event, map, tool.distanceUnitId);
         } else if (withinMap && !toolIsPan && !drawFinished) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
