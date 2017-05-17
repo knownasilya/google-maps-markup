@@ -124,8 +124,9 @@ export default Ember.Component.extend(ParentMixin, {
       style,
       isVisible: true,
       type: tool.id,
+      feature: labelMarker,
       name: tool.name,
-      feature: labelMarker
+      options: tool.options
     };
 
     labelMarker.setMap(map);
@@ -615,21 +616,26 @@ export default Ember.Component.extend(ParentMixin, {
       });
 
       if (!found) {
+        let fillColorTransparent = Ember.copy(tool.fillColorTransparent);
         let style = Ember.copy(tool.style);
         event.feature.setProperty('mode', mode);
         event.feature.setProperty('type', toolId);
         event.feature.setProperty('isVisible', true);
         event.feature.setProperty('style', style);
+        event.feature.setProperty('fillColorTransparent',fillColorTransparent);
 
         let item = {
           mode,
           layer,
           style,
+          fillColorTransparent,
           isVisible: true,
           type: toolId,
           name: tool.name,
           feature: event.feature,
+          options: tool.options,
           distanceUnit: tool.distanceUnit,
+          isEditable: false
         };
 
         if (item.style) {

@@ -143,6 +143,10 @@ class MapLabel extends google.maps.OverlayView {
     }
   }
 
+  updateStyle(color) {
+    this.color = color;
+  }
+
   highlight() {
     this._element.classList.add('highlighted');
   }

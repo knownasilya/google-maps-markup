@@ -7,10 +7,18 @@
 
 <div class="pull-right">
   {{#if editable}}
-    <button type="button" class="btn btn-default btn-xs" onclick={{action 'edit' data.feature.position}}>
-      Edit
-    </button>
+    {{#if data.editing}}
+      <button type="button" class="btn btn-default btn-xs" onclick={{action 'ok' data.feature.position}}>
+        OK
+      </button>
+    {{/if}}
+   {{#unless data.editing}}
+      <button type="button" class="btn btn-default btn-xs" onclick={{action 'edit' data.feature.position}}>
+        Edit
+      </button>
+   {{/unless}}
   {{/if}}
+
   <button type="button" class="btn btn-danger btn-xs" onclick={{action onremove data}}>
     Remove
   </button>
@@ -28,4 +36,21 @@
       {{if data.editingShape 'Finish Editing' 'Edit Shape'}}
     </button>
   {{/ember-wormhole}}
+  {{#unless data.isEditable}}
+    {{#if data.options}}
+      {{#each data.options as |opt|}}
+        {{#if (is-equal opt.type 'color')}}
+          <div class="form-group">
+            <label>
+              {{#if opt.fillOptional}}
+                {{input type="checkbox" click=(action "fillOpacity") checked=(get data opt.id)}}
+              {{/if}}
+              {{opt.name}}
+            </label>
+            {{color-palette selected=(get data opt.id) onselect=(action 'updateOptionValue' data opt.id)}}
+          </div>
+        {{/if}}
+      {{/each}}
+    {{/if}}
+  {{/unless}}
 {{/if}}
