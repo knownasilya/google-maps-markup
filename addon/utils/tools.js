@@ -38,7 +38,7 @@ export default {
       strokeColor: '#374046',
       strokeWeight: 2
     },
-    strokeWeights: [2, 4, 6, 8, 10]
+    strokeWeights: [2, 4, 6, 8, 10],
     distanceUnits: [{
       id: 'ft',
       display: 'Feet'
