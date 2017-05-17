@@ -30,59 +30,8 @@
 {{#unless (is-equal toolId 'pan')}}
   {{#if activeTool.options}}
     <h4>Options</h4>
-    <form class="form options-group" onsubmit="return false">
-      <div class='row'>
-        {{#each activeTool.options as |opt|}}
-          {{#if (is-equal opt.type 'color')}}
-            <div class="col-xs-12 col-sm-2 form-group">
-              <label>{{opt.name}}</label>
-              {{color-palette selected=(get activeTool opt.id) onselect=(action 'updateOptionValue' activeTool opt.id)}}
-            </div>
-          {{else if (is-equal opt.type 'width')}}
-            <div class="col-xs-12 col-sm-2 form-group drop_down">
-              <label>{{opt.name}}</label>
-              {{#power-select
-              options=activeTool.strokeWeights
-              selected=activeTool.style.strokeWeight
-              searchEnabled=false
-              onchange=(action "updateOptionValue" activeTool opt.id)
-              as |width|
-              }}
-            {{width}}
-            {{/power-select}}
-            </div>
-          {{else if (is-equal opt.type 'size')}}
-            <div class="col-xs-12 col-sm-2 form-group drop_down">
-              <div><label>{{opt.name}}</label></div>
-              {{#power-select
-                options=activeTool.fontSizes
-                selected=activeTool.style.fontSize
-                searchEnabled=false
-                onchange=(action "updateOptionValue" activeTool opt.id)
-                as |size|
-              }}
-                {{size}}
-              {{/power-select}}
-            </div>
-          {{else if (is-equal mode 'measure')}}
-            {{#if (is-equal opt.type 'distanceUnit')}}
-              <div class='col-xs-12 col-sm-2 form-group drop_down'>
-                <div><label>{{opt.name}}</label></div>
-                {{#power-select
-                  options=activeTool.distanceUnits
-                  selected=activeTool.distanceUnit
-                  searchEnabled=false
-                  onchange=(action "updateOptionValue" activeTool opt.id)
-                  as |unit|
-                }}
-                  <strong>{{unit.display}}</strong>
-                {{/power-select}}
-              </div>
-            {{/if}}
-          {{/if}}
-        {{/each}}
-      </div>
-    </form>
+    {{gmm-tool-options tool=activeTool
+      updateOptionValue=(action 'updateOptionValue')}}
   {{/if}}
 {{/unless}}
 

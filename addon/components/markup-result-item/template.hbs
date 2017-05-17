@@ -36,21 +36,12 @@
       {{if data.editingShape 'Finish Editing' 'Edit Shape'}}
     </button>
   {{/ember-wormhole}}
+
   {{#unless data.isEditable}}
     {{#if data.options}}
-      {{#each data.options as |opt|}}
-        {{#if (is-equal opt.type 'color')}}
-          <div class="form-group">
-            <label>
-              {{#if opt.fillOptional}}
-                {{input type="checkbox" click=(action "fillOpacity") checked=(get data opt.id)}}
-              {{/if}}
-              {{opt.name}}
-            </label>
-            {{color-palette selected=(get data opt.id) onselect=(action 'updateOptionValue' data opt.id)}}
-          </div>
-        {{/if}}
-      {{/each}}
+      <hr>
+      {{gmm-tool-options tool=data
+        updateOptionValue=(action 'updateOptionValue')}}
     {{/if}}
   {{/unless}}
 {{/if}}
