@@ -6,17 +6,14 @@
 </button>
 
 <div class="pull-right">
-  {{#if editable}}
-    {{#if data.editing}}
-      <button type="button" class="btn btn-default btn-xs" onclick={{action 'ok' data.feature.position}}>
-        OK
-      </button>
-    {{/if}}
-   {{#unless data.editing}}
-      <button type="button" class="btn btn-default btn-xs" onclick={{action 'edit' data.feature.position}}>
-        Edit
-      </button>
-   {{/unless}}
+  {{#if data.editing}}
+    <button type="button" class="btn btn-default btn-xs" onclick={{action 'ok' data.feature.position}}>
+      OK
+    </button>
+  {{else}}
+    <button type="button" class="btn btn-default btn-xs" onclick={{action 'edit' data.feature.position}}>
+      Edit
+    </button>
   {{/if}}
 
   <button type="button" class="btn btn-danger btn-xs" onclick={{action onremove data}}>
@@ -25,21 +22,22 @@
 </div>
 
 {{#if data.editing}}
-  {{#ember-wormhole to="google-maps-markup-infowindow" viewName="wormhole"}}
-    {{#if shapeModified}}
-      <button type="button" class="btn btn-warning btn-sm" {{action 'cancelEditShape'}}>
-        Reset Shape
-      </button>
-    {{/if}}
+  {{#if editable}}
+    {{#ember-wormhole to="google-maps-markup-infowindow" viewName="wormhole"}}
+      {{#if shapeModified}}
+        <button type="button" class="btn btn-warning btn-sm" {{action 'cancelEditShape'}}>
+          Reset Shape
+        </button>
+      {{/if}}
 
-    <button type="button" class="btn btn-default btn-sm" {{action 'toggleEditShape'}}>
-      {{if data.editingShape 'Finish Editing' 'Edit Shape'}}
-    </button>
-  {{/ember-wormhole}}
+      <button type="button" class="btn btn-default btn-sm" {{action 'toggleEditShape'}}>
+        {{if data.editingShape 'Finish Editing' 'Edit Shape'}}
+      </button>
+    {{/ember-wormhole}}
+  {{/if}}
 
   {{#unless data.isEditable}}
     {{#if data.options}}
-      <hr>
       {{gmm-tool-options tool=data
         updateOptionValue=(action 'updateOptionValue')}}
     {{/if}}
