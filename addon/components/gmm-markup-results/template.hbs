@@ -9,10 +9,13 @@
     </button>
   </div>
 
-  <ul class="list-group results-list">
-  {{#sortable-objects sortableObjectList=results sortEndAction='sortEndAction'}}
+  {{#sortable-objects sortableObjectList=results sortEndAction='sortEndAction'
+    class='list-group results-list'
+    tagName='ul'}}
     {{#each results as |result|}}
-      {{#draggable-object content=result isSortable=true}}
+      {{#draggable-object content=result isSortable=true
+        class='list-group-item clearfix'
+        tagName='li'}}
         {{markup-result-item data=result editable=editable
           onremove=(action onRemove)
           ontoggle=(action onToggle)
@@ -23,5 +26,4 @@
       {{/draggable-object}}
     {{/each}}
   {{/sortable-objects}}
-  </ul>
 {{/if}}

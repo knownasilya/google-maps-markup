@@ -14,8 +14,6 @@ const {
 
 export default Ember.Component.extend(ChildMixin, {
   layout: layout,
-  tagName: 'li',
-  classNames: ['list-group-item', 'clearfix'],
 
   init() {
     this._super(...arguments);
