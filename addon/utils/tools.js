@@ -155,6 +155,7 @@ export default {
     title: 'Rectangle Tool',
     options: [
       { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
+      { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
       { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
     ],
