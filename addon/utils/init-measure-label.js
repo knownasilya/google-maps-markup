@@ -9,10 +9,10 @@ export default function initMeasureLabel(result, map) {
 
   if (result.mode === 'measure' && !result.label) {
     let center = featureCenter(result.feature);
-    let measurement = getMeasurement(result.type, result.feature);
+    let measurement = getMeasurement(result.type, result.feature, result.distanceUnit);
 
     result.label = new MapLabel(center);
-    result.label.label = `${measurement.value} ${measurement.unit}`;
+    result.label.label = `${measurement.value} ${measurement.unit.display}`;
 
     if (map) {
       result.label.setMap(map);

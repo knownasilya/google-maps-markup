@@ -116,7 +116,8 @@ export default Ember.Component.extend(ParentMixin, {
     let style = Ember.copy(tool.style);
     let labelMarker = new DynamicLabel(position, {
       color: style.color,
-      autoFocus: true
+      autoFocus: true,
+      fontSize: style.fontSize + 'px',
     });
     let item = {
       mode,
@@ -129,7 +130,7 @@ export default Ember.Component.extend(ParentMixin, {
     };
 
     labelMarker.setMap(map);
-    results.pushObject(item);
+    results.insertAt(0, item);
     map.setOptions({ draggableCursor: undefined });
     // TODO: convert to geojson and add to active layer
     // later load during results process
@@ -633,6 +634,7 @@ export default Ember.Component.extend(ParentMixin, {
           name: tool.name,
           feature: event.feature,
           options: tool.options,
+          distanceUnit: tool.distanceUnit,
           isEditable: false
         };
 
@@ -641,7 +643,8 @@ export default Ember.Component.extend(ParentMixin, {
         }
 
         initMeasureLabel(item, map);
-        results.pushObject(item);
+        results.insertAt(0, item);
+        results[0].style.zIndex = 111;
 
         if (this.get('afterAddFeature')) {
           this.sendAction('afterAddFeature', item);
@@ -714,10 +717,21 @@ export default Ember.Component.extend(ParentMixin, {
 
       let onClick = run.bind(this, (event) => {
         let toolId = this.get('toolId');
+        let tool = this.get('activeTool');
         let mode = this.get('mode');
         let mapDiv = map.getDiv();
         let target = event.target;
         let withinMap = mapDiv.contains(target);
+
+        let results = this.get('results');
+        let length = results.get('length');
+        let arrayIndexOffSet = 1;
+        let lastObjectIndex = length - arrayIndexOffSet;
+        let data = results.get('lastObject');
+
+        if (data) {
+          data.distanceUnit = tool.distanceUnit;
+        }
 
         if (mode === 'draw') {
           if (withinMap && toolId === 'freeFormPolygon') {
@@ -737,7 +751,7 @@ export default Ember.Component.extend(ParentMixin, {
         if (withinMap && noPoints && !drawFinished) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
-          plotter = labelPlotter(currentLabel, currentPoints, toolId, event, map);
+          plotter = labelPlotter(currentLabel, currentPoints, toolId, event, map, tool.distanceUnit);
         } else if (withinMap && !toolIsPan && !drawFinished) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);

@@ -8,10 +8,11 @@ class DynamicLabel extends MapLabel {
     options.element.placeholder = options.placeholder || 'Text Here';
     options.element.rows = 1;
     options.element.wrap = 'hard';
+    options.element.style.fontSize = options.fontSize || '12px';
 
     super(latlng, options);
 
-    this._hidden = document.createElement('pre');
+    this._hidden = document.createElement('div');
     this._hidden.className = 'google-maps-markup-map-hidden';
     this._hidden.innerHTML = '<span></span><br/>';
 

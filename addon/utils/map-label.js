@@ -9,7 +9,7 @@ class MapLabel extends google.maps.OverlayView {
     this.options = options;
 
     this._element = options.element || document.createElement('div');
-    this._element.className = 'google-maps-markup-map-label';
+    this._element.className = 'google-maps-markup-map-label set-width';
     this._element.style.position = 'absolute';
 
     if (options.className) {

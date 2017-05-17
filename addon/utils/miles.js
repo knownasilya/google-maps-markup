@@ -1,11 +1,15 @@
-const TO_MILE = 0.000189394;
-
 export default function miles(result) {
   var output = {};
+  var FEET_DISTANCE_CONVERT_MAP = {
+    mi: 0.000189394,
+    km: 0.0003048,
+    meter: 0.3048,
+  };
 
-  if (result.value > 5280) {
-    output.value = result.value * TO_MILE;
-    output.unit = 'mi.';
+  if(result.unit.id === 'ft') {
+    output.value = Math.round(result.value);
+  } else {
+    output.value = result.value * FEET_DISTANCE_CONVERT_MAP[result.unit.id];
 
     if (output.value < 1) {
       // 4 decimal places
@@ -16,11 +20,9 @@ export default function miles(result) {
     } else {
       output.value = Math.round(output.value);
     }
-  } else {
-    output.value = Math.round(result.value);
-    output.unit = result.unit;
   }
 
+  output.unit = result.unit;
   output.measurementType = result.measurementType;
 
   return output.value !== undefined ? output : result;
