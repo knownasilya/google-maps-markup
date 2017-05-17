@@ -9,20 +9,22 @@
     <div class='col-xs-4 col-sm-3 form-group'>
       <label>{{opt.name}}</label>
       {{#power-select
-        options=tool.strokeWeights
+        options=(get optionsData (concat (tool-id tool) '.strokeWeights'))
         selected=tool.style.strokeWeight
         searchEnabled=false
         onchange=(action updateOptionValue tool opt.id)
         as |width|
       }}
-    {{width}}
-    {{/power-select}}
+        {{width}}
+      {{/power-select}}
     </div>
   {{else if (is-equal opt.type 'size')}}
     <div class="col-xs-4 col-sm-3 form-group">
       <div><label>{{opt.name}}</label></div>
+      {{log tool}}
+      {{log (concat tool.id '.fontSizes')}}
       {{#power-select
-        options=tool.fontSizes
+        options=(get optionsData (concat (tool-id tool) '.fontSizes'))
         selected=tool.style.fontSize
         searchEnabled=false
         onchange=(action updateOptionValue tool opt.id)
@@ -36,7 +38,7 @@
       <div class='col-xs-4 col-sm-3 form-group'>
         <div><label>{{opt.name}}</label></div>
         {{#power-select
-          options=tool.distanceUnits
+          options=(get optionsData (concat (tool-id tool) '.distanceUnits'))
           selected=tool.distanceUnit
           searchEnabled=false
           onchange=(action updateOptionValue tool opt.id)
