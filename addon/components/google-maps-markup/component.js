@@ -336,6 +336,8 @@ export default Ember.Component.extend(ParentMixin, {
             if (result.type === 'text') {
               textGeoJson.removeObject(result.geojson);
             }
+          } else if (result.markerData) {
+              result.markerData.setMap(null);
           }
         });
 
