@@ -49,8 +49,8 @@ class MarkerLabel extends google.maps.OverlayView {
     div.style.zIndex = this.get('zIndex'); // Allow label to overlay marker
     div.style.position = 'absolute';
     div.style.display = 'block';
-    div.style.left = (position.x - (div.offsetWidth / 2) + 10) + 'px';
-    div.style.top = (position.y - div.offsetHeight - 10) + 'px';
+    div.style.left = (position.x - (div.offsetWidth / 2) + 12) + 'px';
+    div.style.top = (position.y - (div.offsetHeight/2) - 24) + 'px';
   }
 
   set position(value) {
