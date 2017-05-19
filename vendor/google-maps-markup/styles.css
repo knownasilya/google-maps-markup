@@ -110,7 +110,7 @@
     fill: #444444;
 }
 
-.ember-power-select-selected-item:hover svg path,.ember-power-select-option:hover svg path {
+.ember-power-select-option:hover svg path {
     fill: #FFFFFF;
 }
 
