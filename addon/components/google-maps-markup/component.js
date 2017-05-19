@@ -356,6 +356,9 @@ export default Ember.Component.extend(ParentMixin, {
       if (result.type === 'text') {
         result.feature.setMap(null);
         textGeoJson.removeObject(result.geojson);
+      } else if (result.type === 'marker') {
+        result.markerData.setMap(null);
+        layer.data.remove(result.feature);
       } else {
         layer.data.remove(result.feature);
       }
@@ -781,6 +784,8 @@ export default Ember.Component.extend(ParentMixin, {
                   },
                   map_icon_label: '<i class="material-icons">' + iconObj.id + '</i>'
                 })
+
+                data.markerData = marker;
 
                 // To add the marker to the map, call setMap();
                 marker.setMap(map);
