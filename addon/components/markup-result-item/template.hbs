@@ -10,7 +10,7 @@
     <button type="button" class="btn btn-default btn-xs" onclick={{action 'ok' data.feature.position}}>
       OK
     </button>
-  {{else}}
+  {{else if data.isEditable}}
     <button type="button" class="btn btn-default btn-xs" onclick={{action 'edit' data.feature.position}}>
       Edit
     </button>
@@ -36,10 +36,10 @@
     {{/ember-wormhole}}
   {{/if}}
 
-  {{#unless data.isEditable}}
+  {{#if data.isEditable}}
     {{#if data.options}}
       {{gmm-tool-options tool=data
         updateOptionValue=(action 'updateOptionValue')}}
     {{/if}}
-  {{/unless}}
+  {{/if}}
 {{/if}}

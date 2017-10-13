@@ -126,7 +126,8 @@ export default Ember.Component.extend(ParentMixin, {
       type: tool.id,
       feature: labelMarker,
       name: tool.name,
-      options: tool.options
+      options: tool.options,
+      isEditable: Object.keys(style).length ? true : false
     };
 
     labelMarker.setMap(map);
@@ -639,7 +640,7 @@ export default Ember.Component.extend(ParentMixin, {
           feature: event.feature,
           options: tool.options,
           distanceUnitId: tool.distanceUnitId,
-          isEditable: false
+          isEditable: Object.keys(style).length ? true : false
         };
 
         if (item.style) {
