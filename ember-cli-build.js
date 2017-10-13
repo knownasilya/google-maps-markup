@@ -1,12 +1,13 @@
-/*jshint node:true*/
-/* global require, module */
-var path = require('path');
-var mergeTrees = require('broccoli-merge-trees');
-var pickFiles = require('broccoli-static-compiler');
-var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+/* eslint-env node */
+'use strict';
+
+const path = require('path');
+const mergeTrees = require('broccoli-merge-trees');
+const pickFiles = require('broccoli-static-compiler');
+const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {
-  var app = new EmberAddon(defaults, {
+  let app = new EmberAddon(defaults, {
     // Add options here
   });
 
@@ -17,9 +18,8 @@ module.exports = function(defaults) {
     behave. You most likely want to be modifying `./index.js` or app's build file
   */
 
-  // Copy fontawesome fonts
-  var fontsDir = path.join(app.bowerDirectory, 'fontawesome', 'fonts');
-  var fonts = pickFiles(fontsDir, {
+  let fontsDir = path.join(app.bowerDirectory, 'fontawesome', 'fonts');
+  let fonts = pickFiles(fontsDir, {
     srcDir: '/',
     files: ['**/*'],
     destDir: '/assets/fonts'
