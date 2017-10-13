@@ -70,7 +70,12 @@ export default Ember.Component.extend(ChildMixin, {
 
     updateOptionValue(tool, prop, value) {
       if (tool.type === 'text') {
-        this.data.feature.updateStyle(value);
+        let [type, specific] = prop.split('.');
+
+        if (type && type === 'style' && specific) {
+          this.data.feature[specific] = value;
+        }
+
         set(tool, prop, value);
       } else {
         let data = this.get('data');

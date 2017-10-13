@@ -117,7 +117,7 @@ export default Ember.Component.extend(ParentMixin, {
     let labelMarker = new DynamicLabel(position, {
       color: style.color,
       autoFocus: true,
-      fontSize: style.fontSize + 'px',
+      fontSize: style.fontSize
     });
     let item = {
       mode,
@@ -150,8 +150,8 @@ export default Ember.Component.extend(ParentMixin, {
           let freshStyle = Ember.copy(freshTool.style);
 
           labelMarker.color = freshStyle.color;
-          item.style = freshStyle;
-          item.geojson.properties.style = freshStyle;
+          set(item, 'style', freshStyle);
+          set(item, 'geojson.properties.style', freshStyle);
           this.toolNotFinished = false;
 
           this.send('changeTool', TOOLS.pan.id);

@@ -8,13 +8,8 @@ class DynamicLabel extends MapLabel {
     options.element.placeholder = options.placeholder || 'Text Here';
     options.element.rows = 1;
     options.element.wrap = 'hard';
-    options.element.style.fontSize = options.fontSize || '12px';
 
     super(latlng, options);
-
-    this._hidden = document.createElement('div');
-    this._hidden.className = 'google-maps-markup-map-hidden';
-    this._hidden.innerHTML = '<span></span><br/>';
 
     this.autoFocus = options.autoFocus || false;
     this.editLabelInPlace = options.editLabelInPlace;
@@ -24,6 +19,7 @@ class DynamicLabel extends MapLabel {
       this.editLabelInPlace = true;
     }
 
+    this.fontSize = options.fontSize;
     this.label = options.label;
   }
 
@@ -34,7 +30,6 @@ class DynamicLabel extends MapLabel {
 
     if (pane) {
       pane.appendChild(this._element);
-      pane.appendChild(this._hidden);
 
       if (this.autoFocus) {
         this._element.focus();
@@ -65,6 +60,9 @@ class DynamicLabel extends MapLabel {
         this.editingText = true;
         event.stopPropagation();
       });
+      google.maps.event.addDomListener(this._element, 'select', event => {
+        event.stopPropagation();
+      });
 
       google.maps.event.addDomListener(this._element, 'blur', (event) => {
         var contentBlank = !!this.label.length && this.label.trim().length === 0;
@@ -79,7 +77,7 @@ class DynamicLabel extends MapLabel {
 
       google.maps.event.addDomListener(this._element, 'input', (event) => {
         google.maps.event.trigger(this, 'changelabel');
-        this.updateHeight();
+        this.updateSize();
 
         if (map) {
           google.maps.event.trigger(map, 'resize');
@@ -91,17 +89,45 @@ class DynamicLabel extends MapLabel {
 
   draw() {
     super.draw();
-    this.updateHeight();
+    this.updateSize();
   }
 
-  updateHeight() {
+  updateSize() {
+    if (!document.body) {
+      return;
+    }
+
     let content = this.label;
+    let fontSize =  Number(this.fontSize.replace('px', ''));
+    let contentLines = content.split(/\r|\n/);
+    let contentHeight = contentLines.length * fontSize;
+    let contentWidth = contentLines.reduce((total, line) => {
+      let div = document.createElement('div');
+
+      div.style.position = 'absolute';
+      div.style.visibility = 'hidden';
+      div.style.fontSize = this.fontSize;
+      div.style.height = 'auto';
+      div.style.width = 'auto';
+      div.style.whiteSpace = 'nowrap';
+      div.textContent = line;
+      document.body.appendChild(div);
+
+      let width = div.clientWidth;
+
+      document.body.removeChild(div)
+
+      if (width > total) {
+        total = width;
+      }
+
+      return total;
+    }, 100);
 
     content = content.replace(/\n/g, '<br/>');
 
-    this._hidden.innerHTML = content + '<br/>';
-    this._element.style.height = this._hidden.clientHeight + 'px';
-    this._element.style.width = (this._hidden.clientWidth + 5) + 'px';
+    this._element.style.height = (contentHeight + 10) + 'px';
+    this._element.style.width = (contentWidth + 20) + 'px';
   }
 
   set editingText(val) {
@@ -118,12 +144,21 @@ class DynamicLabel extends MapLabel {
     return this._editingText;
   }
 
+  set label(value) {
+    this._element.value = value || '';
+  }
+
   get label() {
     return this._element.value;
   }
 
-  set label(value) {
-    this._element.value = value || '';
+  set fontSize(value = 12) {
+    this._element.style.fontSize = value + 'px';
+    this.updateSize();
+  }
+
+  get fontSize() {
+    return this._element.style.fontSize;
   }
 
   onRemove() {
