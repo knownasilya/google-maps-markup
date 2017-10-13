@@ -174,7 +174,6 @@ class DynamicLabel extends MapLabel {
     google.maps.event.clearInstanceListeners(this._element);
 
     super.onRemove(...arguments);
-    this._hidden.parentNode.removeChild(this._hidden);
   }
 }
 
