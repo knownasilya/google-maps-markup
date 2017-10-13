@@ -191,10 +191,12 @@ export default Ember.Component.extend(ParentMixin, {
     });
     let move = google.maps.event.addListener(map, 'mousemove', (e) => {
       poly.getPath().push(e.latLng);
+      map.setOptions({ draggable: false });
     });
 
     google.maps.event.addListenerOnce(map, 'mouseup', (e) => {
       google.maps.event.removeListener(move);
+      map.setOptions({ draggable: true });
       poly.setMap(null);
 
       let path = poly.getPath();
