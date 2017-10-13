@@ -113,7 +113,7 @@ export default Ember.Component.extend(ParentMixin, {
     let results = this.get('results');
     let mode = this.get('mode');
     let map = this.get('map');
-    let style = Ember.copy(tool.style);
+    let style = Ember.copy(tool.style || {});
     let labelMarker = new DynamicLabel(position, {
       color: style.color,
       autoFocus: true,
@@ -201,7 +201,7 @@ export default Ember.Component.extend(ParentMixin, {
 
       let path = poly.getPath();
       let polygon = new google.maps.Data.Polygon([path.getArray()]);
-      let style = Ember.copy(tool.style);
+      let style = Ember.copy(tool.style || {});
       let item = {
         mode,
         style,
@@ -287,12 +287,12 @@ export default Ember.Component.extend(ParentMixin, {
           });
           listeners.pushObjects([ mapListener, dataListener ]);
         } else if (tool.dataId) {
-          let style = Ember.copy(tool.style);
+          let style = Ember.copy(tool.style || {});
 
           activeLayer.data.setDrawingMode(tool.dataId);
           activeLayer.data.setStyle(style);
         } else if (tool.dmId) {
-          let style = Ember.copy(tool.style);
+          let style = Ember.copy(tool.style || {});
           
           dm.setDrawingMode(tool.dmId);
           dm.setOptions({
@@ -620,12 +620,13 @@ export default Ember.Component.extend(ParentMixin, {
 
       if (!found) {
         let fillColorTransparent = Ember.copy(tool.fillColorTransparent);
-        let style = Ember.copy(tool.style);
+        let style = Ember.copy(tool.style || {});
+
         event.feature.setProperty('mode', mode);
         event.feature.setProperty('type', toolId);
         event.feature.setProperty('isVisible', true);
         event.feature.setProperty('style', style);
-        event.feature.setProperty('fillColorTransparent',fillColorTransparent);
+        event.feature.setProperty('fillColorTransparent', fillColorTransparent);
 
         let item = {
           mode,
@@ -642,12 +643,12 @@ export default Ember.Component.extend(ParentMixin, {
         };
 
         if (item.style) {
+          item.style.zIndex = 111;
           layer.data.overrideStyle(event.feature, item.style);
         }
 
         initMeasureLabel(item, map);
         results.insertAt(0, item);
-        results[0].style.zIndex = 111;
 
         if (this.get('afterAddFeature')) {
           this.sendAction('afterAddFeature', item);
