@@ -1,4 +1,12 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import { alias } from '@ember/object/computed';
+import $ from 'jquery';
+import { copy } from '@ember/object/internals';
+import Component from '@ember/component';
+import { on } from '@ember/object/evented';
+import { run } from '@ember/runloop';
+import { A as boundArray } from '@ember/array';
+import { observer as observes, set } from '@ember/object';
 import { v1 } from 'ember-uuid';
 import { ParentMixin } from 'ember-composability-tools';
 import layout from './template';
@@ -15,32 +23,23 @@ if (!window.google) {
   throw new Error('Sorry, but `google` defined globally is required for this addon');
 }
 
-const {
-  on,
-  run,
-  set,
-  inject,
-  computed,
-  A: boundArray,
-  observer: observes
-} = Ember;
 const clearAllConfirm = 'Clearing results will persist the changes, if you want to save a copy of the results please copy the url before clearing the markup.';
 
-export default Ember.Component.extend(ParentMixin, {
+export default Component.extend(ParentMixin, {
   // Start Attrs
   editable: true,
   panForOffscreen: true,
   autoResetToPan: false,
-  map: computed.alias('markupData.map'),
+  map: alias('markupData.map'),
   // End Attrs
 
   layout: layout,
-  markupData: inject.service(),
+  markupData: service(),
   classNames: ['google-maps-markup'],
-  dataLayers: computed.alias('markupData.layers'),
-  results: computed.alias('markupData.results'),
-  mode: computed.alias('markupData.mode'),
-  textGeoJson: computed.alias('markupData.textGeoJson'),
+  dataLayers: alias('markupData.layers'),
+  results: alias('markupData.results'),
+  mode: alias('markupData.mode'),
+  textGeoJson: alias('markupData.textGeoJson'),
   dm: new google.maps.drawing.DrawingManager({
     drawingControl: false
   }),
@@ -94,8 +93,8 @@ export default Ember.Component.extend(ParentMixin, {
       popup.setContent(`<div id='google-maps-markup-infowindow'></div>`);
 
       popup.addListener('closeclick', run.bind(this, function () {
-        Ember.set(popup, 'lastData.editing', false);
-        Ember.set(popup, 'lastData', undefined);
+        set(popup, 'lastData.editing', false);
+        set(popup, 'lastData', undefined);
         // cleanup?
       }));
 
@@ -113,7 +112,7 @@ export default Ember.Component.extend(ParentMixin, {
     let results = this.get('results');
     let mode = this.get('mode');
     let map = this.get('map');
-    let style = Ember.copy(tool.style || {});
+    let style = copy(tool.style || {});
     let labelMarker = new DynamicLabel(position, {
       color: style.color,
       autoFocus: true,
@@ -148,7 +147,7 @@ export default Ember.Component.extend(ParentMixin, {
       google.maps.event.addListenerOnce(labelMarker, 'focusout', () => {
         run.later(this, function () {
           let freshTool = this.getTool(tool.id);
-          let freshStyle = Ember.copy(freshTool.style);
+          let freshStyle = copy(freshTool.style);
 
           labelMarker.color = freshStyle.color;
           set(item, 'style', freshStyle);
@@ -202,7 +201,7 @@ export default Ember.Component.extend(ParentMixin, {
 
       let path = poly.getPath();
       let polygon = new google.maps.Data.Polygon([path.getArray()]);
-      let style = Ember.copy(tool.style || {});
+      let style = copy(tool.style || {});
       let item = {
         mode,
         style,
@@ -288,12 +287,12 @@ export default Ember.Component.extend(ParentMixin, {
           });
           listeners.pushObjects([ mapListener, dataListener ]);
         } else if (tool.dataId) {
-          let style = Ember.copy(tool.style || {});
+          let style = copy(tool.style || {});
 
           activeLayer.data.setDrawingMode(tool.dataId);
           activeLayer.data.setStyle(style);
         } else if (tool.dmId) {
-          let style = Ember.copy(tool.style || {});
+          let style = copy(tool.style || {});
           
           dm.setDrawingMode(tool.dmId);
           dm.setOptions({
@@ -383,7 +382,7 @@ export default Ember.Component.extend(ParentMixin, {
         result.type === 'text' ? result.feature.visible : layer.data.contains(result.feature);
 
       if (hide) {
-        Ember.set(result, 'isVisible', false);
+        set(result, 'isVisible', false);
 
         if (result.type === 'text') {
           result.feature.hide();
@@ -396,7 +395,7 @@ export default Ember.Component.extend(ParentMixin, {
           }
         }
       } else {
-        Ember.set(result, 'isVisible', true);
+        set(result, 'isVisible', true);
 
         if (result.type === 'text') {
           result.feature.show();
@@ -416,7 +415,7 @@ export default Ember.Component.extend(ParentMixin, {
       let map = this.get('map');
       let editable = this.get('editable');
 
-      Ember.set(data, 'editing', true);
+      set(data, 'editing', true);
 
       if (!editable) {
         return;
@@ -426,7 +425,7 @@ export default Ember.Component.extend(ParentMixin, {
         popup.close();
 
         if (popup.lastData) {
-          Ember.set(popup, 'lastData.editing', false);
+          set(popup, 'lastData.editing', false);
         }
       }
 
@@ -620,8 +619,8 @@ export default Ember.Component.extend(ParentMixin, {
       });
 
       if (!found) {
-        let fillColorTransparent = Ember.copy(tool.fillColorTransparent);
-        let style = Ember.copy(tool.style || {});
+        let fillColorTransparent = copy(tool.fillColorTransparent);
+        let style = copy(tool.style || {});
 
         event.feature.setProperty('mode', mode);
         event.feature.setProperty('type', toolId);
@@ -717,7 +716,7 @@ export default Ember.Component.extend(ParentMixin, {
     if (map) {
       this.set('mapEventsSetup', true);
 
-      let $body = Ember.$('body');
+      let $body = $('body');
       let plotter;
 
       let onClick = run.bind(this, (event) => {
@@ -809,7 +808,7 @@ export default Ember.Component.extend(ParentMixin, {
     }
 
     if (bodyListeners) {
-      let $body = Ember.$('body');
+      let $body = $('body');
 
       bodyListeners.forEach(listener => {
         $body.off(listener.event, listener.handler);
@@ -831,7 +830,7 @@ function calculatePosition(mapPosition, event) {
 }
 
 function calculateLatLng(map, event) {
-  let $map = Ember.$(map.getDiv());
+  let $map = $(map.getDiv());
   let projection = map.getProjection();
   let bounds = map.getBounds();
   let ne = bounds.getNorthEast();

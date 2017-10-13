@@ -1,6 +1,4 @@
-import Ember from 'ember';
-
-const { RSVP } = Ember;
+import RSVP from 'rsvp';
 
 class Layer {
   constructor(options) {

@@ -1,18 +1,14 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { on } from '@ember/object/evented';
+import { run } from '@ember/runloop';
+import { computed, set } from '@ember/object';
 import { ChildMixin } from 'ember-composability-tools';
 import layout from './template';
 import MODE from '../../utils/modes';
 import getMeasurement from '../../utils/get-measurement';
 import featureCenter from '../../utils/feature-center';
 
-const {
-  on,
-  run,
-  set,
-  computed
-} = Ember;
-
-export default Ember.Component.extend(ChildMixin, {
+export default Component.extend(ChildMixin, {
   layout: layout,
 
   init() {

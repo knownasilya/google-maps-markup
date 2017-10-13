@@ -1,4 +1,8 @@
-import { polygonArea, circleArea, rectangleArea } from './shape-area';
+import {
+  polygonArea,
+  circleArea,
+  rectangleArea
+} from './shape-area';
 import pathDistance from './path-distance';
 import measureTypeResult from './measure-type-result';
 

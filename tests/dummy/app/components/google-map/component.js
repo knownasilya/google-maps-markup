@@ -1,10 +1,7 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { on } from '@ember/object/evented';
 
-const {
-  on
-} = Ember;
-
-export default Ember.Component.extend({
+export default Component.extend({
   map: null,
   center: new google.maps.LatLng(42.43540000000001, -71.11295997924805),
 

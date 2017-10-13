@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
 
 export function present([data, key]) {
   return key in data;
 }
 
-export default Ember.Helper.helper(present);
+export default helper(present);

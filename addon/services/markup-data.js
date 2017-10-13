@@ -1,23 +1,20 @@
-import Ember from 'ember';
+import Service from '@ember/service';
+import EmberObject, { computed, get } from '@ember/object';
+import { A as boundArray } from '@ember/array';
 import createFeature from '../utils/create-feature';
 import initMeasureLabel from '../utils/init-measure-label';
 import initTextLabel from '../utils/init-text-label';
 import MODE from '../utils/modes';
 import Layer from '../utils/layer';
 
-const {
-  get,
-  computed,
-  A: boundArray
-} = Ember;
 const MODES = [
   MODE.draw.id,
   MODE.measure.id
 ];
 
-export default Ember.Service.extend({
+export default Service.extend({
   mode: MODE.draw.id,
-  markupResults: Ember.Object.create({
+  markupResults: EmberObject.create({
     draw: boundArray(),
     measure: boundArray()
   }),
