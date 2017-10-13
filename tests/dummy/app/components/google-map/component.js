@@ -16,15 +16,16 @@ export default Ember.Component.extend({
     this.setup(el, center, zoom);
   }),
 
-  setup(el, center, zoom) {
+  setup(el, center, zoom = 10) {
     var map;
 
     google.maps.visualRefresh = true;
 
     var options = {
-      zoom: zoom || 10,
+      zoom,
+      center,
       maxZoom: 19,
-      center: center
+      gestureHandling: 'greedy'
     };
 
     map = new google.maps.Map(el, options);
