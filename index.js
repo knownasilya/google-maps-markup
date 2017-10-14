@@ -4,12 +4,10 @@
 module.exports = {
   name: 'google-maps-markup',
 
-  included: function(app, parentAddon) {
-    var target = (parentAddon || app);
-
+  included: function() {
     this._super.included.apply(this, arguments);
 
-    target.import('vendor/google-maps-markup/styles.css');
+    this.import('vendor/google-maps-markup/styles.css');
   },
 
   isDevelopingAddon: function() {
