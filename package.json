@@ -20,7 +20,8 @@
     "build": "ember build",
     "start": "ember server",
     "pretest": "mkdir coverage",
-    "test": "ember try:each"
+    "test": "ember try:each",
+    "release": "standard-version"
   },
   "dependencies": {
     "ember-cli-babel": "^6.6.0",
@@ -51,7 +52,8 @@
     "ember-load-initializers": "^1.0.0",
     "ember-resolver": "^4.0.0",
     "ember-source": "~2.16.0",
-    "loader.js": "^4.2.3"
+    "loader.js": "^4.2.3",
+    "standard-version": "^4.0.0"
   },
   "engines": {
     "node": "^4.5 || 6.* || >= 7.*"
