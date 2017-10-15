@@ -142,6 +142,10 @@ export default Component.extend(ParentMixin, {
       textGeoJson.pushObject(data);
     });
 
+    if (this.get('afterAddFeature')) {
+      this.sendAction('afterAddFeature', item);
+    }
+
     if (autoResetToPan) {
       this.toolNotFinished = true;
       google.maps.event.addListenerOnce(labelMarker, 'focusout', () => {
@@ -180,6 +184,7 @@ export default Component.extend(ParentMixin, {
   },
 
   enableFreeFormPolygon() {
+    let autoResetToPan = this.get('autoResetToPan');
     let toolId = this.get('toolId');
     let map = this.get('map');
     let mode = this.get('mode');
@@ -211,9 +216,18 @@ export default Component.extend(ParentMixin, {
       };
       let feature = this.createFeature(item, polygon);
 
+      if (this.get('afterAddFeature')) {
+        this.sendAction('afterAddFeature', item);
+      }
+
       activeLayer.data.add(feature);
       activeLayer.data.overrideStyle(feature, style);
-      this.send('changeTool', TOOLS.pan.id);
+
+      if (autoResetToPan) {
+        run.later(this, function () {
+          this.send('changeTool', TOOLS.pan.id);
+        }, 250);
+      }
     });
   },
 
