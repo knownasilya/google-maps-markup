@@ -14,13 +14,13 @@
     tagName='ul'}}
     {{#each results as |result|}}
       {{#draggable-object content=result isSortable=true
+        mouseEnter=(action onOver result)
+        mouseLeave=(action onOut result)
         class='list-group-item clearfix'
         tagName='li'}}
         {{markup-result-item data=result editable=editable
           onremove=(action onRemove)
           ontoggle=(action onToggle)
-          onover=(action onOver)
-          onout=(action onOut)
           onedit=(action onEdit)
         }}
       {{/draggable-object}}

@@ -139,14 +139,6 @@ export default Component.extend(ChildMixin, {
     }
   },
 
-  onOver: on('mouseEnter', function () {
-    this.sendAction('onover', this.get('data'));
-  }),
-
-  onOut: on('mouseLeave', function () {
-    this.sendAction('onout', this.get('data'));
-  }),
-
   willDestroyElement() {
     this._super(...arguments);
 
