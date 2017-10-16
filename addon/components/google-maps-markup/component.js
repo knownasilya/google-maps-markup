@@ -4,7 +4,7 @@ import $ from 'jquery';
 import { copy } from '@ember/object/internals';
 import Component from '@ember/component';
 import { on } from '@ember/object/evented';
-import { run } from '@ember/runloop';
+import { run, next } from '@ember/runloop';
 import { A as boundArray } from '@ember/array';
 import { observer as observes, set } from '@ember/object';
 import { v1 } from 'ember-uuid';
@@ -190,23 +190,27 @@ export default Component.extend(ParentMixin, {
     let mode = this.get('mode');
     let activeLayer = this.get('activeLayer');
     let tool = this.getTool(toolId);
+    let style = copy(tool.style || {});
     let poly = new google.maps.Polyline({
-      map: map,
+      map,
       clickable: false
     });
+
+    this.set('toolActive', true);
+    poly.setOptions(style);
+
     let move = google.maps.event.addListener(map, 'mousemove', (e) => {
       poly.getPath().push(e.latLng);
       map.setOptions({ draggable: false });
     });
 
-    google.maps.event.addListenerOnce(map, 'mouseup', (e) => {
+    google.maps.event.addListenerOnce(map, 'mouseup', () => {
       google.maps.event.removeListener(move);
       map.setOptions({ draggable: true });
       poly.setMap(null);
 
       let path = poly.getPath();
       let polygon = new google.maps.Data.Polygon([path.getArray()]);
-      let style = copy(tool.style || {});
       let item = {
         mode,
         style,
@@ -220,6 +224,7 @@ export default Component.extend(ParentMixin, {
         this.sendAction('afterAddFeature', item);
       }
 
+      poly = null;
       activeLayer.data.add(feature);
       activeLayer.data.overrideStyle(feature, style);
 
@@ -228,6 +233,12 @@ export default Component.extend(ParentMixin, {
           this.send('changeTool', TOOLS.pan.id);
         }, 250);
       }
+
+      this.set('drawFinished', true);
+
+      run.later(this, () => {
+        this.set('toolActive', false);
+      }, 250);
     });
   },
 
@@ -273,7 +284,6 @@ export default Component.extend(ParentMixin, {
 
           let clickListener = activeLayer.data.addListener('click', event => {
             let childComponents = this.get('childComponents');
-            let results = this.get('results');
             let found = childComponents.find(function (comp) {
               return comp.get('data').feature.getId() === event.feature.getId();
             });
@@ -736,15 +746,12 @@ export default Component.extend(ParentMixin, {
       let onClick = run.bind(this, (event) => {
         let toolId = this.get('toolId');
         let tool = this.get('activeTool');
+        let toolActive = this.get('toolActive');
         let mode = this.get('mode');
         let mapDiv = map.getDiv();
         let target = event.target;
         let withinMap = mapDiv.contains(target);
-
         let results = this.get('results');
-        let length = results.get('length');
-        let arrayIndexOffSet = 1;
-        let lastObjectIndex = length - arrayIndexOffSet;
         let data = results.get('lastObject');
 
         if (data) {
@@ -752,9 +759,18 @@ export default Component.extend(ParentMixin, {
         }
 
         if (mode === 'draw') {
-          if (withinMap && toolId === 'freeFormPolygon') {
-            this.enableFreeFormPolygon();
+          if (withinMap && toolActive !== true && toolId === 'freeFormPolygon') {
+            next(() => {
+              this.enableFreeFormPolygon();
+            });
+            return;
           }
+
+          if (toolActive === false) {
+            this.set('toolActive', undefined);
+            return;
+          }
+
           return;
         }
 
