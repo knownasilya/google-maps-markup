@@ -798,7 +798,7 @@ export default Component.extend(ParentMixin, {
         }
       });
 
-      let onDblClick = run.bind(this, () => {
+      let onDblClick = run.bind(this, (event) => {
         if (plotter) {
           plotter.finish();
           plotter = undefined;
