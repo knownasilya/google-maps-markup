@@ -1,5 +1,4 @@
 import Component from '@ember/component';
-import { on } from '@ember/object/evented';
 import { run } from '@ember/runloop';
 import { computed, set } from '@ember/object';
 import { ChildMixin } from 'ember-composability-tools';
@@ -53,14 +52,15 @@ export default Component.extend(ChildMixin, {
 
     ok() {
       let data = this.get('data');
-       set(this.data, 'editing', false);
+      
+      set(data, 'editing', false);
     },
 
     fillOpacity() {
       let data = this.get('data');
 
-      if (this.data.fillColorTransparent) {
-        set(this.data, 'style.fillOpacity', 0);
+      if (data && data.fillColorTransparent) {
+        set(data, 'style.fillOpacity', 0);
       }
     },
 

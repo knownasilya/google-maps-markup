@@ -459,10 +459,18 @@ export default Component.extend(ParentMixin, {
       let popup = this.get('markupEditPopup');
       let map = this.get('map');
       let editable = this.get('editable');
+      let childComponents = this.get('childComponents');
 
       set(data, 'editing', true);
 
-      if (!editable) {
+      // disable editing on other items
+      childComponents.forEach((comp) => {
+        if (comp.get('data').feature.getId() !== data.feature.getId()) {
+          set(comp, 'data.editing', false);
+        }
+      });
+
+      if (!editable || !position) {
         return;
       }
 
