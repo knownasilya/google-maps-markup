@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.1.3"></a>
+## [2.1.3](https://github.com/knownasilya/google-maps-markup/compare/v2.1.2...v2.1.3) (2017-10-16)
+
+
+### Bug Fixes
+
+* missing event in dblclick handler for measurement plotter ([cf9d549](https://github.com/knownasilya/google-maps-markup/commit/cf9d549))
+
+
+
 <a name="2.1.2"></a>
 ## [2.1.2](https://github.com/knownasilya/google-maps-markup/compare/v2.1.1...v2.1.2) (2017-10-16)
 
