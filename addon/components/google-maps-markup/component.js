@@ -204,7 +204,7 @@ export default Component.extend(ParentMixin, {
       map.setOptions({ draggable: false });
     });
 
-    google.maps.event.addListenerOnce(map, 'mouseup', () => {
+    google.maps.event.addListenerOnce(map, 'click', () => {
       google.maps.event.removeListener(move);
       map.setOptions({ draggable: true });
       poly.setMap(null);
@@ -275,13 +275,13 @@ export default Component.extend(ParentMixin, {
 
       this.resetAllLayers();
       this.clearListeners();
+      dm.setDrawingMode(null);
+      map.setOptions({ draggableCursor: 'default' });
 
       if (activeLayer) {
-        if (tool.id === 'pan') {
           activeLayer.data.setDrawingMode(null);
-          dm.setDrawingMode(null);
-          map.setOptions({ draggableCursor: 'default' });
 
+        if (tool.id === 'pan') {
           let clickListener = activeLayer.data.addListener('click', event => {
             let childComponents = this.get('childComponents');
             let found = childComponents.find(function (comp) {
@@ -293,9 +293,11 @@ export default Component.extend(ParentMixin, {
               found.send('edit', event.latLng);
             }
           });
+
           listeners.pushObject(clickListener);
         } else if (tool.id === 'text') {
           map.setOptions({ draggableCursor: 'crosshair' });
+
           let mapListener = map.addListener('click', event => {
             if (this.toolNotFinished) {
               return;
@@ -309,22 +311,23 @@ export default Component.extend(ParentMixin, {
             map.setOptions({ draggableCursor: 'default' });
             event.stop();
           });
+
           listeners.pushObjects([ mapListener, dataListener ]);
         } else if (tool.dataId) {
           let style = copy(tool.style || {});
 
+          map.setOptions({ draggableCursor: 'crosshair' });
           activeLayer.data.setDrawingMode(tool.dataId);
           activeLayer.data.setStyle(style);
         } else if (tool.dmId) {
           let style = copy(tool.style || {});
           
+          map.setOptions({ draggableCursor: 'crosshair' });
           dm.setDrawingMode(tool.dmId);
           dm.setOptions({
             [`${tool.id}Options`]: style
           });
           dm.setMap(map);
-        } else {
-          map.setOptions({ draggableCursor: 'default' });
         }
       }
 
@@ -795,7 +798,7 @@ export default Component.extend(ParentMixin, {
         }
       });
 
-      let onDblClick = run.bind(this, (event) => {
+      let onDblClick = run.bind(this, () => {
         if (plotter) {
           plotter.finish();
           plotter = undefined;
@@ -824,7 +827,9 @@ export default Component.extend(ParentMixin, {
     }
   },
 
-  teardown: on('willDestroyElement', function () {
+  willDestroyElement() {
+    this._super(...arguments);
+
     let listeners = this.get('listeners');
     let bodyListeners = this.get('bodyListeners');
 
@@ -844,7 +849,7 @@ export default Component.extend(ParentMixin, {
         $body.off(listener.event, listener.handler);
       });
     }
-  })
+  }
 });
 
 function calculatePosition(mapPosition, event) {
