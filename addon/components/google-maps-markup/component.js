@@ -282,7 +282,7 @@ export default Component.extend(ParentMixin, {
           activeLayer.data.setDrawingMode(null);
 
         if (tool.id === 'pan') {
-          let clickListener = activeLayer.data.addListener('click', event => {
+          let clickListener = activeLayer.data.addListener('click', (event) => {
             let childComponents = this.get('childComponents');
             let found = childComponents.find(function (comp) {
               return comp.get('data').feature.getId() === event.feature.getId();
@@ -293,12 +293,30 @@ export default Component.extend(ParentMixin, {
               found.send('edit', event.latLng);
             }
           });
+          let mouseoverListener = activeLayer.data.addListener('mouseover', (event) => {
+            let childComponents = this.get('childComponents');
+            let found = childComponents.find(function (comp) {
+              return comp.get('data').feature.getId() === event.feature.getId();
+            });
 
-          listeners.pushObject(clickListener);
+            if (found) {
+              // invoke action here
+              this.send('highlightResult', found.get('data'));
+            }
+          });
+          let mouseoutListener = activeLayer.data.addListener('mouseout', () => {
+            let childComponents = this.get('childComponents');
+            
+            childComponents.forEach((comp) => {
+              this.send('resetResultStyle', comp.get('data'));
+            });
+          });
+
+          listeners.pushObjects([ clickListener, mouseoverListener, mouseoutListener ]);
         } else if (tool.id === 'text') {
           map.setOptions({ draggableCursor: 'crosshair' });
 
-          let mapListener = map.addListener('click', event => {
+          let mapListener = map.addListener('click', (event) => {
             if (this.toolNotFinished) {
               return;
             }
@@ -306,7 +324,7 @@ export default Component.extend(ParentMixin, {
             map.setOptions({ draggableCursor: 'default' });
             event.stop();
           });
-          let dataListener = activeLayer.data.addListener('click', event => {
+          let dataListener = activeLayer.data.addListener('click', (event) => {
             this.addTextLabel(tool, event.latLng);
             map.setOptions({ draggableCursor: 'default' });
             event.stop();
@@ -354,7 +372,7 @@ export default Component.extend(ParentMixin, {
           layer.data.remove(feature);
         });
 
-        results.forEach(result => {
+        results.forEach((result) => {
           if (mode === 'measure') {
             result.label.onRemove();
           } else if (result.feature.setMap) {
