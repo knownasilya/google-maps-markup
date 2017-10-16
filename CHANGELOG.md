@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/knownasilya/google-maps-markup/compare/v2.1.3...v2.2.0) (2017-10-16)
+
+
+### Bug Fixes
+
+* add back dependencies missed during cli upgrade ([401ea0a](https://github.com/knownasilya/google-maps-markup/commit/401ea0a))
+* make edit mode exclusive ([1bf8fb2](https://github.com/knownasilya/google-maps-markup/commit/1bf8fb2))
+* result item hover on the full draggable element ([931fd68](https://github.com/knownasilya/google-maps-markup/commit/931fd68))
+
+
+### Features
+
+* hover markup on map mouse interaction ([0fb9ec3](https://github.com/knownasilya/google-maps-markup/commit/0fb9ec3))
+
+
+
 <a name="2.1.3"></a>
 ## [2.1.3](https://github.com/knownasilya/google-maps-markup/compare/v2.1.2...v2.1.3) (2017-10-16)
 
