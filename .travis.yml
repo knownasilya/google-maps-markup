@@ -24,7 +24,7 @@ env:
     # as well as latest stable release (bonus points to beta/canary)
     - EMBER_TRY_SCENARIO=ember-lts-2.8
     - EMBER_TRY_SCENARIO=ember-lts-2.12
-    - COVERAGE=true EMBER_TRY_SCENARIO=ember-release
+    - EMBER_TRY_SCENARIO=ember-release
     - EMBER_TRY_SCENARIO=ember-beta
     - EMBER_TRY_SCENARIO=ember-canary
     - EMBER_TRY_SCENARIO=ember-default
@@ -40,7 +40,11 @@ before_install:
   - npm --version
 
 script:
-  - node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+  # Only enable coverage if scenario is ember-release, since we only want to do it once
+  - COVERAGE=false && [[ "$EMBER_TRY_SCENARIO" == "ember-release" ]] && COVERAGE=true
   # Usually, it's ok to finish the test scenario without reverting
   #  to the addon's original dependency state, skipping "cleanup".
-  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
+  - COVERAGE=$COVERAGE node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
+
+after_script:
+  - node_modules/.bin/coveralls && rm -rf ./coverage
