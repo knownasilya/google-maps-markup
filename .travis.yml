@@ -17,6 +17,7 @@ cache:
 
 env:
   global:
+    - $HOME/.cache # includes bowers cache
     # See https://git.io/vdao3 for details.
     - JOBS=1
   matrix:
@@ -36,8 +37,12 @@ matrix:
 
 before_install:
   - npm config set spin false
-  - npm install -g npm@4
+  - npm install -g npm@4 bower
   - npm --version
+
+install:
+  - npm install
+  - bower install
 
 script:
   # Only enable coverage if scenario is ember-release, since we only want to do it once
