@@ -52,4 +52,4 @@ script:
   - COVERAGE=$COVERAGE node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
 
 after_script:
-  - node_modules/.bin/coveralls && rm -rf ./coverage
+  - cat ./coverage/lcov.info | node_modules/.bin/coveralls && rm -rf ./coverage
