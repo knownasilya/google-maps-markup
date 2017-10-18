@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.4"></a>
+## [2.2.4](https://github.com/knownasilya/google-maps-markup/compare/v2.2.3...v2.2.4) (2017-10-18)
+
+
+### Bug Fixes
+
+* option layout columns ([01dce1a](https://github.com/knownasilya/google-maps-markup/commit/01dce1a))
+
+
+
 <a name="2.2.3"></a>
 ## [2.2.3](https://github.com/knownasilya/google-maps-markup/compare/v2.2.2...v2.2.3) (2017-10-18)
 
