@@ -280,7 +280,7 @@ export default Component.extend(ParentMixin, {
       map.setOptions({ draggableCursor: 'default' });
 
       if (activeLayer) {
-          activeLayer.data.setDrawingMode(null);
+        activeLayer.data.setDrawingMode(null);
 
         if (tool.id === 'pan') {
           let clickListener = activeLayer.data.addListener('click', (event) => {
@@ -347,6 +347,9 @@ export default Component.extend(ParentMixin, {
             [`${tool.id}Options`]: style
           });
           dm.setMap(map);
+        } else {
+          // for freeform polygon and others
+          map.setOptions({ draggableCursor: 'crosshair' });
         }
       }
 
