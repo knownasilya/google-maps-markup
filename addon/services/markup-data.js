@@ -23,8 +23,8 @@ export default Service.extend({
   activate(map) {
     this.set('map', map);
 
-    var layers = this.get('layers');
-    var measureResults = this.get('markupResults.measure');
+    let layers = this.get('layers');
+    let measureResults = this.get('markupResults.measure');
 
     // Enable all layers to show on map
     layers.forEach(layer => {
@@ -42,7 +42,7 @@ export default Service.extend({
   },
 
   changeModeByResults() {
-    var markupResults = this.get('markupResults');
+    let markupResults = this.get('markupResults');
 
     for (let i = 0; i < MODES.length; i++) {
       let key = MODES[i];
@@ -57,9 +57,9 @@ export default Service.extend({
 
   layers: computed({
     get() {
-      var results = this.get('results');
-      var textGeoJson = this.get('textGeoJson');
-      var setId = function (geom) {
+      let results = this.get('results');
+      let textGeoJson = this.get('textGeoJson');
+      let setId = function (geom) {
         return createFeature(geom, results);
       };
 
@@ -79,7 +79,7 @@ export default Service.extend({
 
   results: computed('mode', {
     get() {
-      var mode = this.get('mode');
+      let mode = this.get('mode');
 
       if (!mode) {
         return;
@@ -88,7 +88,7 @@ export default Service.extend({
       return this.get(`markupResults.${mode}`);
     },
     set(key, data) {
-      var mode = this.get('mode');
+      let mode = this.get('mode');
 
       if (!mode) {
         return;
@@ -101,11 +101,13 @@ export default Service.extend({
   }),
 
   featureToResult(feature, layer) {
-    var map = this.get('map');
-    var textGeoJson = this.get('textGeoJson');
-    var mode = feature.getProperty('mode');
-    var results = this.get(`markupResults.${mode}`);
-    var result = {
+    let map = this.get('map');
+    let textGeoJson = this.get('textGeoJson');
+    let name = feature.getProperty('name');
+    let mode = feature.getProperty('mode');
+    let results = this.get(`markupResults.${mode}`);
+    let result = {
+      name,
       mode,
       feature,
       layer,
