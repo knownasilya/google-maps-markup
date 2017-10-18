@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/knownasilya/google-maps-markup/compare/v2.2.0...v2.2.1) (2017-10-18)
+
+
+### Bug Fixes
+
+* remove unused helper, add tool-id test ([b9bb7f3](https://github.com/knownasilya/google-maps-markup/commit/b9bb7f3))
+* use getTool on click, prevents error ([312d776](https://github.com/knownasilya/google-maps-markup/commit/312d776))
+* use reduce to calc value for path distance ([4ba8e7b](https://github.com/knownasilya/google-maps-markup/commit/4ba8e7b))
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/knownasilya/google-maps-markup/compare/v2.1.3...v2.2.0) (2017-10-16)
 
