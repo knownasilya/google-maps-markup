@@ -169,6 +169,7 @@ export default Component.extend(ParentMixin, {
   createFeature(result, geometry) {
     let id = v1();
     let properties = {
+      name: result.name,
       mode: result.mode,
       type: result.type,
       style: result.style,
@@ -675,6 +676,7 @@ export default Component.extend(ParentMixin, {
         let fillColorTransparent = copy(tool.fillColorTransparent);
         let style = copy(tool.style || {});
 
+        event.feature.setProperty('name', tool.name);
         event.feature.setProperty('mode', mode);
         event.feature.setProperty('type', toolId);
         event.feature.setProperty('isVisible', true);
