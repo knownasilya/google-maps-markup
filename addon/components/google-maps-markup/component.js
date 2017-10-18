@@ -773,10 +773,10 @@ export default Component.extend(ParentMixin, {
       let plotter;
 
       let onClick = run.bind(this, (event) => {
-        let toolId = this.get('toolId');
-        let tool = this.get('activeTool');
-        let toolActive = this.get('toolActive');
         let mode = this.get('mode');
+        let toolId = this.get('toolId');
+        let toolActive = this.get('toolActive');
+        let tool = this.getTool(toolId, mode);
         let mapDiv = map.getDiv();
         let target = event.target;
         let withinMap = mapDiv.contains(target);
