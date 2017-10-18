@@ -13,13 +13,4 @@ test('it renders', function(assert) {
   this.render(hbs`{{gmm-tool-options}}`);
 
   assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#gmm-tool-options}}
-      template block text
-    {{/gmm-tool-options}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });
