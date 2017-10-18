@@ -1,12 +1,12 @@
 {{#each tool.options as |opt|}}
   {{#if (is-equal opt.type 'color')}}
-    <div class='col-xs-4 col-sm-3 form-group'>
+    <div class='col-xs-3 col-sm-4 form-group'>
       <label>{{opt.name}}</label>
       {{color-palette selected=(get tool opt.id)
         onselect=(action updateOptionValue tool opt.id)}}
     </div>
   {{else if (is-equal opt.type 'width')}}
-    <div class='col-xs-4 col-sm-3 form-group'>
+    <div class='col-xs-3 col-sm-4 form-group'>
       <label>{{opt.name}}</label>
       {{#power-select
         options=(get optionsData (concat (tool-id tool) '.strokeWeights'))
@@ -19,7 +19,7 @@
       {{/power-select}}
     </div>
   {{else if (is-equal opt.type 'size')}}
-    <div class="col-xs-4 col-sm-3 form-group">
+    <div class="col-xs-3 col-sm-4 form-group">
       <div><label>{{opt.name}}</label></div>
       {{log tool}}
       {{log (concat tool.id '.fontSizes')}}
@@ -35,7 +35,7 @@
     </div>
   {{else if (is-equal mode 'measure')}}
     {{#if (is-equal opt.type 'distanceUnit')}}
-      <div class='col-xs-4 col-sm-3 form-group'>
+      <div class='col-xs-3 col-sm-4 form-group'>
         <div><label>{{opt.name}}</label></div>
         {{#power-select
           options=(get optionsData (concat (tool-id tool) '.distanceUnits'))
