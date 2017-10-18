@@ -1,6 +1,6 @@
 {
   "name": "google-maps-markup",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Ember markup component for Google Maps - Draw and Measure",
   "keywords": [
     "ember-addon",
