@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.5"></a>
+## [2.2.5](https://github.com/knownasilya/google-maps-markup/compare/v2.2.4...v2.2.5) (2017-11-16)
+
+
+### Bug Fixes
+
+* enable crosshair for freeform poly tool ([8913108](https://github.com/knownasilya/google-maps-markup/commit/8913108))
+* path distance incorrectly setting the wrong var ([b90989a](https://github.com/knownasilya/google-maps-markup/commit/b90989a))
+
+
+
 <a name="2.2.4"></a>
 ## [2.2.4](https://github.com/knownasilya/google-maps-markup/compare/v2.2.3...v2.2.4) (2017-10-18)
 
