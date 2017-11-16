@@ -5,12 +5,12 @@ export default function pathDistance(points) {
 
     if (lastIndex !== undefined) {
       let last = processed[lastIndex];
-      value += google.maps.geometry.spherical.computeDistanceBetween(last, point);
+      val += google.maps.geometry.spherical.computeDistanceBetween(last, point);
     }
 
     processed.push(point);
 
-    return value;
+    return val;
   }, 0);
 
   return value;
