@@ -1,4 +1,4 @@
-import miles from '../../../utils/miles';
+import distance from '../../../utils/distance';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | miles');
@@ -10,7 +10,7 @@ test('it works', function(assert) {
     unit: 'ft.',
     measurementType: 'Distance'
   };
-  var result = miles(input);
+  var result = distance(input);
 
   assert.deepEqual(result, {
     value: 0.3788,

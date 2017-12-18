@@ -1,22 +1,20 @@
-const ACRE = 2.29568e-5;
+const FEET_DISTANCE_CONVERT_MAP = {
+  mi: 0.000189394,
+  km: 0.0003048,
+  meter: 0.3048,
+};
 
-export default function acres(result) {
-  var output = {};
-  var SQUARE_FEET_AREA_CONVERT_MAP = {
-    'acres': 2.29568e-5,
-    'sq km': 9.2903e-8,
-    'sq mi': 3.587e-8,
-    'sq ft': 1,
-  };
+export default function miles(result) {
+  let output = {};
 
-  if (result.unit === 'sq ft') {
+  if(result.unit.id === 'ft') {
     output.value = Math.round(result.value);
   } else {
-    output.value = result.value * SQUARE_FEET_AREA_CONVERT_MAP[result.unit.id];
+    output.value = result.value * FEET_DISTANCE_CONVERT_MAP[result.unit.id];
 
     if (output.value < 1) {
       // 4 decimal places
-      output.value = Math.round(output.value * 100000000) / 100000000;
+      output.value = Math.round(output.value * 10000) / 10000;
     } else if (output.value >= 1 && output.value < 10) {
       // 1 decimal place
       output.value = Math.round(output.value * 10) / 10;

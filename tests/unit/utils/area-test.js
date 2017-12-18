@@ -1,4 +1,4 @@
-import acres from 'google-maps-markup/utils/acres';
+import area from 'google-maps-markup/utils/area';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | acres');
@@ -10,7 +10,7 @@ test('it works', function(assert) {
     unit: 'sq. ft.',
     measurementType: 'Area'
   };
-  var result = acres(input);
+  var result = area(input);
 
   assert.deepEqual(result, {
     value: 1.37741,
