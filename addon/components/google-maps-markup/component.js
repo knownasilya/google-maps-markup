@@ -788,7 +788,8 @@ export default Component.extend(ParentMixin, {
         let results = this.get('results');
         let data = results.get('lastObject');
 
-        if (data) {
+        // Set distanceUnitId if not set yet and available
+        if (data && withinMap && !data.distanceUnitId && tool.distanceUnitId) {
           data.distanceUnitId = tool.distanceUnitId;
         }
 
