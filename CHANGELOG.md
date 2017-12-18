@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.6"></a>
+## [2.2.6](https://github.com/knownasilya/google-maps-markup/compare/v2.2.5...v2.2.6) (2017-12-18)
+
+
+### Bug Fixes
+
+* distanceUnitId being overwritten on click ([f567a26](https://github.com/knownasilya/google-maps-markup/commit/f567a26))
+
+
+
 <a name="2.2.5"></a>
 ## [2.2.5](https://github.com/knownasilya/google-maps-markup/compare/v2.2.4...v2.2.5) (2017-11-16)
 
