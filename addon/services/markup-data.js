@@ -113,7 +113,8 @@ export default Service.extend({
       layer,
       style: feature.getProperty('style'),
       type: feature.getProperty('type'),
-      isVisible: feature.getProperty('isVisible')
+      isVisible: feature.getProperty('isVisible'),
+      distanceUnitId: feature.getProperty('distanceUnitId')
     };
 
     if (result.style) {
