@@ -685,6 +685,7 @@ export default Component.extend(ParentMixin, {
         event.feature.setProperty('isVisible', true);
         event.feature.setProperty('style', style);
         event.feature.setProperty('fillColorTransparent', fillColorTransparent);
+        event.feature.setProperty('distanceUnitId', tool.distanceUnitId);
 
         let item = {
           mode,
