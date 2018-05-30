@@ -7,7 +7,7 @@ const FEET_DISTANCE_CONVERT_MAP = {
 export default function miles(result) {
   let output = {};
 
-  if(result.unit.id === 'ft') {
+  if (result.unit.id === 'ft') {
     output.value = Math.round(result.value);
   } else {
     output.value = result.value * FEET_DISTANCE_CONVERT_MAP[result.unit.id];

@@ -8,7 +8,7 @@ class Layer {
   }
 
   toGeoJson() {
-    var textData = this.textData;
+    let textData = this.textData;
 
     return new RSVP.Promise(resolve => {
       this.data.toGeoJson(data => {

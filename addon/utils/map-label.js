@@ -25,8 +25,8 @@ class MapLabel extends google.maps.OverlayView {
 
   // Required by GMaps
   onAdd() {
-    var panes = this.getPanes();
-    var pane = panes.markerLayer;
+    let panes = this.getPanes();
+    let pane = panes.markerLayer;
 
     if (pane) {
       pane.appendChild(this._element);
@@ -35,20 +35,20 @@ class MapLabel extends google.maps.OverlayView {
 
   // Required by GMaps
   draw() {
-    var map = this.getMap();
+    let map = this.getMap();
 
     if (!map || !this.latlng) {
       return;
     }
 
-    var projection = this.getProjection();
+    let projection = this.getProjection();
 
     if (!projection) {
       return;
     }
 
-    var position = projection.fromLatLngToDivPixel(this.latlng);
-    var div = this._element;
+    let position = projection.fromLatLngToDivPixel(this.latlng);
+    let div = this._element;
 
     if (position && position.x && position.y) {
       let width = this._element.clientWidth;

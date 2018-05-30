@@ -40,18 +40,21 @@ export default Component.extend(ParentMixin, {
   results: alias('markupData.results'),
   mode: alias('markupData.mode'),
   textGeoJson: alias('markupData.textGeoJson'),
+  // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
   dm: new google.maps.drawing.DrawingManager({
     drawingControl: false
   }),
   listeners: boundArray(),
   toolListeners: boundArray(),
   currentPoints: boundArray(),
+  // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
   currentLabel: new MapLabel(undefined, {
     dontScale: true
   }),
   resultsHidden: false,
   activeLayer: undefined,
   toolId: TOOLS.pan.id,
+  // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
   modes: [
     MODE.draw,
     MODE.measure
@@ -103,7 +106,9 @@ export default Component.extend(ParentMixin, {
   },
 
   getTool(id, mode) {
-    let toolIds = mode ? this.get((mode === 'draw' ? 'drawing' : mode) + 'Tools') : TOOLS;
+    let isDrawingMode = mode === 'draw';
+    let toolIds = mode ? this.get((isDrawingMode ? 'drawing' : mode) + 'Tools') : TOOLS;
+  
     return Array.isArray(toolIds) ? toolIds.findBy('id', id) : toolIds[id];
   },
 
@@ -143,7 +148,7 @@ export default Component.extend(ParentMixin, {
     });
 
     if (this.get('afterAddFeature')) {
-      this.sendAction('afterAddFeature', item);
+      this.get('afterAddFeature')(item);
     }
 
     if (autoResetToPan) {
@@ -222,7 +227,7 @@ export default Component.extend(ParentMixin, {
       let feature = this.createFeature(item, polygon);
 
       if (this.get('afterAddFeature')) {
-        this.sendAction('afterAddFeature', item);
+        this.get('afterAddFeature')(item);
       }
 
       poly = null;
@@ -391,7 +396,7 @@ export default Component.extend(ParentMixin, {
         results.clear();
 
         if (this.get('afterClearResults')) {
-          this.sendAction('afterClearResults', layer);
+          this.get('afterClearResults')(layer);
         }
       }
     },
@@ -710,7 +715,7 @@ export default Component.extend(ParentMixin, {
         results.insertAt(0, item);
 
         if (this.get('afterAddFeature')) {
-          this.sendAction('afterAddFeature', item);
+          this.get('afterAddFeature')(item);
         }
 
         let autoResetToPan = this.get('autoResetToPan');

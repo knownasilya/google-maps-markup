@@ -1,7 +1,7 @@
 const LatLng = google.maps.LatLng;
 
-const d2r = Math.PI / 180;   // degrees to radians
-const r2d = 180 / Math.PI;   // radians to degrees
+const d2r = Math.PI / 180; // degrees to radians
+const r2d = 180 / Math.PI; // radians to degrees
 const earthsradius = 3963; // 3963 is the radius of the earth in miles
 
 export default function createCircle(lat, lng, radius) {

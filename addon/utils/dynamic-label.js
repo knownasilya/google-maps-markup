@@ -24,9 +24,9 @@ class DynamicLabel extends MapLabel {
   }
 
   onAdd() {
-    var panes = this.getPanes();
-    var pane = panes.overlayMouseTarget;
-    var map = this.getMap();
+    let panes = this.getPanes();
+    let pane = panes.overlayMouseTarget;
+    let map = this.getMap();
 
     if (pane) {
       pane.appendChild(this._element);
@@ -40,7 +40,7 @@ class DynamicLabel extends MapLabel {
       //this._element.contentEditable = true;
       google.maps.event.addDomListener(this._element, 'keydown', event => {
         // left, up, right, down, equal, minus
-        var blockedKeys = [37, 38, 39, 40, 187, 189];
+        let blockedKeys = [37, 38, 39, 40, 187, 189];
 
         if (blockedKeys.indexOf(event.keyCode) !== -1) {
           event.stopPropagation();
@@ -65,7 +65,7 @@ class DynamicLabel extends MapLabel {
       });
 
       google.maps.event.addDomListener(this._element, 'blur', (event) => {
-        var contentBlank = !!this.label.length && this.label.trim().length === 0;
+        let contentBlank = !!this.label.length && this.label.trim().length === 0;
 
         if (!contentBlank) {
           this.editingText = false;
