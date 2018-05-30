@@ -23,8 +23,9 @@ env:
   matrix:
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
-    - EMBER_TRY_SCENARIO=ember-lts-2.8
     - EMBER_TRY_SCENARIO=ember-lts-2.12
+    - EMBER_TRY_SCENARIO=ember-lts-2.16
+    - EMBER_TRY_SCENARIO=ember-lts-2.18
     - EMBER_TRY_SCENARIO=ember-release
     - EMBER_TRY_SCENARIO=ember-beta
     - EMBER_TRY_SCENARIO=ember-canary
@@ -47,6 +48,7 @@ install:
 script:
   # Only enable coverage if scenario is ember-release, since we only want to do it once
   - COVERAGE=false && [[ "$EMBER_TRY_SCENARIO" == "ember-release" ]] && COVERAGE=true
+  - npm run lint:js
   # Usually, it's ok to finish the test scenario without reverting
   #  to the addon's original dependency state, skipping "cleanup".
   - COVERAGE=$COVERAGE node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
