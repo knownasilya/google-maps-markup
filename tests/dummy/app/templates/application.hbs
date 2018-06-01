@@ -4,6 +4,11 @@
   <div class="row">
     <div class="col-md-6 col-sm-12">
       {{google-maps-markup map=map editable=false panForOffscreen=false autoResetToPan=true}}
+      <hr>
+      <button type='button' class='btn btn-default' onclick={{action 'save'}}>Save Markup</button>
+      {{#if exported}}
+        <button type='button' class='btn btn-default' onclick={{action 'load'}}>Load Markup</button>
+      {{/if}}
     </div>
     <div class="col-md-6 col-sm-12">
       {{google-map map=map}}

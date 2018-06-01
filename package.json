@@ -1,6 +1,6 @@
 {
   "name": "google-maps-markup",
-  "version": "2.2.7",
+  "version": "2.2.8",
   "description": "Ember markup component for Google Maps - Draw and Measure",
   "keywords": [
     "ember-addon",
@@ -28,12 +28,12 @@
   "dependencies": {
     "ember-cli-babel": "^6.6.0",
     "ember-cli-htmlbars": "^2.0.1",
-    "ember-composability-tools": "0.0.7",
-    "ember-drag-drop": "0.4.3",
+    "ember-composability-tools": "0.0.9",
+    "ember-drag-drop": "0.4.8",
     "ember-palette": "^2.0.0",
     "ember-power-select": "^1.9.9",
-    "ember-uuid": "1.0.0",
-    "ember-wormhole": "0.5.1"
+    "ember-uuid": "1.0.1",
+    "ember-wormhole": "0.5.4"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
