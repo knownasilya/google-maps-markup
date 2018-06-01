@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.8"></a>
+## [2.2.8](https://github.com/knownasilya/google-maps-markup/compare/v2.2.7...v2.2.8) (2018-06-01)
+
+
+### Bug Fixes
+
+* clean up deprecations and linting ([dff2d76](https://github.com/knownasilya/google-maps-markup/commit/dff2d76))
+* update all the things ([735cfec](https://github.com/knownasilya/google-maps-markup/commit/735cfec))
+* update the deps, add load and save to dummy app ([fc7c903](https://github.com/knownasilya/google-maps-markup/commit/fc7c903))
+
+
+
 <a name="2.2.7"></a>
 ## [2.2.7](https://github.com/knownasilya/google-maps-markup/compare/v2.2.6...v2.2.7) (2018-03-21)
 
