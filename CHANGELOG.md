@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.9"></a>
+## [2.2.9](https://github.com/knownasilya/google-maps-markup/compare/v2.2.8...v2.2.9) (2018-07-16)
+
+
+### Bug Fixes
+
+* area auto next unit if above a threshold ([429ac37](https://github.com/knownasilya/google-maps-markup/commit/429ac37))
+* remove non existent references to a util ([eabdf0e](https://github.com/knownasilya/google-maps-markup/commit/eabdf0e))
+
+
+
 <a name="2.2.8"></a>
 ## [2.2.8](https://github.com/knownasilya/google-maps-markup/compare/v2.2.7...v2.2.8) (2018-06-01)
 
