@@ -3,18 +3,47 @@ import { module, test } from 'qunit';
 
 module('Unit | Utility | acres');
 
-// Replace this with your real tests.
-test('it works', function(assert) {
-  var input = {
+test('over threshold - one level', function(assert) {
+  let input = {
     value: 60000,
-    unit: 'sq. ft.',
+    unit: 'sq ft',
     measurementType: 'Area'
   };
-  var result = area(input);
+  let result = area(input);
 
   assert.deepEqual(result, {
-    value: 1.37741,
-    unit: 'ac.',
+    value: 1.4,
+    unit: 'acres',
+    measurementType: input.measurementType
+  });
+});
+
+test('over threshold - two levels', function(assert) {
+  let input = {
+    value: 27980000,
+    unit: 'sq ft',
+    measurementType: 'Area'
+  };
+  let result = area(input);
+
+  assert.deepEqual(result, {
+    value: 1,
+    unit: 'sq mi',
+    measurementType: input.measurementType
+  });
+});
+
+test('below threshold', function(assert) {
+  let input = {
+    value: 2000,
+    unit: 'sq ft',
+    measurementType: 'Area'
+  };
+  let result = area(input);
+
+  assert.deepEqual(result, {
+    value: 2000,
+    unit: 'sq ft',
     measurementType: input.measurementType
   });
 });
