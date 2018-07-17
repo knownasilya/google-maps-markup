@@ -27,6 +27,8 @@ export default function measureTypeResult(type, value, unitId) {
       result.value = value * 10.7639;
       result.measurementType = 'Area';
       result = area(result);
+      // Reset the correct unit format
+      result.unit = units.findBy('id', result.unit);
       break;
     }
   }

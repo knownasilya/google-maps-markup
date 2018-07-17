@@ -1,12 +1,14 @@
 import area from 'google-maps-markup/utils/area';
 import { module, test } from 'qunit';
 
-module('Unit | Utility | acres');
+module('Unit | Utility | area');
 
 test('over threshold - one level', function(assert) {
   let input = {
     value: 60000,
-    unit: 'sq ft',
+    unit: {
+      id: 'sq ft'
+    },
     measurementType: 'Area'
   };
   let result = area(input);
@@ -21,7 +23,9 @@ test('over threshold - one level', function(assert) {
 test('over threshold - two levels', function(assert) {
   let input = {
     value: 27980000,
-    unit: 'sq ft',
+    unit: {
+      id: 'sq ft',
+    },
     measurementType: 'Area'
   };
   let result = area(input);
@@ -36,7 +40,9 @@ test('over threshold - two levels', function(assert) {
 test('below threshold', function(assert) {
   let input = {
     value: 2000,
-    unit: 'sq ft',
+    unit: {
+      id: 'sq ft'
+    },
     measurementType: 'Area'
   };
   let result = area(input);

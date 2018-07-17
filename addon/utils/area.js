@@ -16,16 +16,16 @@ const NEXT_UNIT = {
 };
 
 export default function acres(result) {
-  let unit = result.unit;
+  let unitId = result.unit.id;
   let output = {};
 
-  while (nextUnitIfBeyondThreshold(result.value, unit)) {
-    let nextOptions = NEXT_UNIT[unit];
+  while (nextUnitIfBeyondThreshold(result.value, unitId)) {
+    let nextOptions = NEXT_UNIT[unitId];
 
-    unit = nextOptions.unit;
+    unitId = nextOptions.unit;
   }
 
-  output.value = result.value * SQUARE_FEET_AREA_CONVERT_MAP[unit];
+  output.value = result.value * SQUARE_FEET_AREA_CONVERT_MAP[unitId];
 
   if (output.value < 1) {
     // 4 decimal places
@@ -37,7 +37,7 @@ export default function acres(result) {
     output.value = Math.round(output.value);
   }
 
-  output.unit = unit;
+  output.unit = unitId;
   output.measurementType = result.measurementType;
 
   return output.value !== undefined ? output : result;
