@@ -1,3 +1,5 @@
+import formatNumber from './format-number';
+
 const SQUARE_FEET_AREA_CONVERT_MAP = {
   'acres': 2.29568e-5,
   'sq km': 9.2903e-8,
@@ -25,18 +27,9 @@ export default function acres(result) {
     unitId = nextOptions.unit;
   }
 
-  output.value = result.value * SQUARE_FEET_AREA_CONVERT_MAP[unitId];
+  let converted = result.value * SQUARE_FEET_AREA_CONVERT_MAP[unitId];
 
-  if (output.value < 1) {
-    // 4 decimal places
-    output.value = Math.round(output.value * 100000000) / 100000000;
-  } else if (output.value >= 1 && output.value < 10) {
-    // 1 decimal place
-    output.value = Math.round(output.value * 10) / 10;
-  } else {
-    output.value = Math.round(output.value);
-  }
-
+  output.value = formatNumber(converted);
   output.unit = unitId;
   output.measurementType = result.measurementType;
 

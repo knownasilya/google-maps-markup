@@ -17,6 +17,8 @@ export default function measureTypeResult(type, value, unitId) {
       // meters->feet conversion
       result.value = value * 3.28084;
       result = distance(result);
+      // Reset the correct unit format
+      result.unit = units && units.findBy('id', result.unit);
       break;
     }
 
