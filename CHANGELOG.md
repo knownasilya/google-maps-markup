@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.11"></a>
+## [2.2.11](https://github.com/knownasilya/google-maps-markup/compare/v2.2.10...v2.2.11) (2018-07-17)
+
+
+### Bug Fixes
+
+* auto unit change for distance, format to own module ([a0edf9a](https://github.com/knownasilya/google-maps-markup/commit/a0edf9a))
+
+
+
 <a name="2.2.10"></a>
 ## [2.2.10](https://github.com/knownasilya/google-maps-markup/compare/v2.2.9...v2.2.10) (2018-07-17)
 
