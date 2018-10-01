@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.12"></a>
+## [2.2.12](https://github.com/knownasilya/google-maps-markup/compare/v2.2.11...v2.2.12) (2018-10-01)
+
+
+### Bug Fixes
+
+* update power select version ([0dcb421](https://github.com/knownasilya/google-maps-markup/commit/0dcb421))
+
+
+
 <a name="2.2.11"></a>
 ## [2.2.11](https://github.com/knownasilya/google-maps-markup/compare/v2.2.10...v2.2.11) (2018-07-17)
 
