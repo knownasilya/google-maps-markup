@@ -23,7 +23,7 @@ if (!window.google) {
   throw new Error('Sorry, but `google` defined globally is required for this addon');
 }
 
-const clearAllConfirm = 'Clearing results will persist the changes, if you want to save a copy of the results please copy the url before clearing the markup.';
+const clearAllConfirm = 'Markup is unsaved. Do you wish to continue clearing all markup?';
 
 export default Component.extend(ParentMixin, {
   // Start Attrs
