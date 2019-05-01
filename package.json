@@ -36,6 +36,7 @@
     "ember-wormhole": "0.5.4"
   },
   "devDependencies": {
+    "bootstrap": "^3.4.1",
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-merge-trees": "^2.0.0",
     "broccoli-static-compiler": "^0.2.1",
@@ -62,6 +63,7 @@
     "ember-try": "^0.2.23",
     "eslint-plugin-ember": "^5.0.0",
     "eslint-plugin-node": "^6.0.1",
+    "font-awesome": "^4.7.0",
     "loader.js": "^4.2.3",
     "standard-version": "^4.0.0"
   },

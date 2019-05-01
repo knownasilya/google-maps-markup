@@ -1,9 +1,0 @@
-{
-  "name": "google-maps-markup",
-  "dependencies": {},
-  "devDependencies": {
-    "bootstrap": "~3.3.7",
-    "fontawesome": "~4.7.0"
-  },
-  "version": "2.2.12"
-}

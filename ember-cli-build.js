@@ -17,7 +17,7 @@ module.exports = function(defaults) {
     behave. You most likely want to be modifying `./index.js` or app's build file
   */
 
-  let fontsDir = path.join(app.bowerDirectory, 'fontawesome', 'fonts');
+  let fontsDir = path.join('node_modules', 'font-awesome', 'fonts');
   let fonts = pickFiles(fontsDir, {
     srcDir: '/',
     files: ['**/*'],

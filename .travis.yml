@@ -38,12 +38,12 @@ matrix:
 
 before_install:
   - npm config set spin false
-  - npm install -g npm@4 bower
+  - npm install -g npm@6 
   - npm --version
 
 install:
   - npm install
-  - bower install
+
 
 script:
   # Only enable coverage if scenario is ember-release, since we only want to do it once
