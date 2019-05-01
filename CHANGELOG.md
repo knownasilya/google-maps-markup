@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.13"></a>
+## [2.2.13](https://github.com/knownasilya/google-maps-markup/compare/v2.2.12...v2.2.13) (2019-05-01)
+
+
+### Bug Fixes
+
+* remove bower ([8f1077a](https://github.com/knownasilya/google-maps-markup/commit/8f1077a))
+* update clear all message, resolves [#34](https://github.com/knownasilya/google-maps-markup/issues/34) ([6dedcd1](https://github.com/knownasilya/google-maps-markup/commit/6dedcd1))
+* update ghpages dep ([6a03ac3](https://github.com/knownasilya/google-maps-markup/commit/6a03ac3))
+
+
+
 <a name="2.2.12"></a>
 ## [2.2.12](https://github.com/knownasilya/google-maps-markup/compare/v2.2.11...v2.2.12) (2018-10-01)
 
