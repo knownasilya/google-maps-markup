@@ -28,7 +28,7 @@
   "dependencies": {
     "ember-cli-babel": "^6.6.0",
     "ember-cli-htmlbars": "^2.0.1",
-    "ember-composability-tools": "0.0.9",
+    "ember-composability-tools": "0.0.12",
     "ember-drag-drop": "0.4.8",
     "ember-palette": "^2.0.0",
     "ember-power-select": "^2.0.0",
