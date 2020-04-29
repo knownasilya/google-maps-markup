@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/knownasilya/google-maps-markup/compare/v2.2.13...v3.0.0) (2020-04-29)
+
+
+### Bug Fixes
+
+* update changes from auto update ([5fd2947](https://github.com/knownasilya/google-maps-markup/commit/5fd2947))
+* update composability tools ([d0b1507](https://github.com/knownasilya/google-maps-markup/commit/d0b1507))
+* v3.1.4...v3.17. ([de287e6](https://github.com/knownasilya/google-maps-markup/commit/de287e6))
+
+
+### BREAKING CHANGES
+
+* Drop old node, ember-cli, and ember support. See compatibility section in readme.
+
+
+
 <a name="2.2.13"></a>
 ## [2.2.13](https://github.com/knownasilya/google-maps-markup/compare/v2.2.12...v2.2.13) (2019-05-01)
 
