@@ -9,6 +9,12 @@ Drawing and measurement tools for a Google Map
 
 [Preview Demo]
 
+## Compatibility
+
+- Ember.js v3.12 or above
+- Ember CLI v2.13 or above
+- Node.js v10 or above
+
 ## Usage
 
 ```bash
@@ -37,7 +43,7 @@ The service is called `markupData` and allows access to the result data that get
 create markup on the map. It also has some helper functions.
 
 ```js
-markupData: Ember.inject.service()
+markupData: Ember.inject.service();
 ```
 
 #### Properties
@@ -54,30 +60,27 @@ markupData: Ember.inject.service()
 - `featureToResult` - Converts a Google Maps Data Feature to a markup result, for loading data without
   actually drawing on the map (ie, load via url). `featureToResult(feature, layer)`.
 
+## Installation
 
-
-Installation
-------------------------------------------------------------------------------
-
-* `git clone` this repository
-* `npm install`
-* `bower install`
+- `git clone` this repository
+- `npm install`
+- `bower install`
 
 ### Linting
 
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
+- `npm run lint:js`
+- `npm run lint:js -- --fix`
 
 ### Running tests
 
-* `ember test` – Runs the test suite on the current Ember version
-* `ember test --server` – Runs the test suite in "watch mode"
-* `ember try:each` – Runs the test suite against multiple Ember versions
+- `ember test` – Runs the test suite on the current Ember version
+- `ember test --server` – Runs the test suite in "watch mode"
+- `ember try:each` – Runs the test suite against multiple Ember versions
 
 ### Running the dummy application
 
-* `ember serve`
-* Visit the dummy application at [http://localhost:4200](http://localhost:4200).
+- `ember serve`
+- Visit the dummy application at [http://localhost:4200](http://localhost:4200).
 
 For developing locally with your app, you can use `DEVELOPING=true npm start` for your app, and
 `npm link path/to/this/addon` and your app will automatically rebuild as you make changes to your
@@ -98,9 +101,12 @@ ember github-pages:commit --message <message describing demo release>
 
 For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
 
-License
-------------------------------------------------------------------------------
+## Contributing
+
+See the [Contributing](CONTRIBUTING.md) guide for details.
+
+## License
 
 This project is licensed under the [MIT License](LICENSE.md).
 
-[Preview Demo]: http://knownasilya.github.io/google-maps-markup
+[preview demo]: http://knownasilya.github.io/google-maps-markup

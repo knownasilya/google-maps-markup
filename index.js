@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
 module.exports = {
-  name: 'google-maps-markup',
+  name: require("./package").name,
 
-  included: function() {
+  included: function () {
     this._super.included.apply(this, arguments);
 
-    this.import('vendor/google-maps-markup/styles.css');
+    this.import("vendor/google-maps-markup/styles.css");
   },
 
-  isDevelopingAddon: function() {
-    return process.env.DEVELOPING === 'true';
-  }
+  isDevelopingAddon: function () {
+    return process.env.DEVELOPING === "true";
+  },
 };
