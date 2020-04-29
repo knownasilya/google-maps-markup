@@ -1,34 +1,42 @@
 {{#each tool.options as |opt|}}
   {{#if (is-equal opt.type 'color')}}
     <div class='col-xs-3 col-sm-4 form-group'>
-      <label>{{opt.name}}</label>
-      {{color-palette selected=(get tool opt.id)
-        onselect=(action updateOptionValue tool opt.id)}}
+      <label>
+        {{opt.name}}
+      </label>
+      {{color-palette
+        selected=(get tool opt.id)
+        onselect=(action updateOptionValue tool opt.id)
+      }}
     </div>
   {{else if (is-equal opt.type 'width')}}
     <div class='col-xs-3 col-sm-4 form-group'>
-      <label>{{opt.name}}</label>
+      <label>
+        {{opt.name}}
+      </label>
       {{#power-select
         options=(get optionsData (concat (tool-id tool) '.strokeWeights'))
         selected=tool.style.strokeWeight
         searchEnabled=false
-        onchange=(action updateOptionValue tool opt.id)
-        as |width|
+        onChange=(action updateOptionValue tool opt.id) as |width|
       }}
         {{width}}
       {{/power-select}}
     </div>
   {{else if (is-equal opt.type 'size')}}
-    <div class="col-xs-3 col-sm-4 form-group">
-      <div><label>{{opt.name}}</label></div>
+    <div class='col-xs-3 col-sm-4 form-group'>
+      <div>
+        <label>
+          {{opt.name}}
+        </label>
+      </div>
       {{log tool}}
       {{log (concat tool.id '.fontSizes')}}
       {{#power-select
         options=(get optionsData (concat (tool-id tool) '.fontSizes'))
         selected=tool.style.fontSize
         searchEnabled=false
-        onchange=(action updateOptionValue tool opt.id)
-        as |size|
+        onChange=(action updateOptionValue tool opt.id) as |size|
       }}
         {{size}}
       {{/power-select}}
@@ -36,15 +44,20 @@
   {{else if (is-equal mode 'measure')}}
     {{#if (is-equal opt.type 'distanceUnit')}}
       <div class='col-xs-3 col-sm-4 form-group'>
-        <div><label>{{opt.name}}</label></div>
+        <div>
+          <label>
+            {{opt.name}}
+          </label>
+        </div>
         {{#power-select
           options=(get optionsData (concat (tool-id tool) '.distanceUnits'))
           selected=tool.distanceUnit
           searchEnabled=false
-          onchange=(action updateOptionValue tool opt.id)
-          as |unit|
+          onChange=(action updateOptionValue tool opt.id) as |unit|
         }}
-          <strong>{{unit.display}}</strong>
+          <strong>
+            {{unit.display}}
+          </strong>
         {{/power-select}}
       </div>
     {{/if}}

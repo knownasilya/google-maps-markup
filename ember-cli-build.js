@@ -2,10 +2,10 @@
 
 const path = require('path');
 const mergeTrees = require('broccoli-merge-trees');
-const pickFiles = require('broccoli-static-compiler');
+const funnel = require('broccoli-funnel');
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
-module.exports = function(defaults) {
+module.exports = function (defaults) {
   let app = new EmberAddon(defaults, {
     // Add options here
   });
@@ -17,11 +17,10 @@ module.exports = function(defaults) {
     behave. You most likely want to be modifying `./index.js` or app's build file
   */
 
-  let fontsDir = path.join('node_modules', 'font-awesome', 'fonts');
-  let fonts = pickFiles(fontsDir, {
-    srcDir: '/',
-    files: ['**/*'],
-    destDir: '/assets/fonts'
+  let fontsDir = path.dirname(require.resolve('font-awesome/package.json'));
+  let fonts = funnel(fontsDir, {
+    srcDir: 'fonts',
+    destDir: 'assets/fonts',
   });
 
   return mergeTrees([app.toTree(), fonts]);
