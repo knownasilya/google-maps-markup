@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.1"></a>
+## [3.0.1](https://github.com/knownasilya/google-maps-markup/compare/v3.0.0...v3.0.1) (2020-04-29)
+
+
+### Bug Fixes
+
+* use ember-copy and loosen up deps ([11cda0f](https://github.com/knownasilya/google-maps-markup/commit/11cda0f))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/knownasilya/google-maps-markup/compare/v2.2.13...v3.0.0) (2020-04-29)
 
