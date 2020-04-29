@@ -1,7 +1,7 @@
 import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import $ from 'jquery';
-import { copy } from '@ember/object/internals';
+import { copy } from 'ember-copy';
 import Component from '@ember/component';
 import { on } from '@ember/object/evented';
 import { run, next } from '@ember/runloop';
@@ -20,10 +20,13 @@ import DynamicLabel from '../../utils/dynamic-label';
 import labelPlotter from '../../utils/label-plotter';
 
 if (!window.google) {
-  throw new Error('Sorry, but `google` defined globally is required for this addon');
+  throw new Error(
+    'Sorry, but `google` defined globally is required for this addon'
+  );
 }
 
-const clearAllConfirm = 'Markup is unsaved. Do you wish to continue clearing all markup?';
+const clearAllConfirm =
+  'Markup is unsaved. Do you wish to continue clearing all markup?';
 
 export default Component.extend(ParentMixin, {
   // Start Attrs
@@ -42,23 +45,20 @@ export default Component.extend(ParentMixin, {
   textGeoJson: alias('markupData.textGeoJson'),
   // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
   dm: new google.maps.drawing.DrawingManager({
-    drawingControl: false
+    drawingControl: false,
   }),
   listeners: boundArray(),
   toolListeners: boundArray(),
   currentPoints: boundArray(),
   // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
   currentLabel: new MapLabel(undefined, {
-    dontScale: true
+    dontScale: true,
   }),
   resultsHidden: false,
   activeLayer: undefined,
   toolId: TOOLS.pan.id,
   // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
-  modes: [
-    MODE.draw,
-    MODE.measure
-  ],
+  modes: [MODE.draw, MODE.measure],
   drawingTools: boundArray([
     TOOLS.pan,
     TOOLS.text,
@@ -67,14 +67,14 @@ export default Component.extend(ParentMixin, {
     TOOLS.circle,
     TOOLS.rectangle,
     TOOLS.polygon,
-    TOOLS.freeFormPolygon
+    TOOLS.freeFormPolygon,
   ]),
   measureTools: boundArray([
     TOOLS.pan,
     TOOLS.polyline,
     TOOLS.circle,
     TOOLS.rectangle,
-    TOOLS.polygon
+    TOOLS.polygon,
   ]),
 
   init() {
@@ -95,11 +95,14 @@ export default Component.extend(ParentMixin, {
 
       popup.setContent(`<div id='google-maps-markup-infowindow'></div>`);
 
-      popup.addListener('closeclick', run.bind(this, function () {
-        set(popup, 'lastData.editing', false);
-        set(popup, 'lastData', undefined);
-        // cleanup?
-      }));
+      popup.addListener(
+        'closeclick',
+        run.bind(this, function () {
+          set(popup, 'lastData.editing', false);
+          set(popup, 'lastData', undefined);
+          // cleanup?
+        })
+      );
 
       this.set('markupEditPopup', popup);
     }
@@ -107,8 +110,10 @@ export default Component.extend(ParentMixin, {
 
   getTool(id, mode) {
     let isDrawingMode = mode === 'draw';
-    let toolIds = mode ? this.get((isDrawingMode ? 'drawing' : mode) + 'Tools') : TOOLS;
-  
+    let toolIds = mode
+      ? this.get((isDrawingMode ? 'drawing' : mode) + 'Tools')
+      : TOOLS;
+
     return Array.isArray(toolIds) ? toolIds.findBy('id', id) : toolIds[id];
   },
 
@@ -121,7 +126,7 @@ export default Component.extend(ParentMixin, {
     let labelMarker = new DynamicLabel(position, {
       color: style.color,
       autoFocus: true,
-      fontSize: style.fontSize
+      fontSize: style.fontSize,
     });
     let item = {
       mode,
@@ -131,7 +136,7 @@ export default Component.extend(ParentMixin, {
       feature: labelMarker,
       name: tool.name,
       options: tool.options,
-      isEditable: Object.keys(style).length ? true : false
+      isEditable: Object.keys(style).length ? true : false,
     };
 
     labelMarker.setMap(map);
@@ -142,7 +147,7 @@ export default Component.extend(ParentMixin, {
     let feature = this.createFeature(item, labelMarker.position);
     let textGeoJson = this.get('textGeoJson');
 
-    feature.toGeoJson(data => {
+    feature.toGeoJson((data) => {
       item.geojson = data;
       textGeoJson.pushObject(data);
     });
@@ -154,17 +159,21 @@ export default Component.extend(ParentMixin, {
     if (autoResetToPan) {
       this.toolNotFinished = true;
       google.maps.event.addListenerOnce(labelMarker, 'focusout', () => {
-        run.later(this, function () {
-          let freshTool = this.getTool(tool.id);
-          let freshStyle = copy(freshTool.style);
+        run.later(
+          this,
+          function () {
+            let freshTool = this.getTool(tool.id);
+            let freshStyle = copy(freshTool.style);
 
-          labelMarker.color = freshStyle.color;
-          set(item, 'style', freshStyle);
-          set(item, 'geojson.properties.style', freshStyle);
-          this.toolNotFinished = false;
+            labelMarker.color = freshStyle.color;
+            set(item, 'style', freshStyle);
+            set(item, 'geojson.properties.style', freshStyle);
+            this.toolNotFinished = false;
 
-          this.send('changeTool', TOOLS.pan.id);
-        }, 250);
+            this.send('changeTool', TOOLS.pan.id);
+          },
+          250
+        );
       });
     }
 
@@ -178,12 +187,12 @@ export default Component.extend(ParentMixin, {
       mode: result.mode,
       type: result.type,
       style: result.style,
-      isVisible: true
+      isVisible: true,
     };
     let feature = new google.maps.Data.Feature({
       geometry,
       properties,
-      id
+      id,
     });
 
     return feature;
@@ -199,7 +208,7 @@ export default Component.extend(ParentMixin, {
     let style = copy(tool.style || {});
     let poly = new google.maps.Polyline({
       map,
-      clickable: false
+      clickable: false,
     });
 
     this.set('toolActive', true);
@@ -222,7 +231,7 @@ export default Component.extend(ParentMixin, {
         style,
         isVisible: true,
         type: tool.id,
-        name: tool.name
+        name: tool.name,
       };
       let feature = this.createFeature(item, polygon);
 
@@ -235,16 +244,24 @@ export default Component.extend(ParentMixin, {
       activeLayer.data.overrideStyle(feature, style);
 
       if (autoResetToPan) {
-        run.later(this, function () {
-          this.send('changeTool', TOOLS.pan.id);
-        }, 250);
+        run.later(
+          this,
+          function () {
+            this.send('changeTool', TOOLS.pan.id);
+          },
+          250
+        );
       }
 
       this.set('drawFinished', true);
 
-      run.later(this, () => {
-        this.set('toolActive', false);
-      }, 250);
+      run.later(
+        this,
+        () => {
+          this.set('toolActive', false);
+        },
+        250
+      );
     });
   },
 
@@ -258,7 +275,11 @@ export default Component.extend(ParentMixin, {
     },
 
     fillColorTransparent() {
-      set(this.activeTool, 'fillColorTransparent', ! this.activeTool.fillColorTransparent)
+      set(
+        this.activeTool,
+        'fillColorTransparent',
+        !this.activeTool.fillColorTransparent
+      );
 
       if (this.activeTool.fillColorTransparent) {
         set(this.activeTool, 'style.fillOpacity', 0.5);
@@ -299,26 +320,38 @@ export default Component.extend(ParentMixin, {
               found.send('edit', event.latLng);
             }
           });
-          let mouseoverListener = activeLayer.data.addListener('mouseover', (event) => {
-            let childComponents = this.get('childComponents');
-            let found = childComponents.find(function (comp) {
-              return comp.get('data').feature.getId() === event.feature.getId();
-            });
+          let mouseoverListener = activeLayer.data.addListener(
+            'mouseover',
+            (event) => {
+              let childComponents = this.get('childComponents');
+              let found = childComponents.find(function (comp) {
+                return (
+                  comp.get('data').feature.getId() === event.feature.getId()
+                );
+              });
 
-            if (found) {
-              // invoke action here
-              this.send('highlightResult', found.get('data'));
+              if (found) {
+                // invoke action here
+                this.send('highlightResult', found.get('data'));
+              }
             }
-          });
-          let mouseoutListener = activeLayer.data.addListener('mouseout', () => {
-            let childComponents = this.get('childComponents');
-            
-            childComponents.forEach((comp) => {
-              this.send('resetResultStyle', comp.get('data'));
-            });
-          });
+          );
+          let mouseoutListener = activeLayer.data.addListener(
+            'mouseout',
+            () => {
+              let childComponents = this.get('childComponents');
 
-          listeners.pushObjects([ clickListener, mouseoverListener, mouseoutListener ]);
+              childComponents.forEach((comp) => {
+                this.send('resetResultStyle', comp.get('data'));
+              });
+            }
+          );
+
+          listeners.pushObjects([
+            clickListener,
+            mouseoverListener,
+            mouseoutListener,
+          ]);
         } else if (tool.id === 'text') {
           map.setOptions({ draggableCursor: 'crosshair' });
 
@@ -336,7 +369,7 @@ export default Component.extend(ParentMixin, {
             event.stop();
           });
 
-          listeners.pushObjects([ mapListener, dataListener ]);
+          listeners.pushObjects([mapListener, dataListener]);
         } else if (tool.dataId) {
           let style = copy(tool.style || {});
 
@@ -345,11 +378,11 @@ export default Component.extend(ParentMixin, {
           activeLayer.data.setStyle(style);
         } else if (tool.dmId) {
           let style = copy(tool.style || {});
-          
+
           map.setOptions({ draggableCursor: 'crosshair' });
           dm.setDrawingMode(tool.dmId);
           dm.setOptions({
-            [`${tool.id}Options`]: style
+            [`${tool.id}Options`]: style,
           });
           dm.setMap(map);
         } else {
@@ -366,7 +399,7 @@ export default Component.extend(ParentMixin, {
       let activeLayer = this.get('activeLayer');
       let results = this.get('results');
 
-      results.forEach(result => this.send('toggleResult', result, !isHidden));
+      results.forEach((result) => this.send('toggleResult', result, !isHidden));
       activeLayer.isHidden = isHidden;
     },
 
@@ -431,9 +464,12 @@ export default Component.extend(ParentMixin, {
       let layer = this.get('activeLayer');
       let mode = this.get('mode');
       let isMeasure = mode === 'measure';
-      let hide = force !== undefined && force !== null ?
-        !force :
-        result.type === 'text' ? result.feature.visible : layer.data.contains(result.feature);
+      let hide =
+        force !== undefined && force !== null
+          ? !force
+          : result.type === 'text'
+          ? result.feature.visible
+          : layer.data.contains(result.feature);
 
       if (hide) {
         set(result, 'isVisible', false);
@@ -492,16 +528,21 @@ export default Component.extend(ParentMixin, {
       }
 
       if (data) {
-        let geometry = data.feature.getGeometry ? data.feature.getGeometry() : data.feature.position;
-        let latlng = position && position instanceof google.maps.LatLng ? position : featureCenter(data.feature);
+        let geometry = data.feature.getGeometry
+          ? data.feature.getGeometry()
+          : data.feature.position;
+        let latlng =
+          position && position instanceof google.maps.LatLng
+            ? position
+            : featureCenter(data.feature);
 
         if (geometry.getType && geometry.getType() === 'Point') {
           popup.setOptions({
-            pixelOffset: new google.maps.Size(0, -40)
+            pixelOffset: new google.maps.Size(0, -40),
           });
         } else {
           popup.setOptions({
-            pixelOffset: new google.maps.Size(0, 0)
+            pixelOffset: new google.maps.Size(0, 0),
           });
         }
 
@@ -527,15 +568,15 @@ export default Component.extend(ParentMixin, {
           icon: {
             url: 'google-maps-markup/images/spotlight-poi-highlighted_hdpi.png',
             scaledSize: new google.maps.Size(22, 40),
-          }
+          },
         };
       } else if (data.type === 'text') {
         data.feature.highlight();
       } else {
-          style = {
-            strokeColor: 'red',
-            zIndex:99999
-          };
+        style = {
+          strokeColor: 'red',
+          zIndex: 99999,
+        };
       }
 
       if (data.label) {
@@ -566,13 +607,13 @@ export default Component.extend(ParentMixin, {
       if (!data.editing) {
         this.panBack();
       }
-    }
+    },
   },
 
   resetAllLayers() {
     let layers = this.get('dataLayers');
 
-    layers.forEach(layer => {
+    layers.forEach((layer) => {
       layer.data.setDrawingMode(null);
     });
   },
@@ -580,7 +621,7 @@ export default Component.extend(ParentMixin, {
   clearListeners() {
     let listeners = this.get('toolListeners');
 
-    listeners.forEach(l => google.maps.event.removeListener(l));
+    listeners.forEach((l) => google.maps.event.removeListener(l));
     listeners.clear();
   },
 
@@ -621,34 +662,37 @@ export default Component.extend(ParentMixin, {
     }
   },
 
-  changeLayer: on('init', observes('mode', 'map', function () {
-    let modeId = this.get('mode');
-    let map = this.get('map');
-    let toolId = this.get('toolId');
-    let dataLayers = this.get('dataLayers');
-    let activeLayer = this.get('activeLayer');
+  changeLayer: on(
+    'init',
+    observes('mode', 'map', function () {
+      let modeId = this.get('mode');
+      let map = this.get('map');
+      let toolId = this.get('toolId');
+      let dataLayers = this.get('dataLayers');
+      let activeLayer = this.get('activeLayer');
 
-    this.set('lastActiveLayer', activeLayer);
+      this.set('lastActiveLayer', activeLayer);
 
-    if (modeId === MODE.draw.id || modeId === MODE.measure.id) {
-      let tool = this.getTool(toolId, modeId);
+      if (modeId === MODE.draw.id || modeId === MODE.measure.id) {
+        let tool = this.getTool(toolId, modeId);
 
-      activeLayer = dataLayers[modeId === MODE.draw.id ? 0 : 1];
+        activeLayer = dataLayers[modeId === MODE.draw.id ? 0 : 1];
 
-      if (!activeLayer.isHidden) {
-        activeLayer.data.setMap(map);
+        if (!activeLayer.isHidden) {
+          activeLayer.data.setMap(map);
+        }
+
+        // tool doesn't exist for this mode, revert to pan
+        if (!tool) {
+          this.send('changeTool', TOOLS.pan.id);
+        }
+
+        activeLayer.data.setDrawingMode(tool && tool.dataId);
+
+        this.set('activeLayer', activeLayer);
       }
-
-      // tool doesn't exist for this mode, revert to pan
-      if (!tool) {
-        this.send('changeTool', TOOLS.pan.id);
-      }
-
-      activeLayer.data.setDrawingMode(tool && tool.dataId);
-
-      this.set('activeLayer', activeLayer);
-    }
-  })),
+    })
+  ),
 
   activeLayerSetup: observes('activeLayer', function () {
     let mode = this.get('mode');
@@ -663,76 +707,84 @@ export default Component.extend(ParentMixin, {
       google.maps.event.clearListeners(lastLayer.data, 'addfeature');
     }
 
-    let listener = layer.data.addListener('addfeature', run.bind(this, (event) => {
-      if (event.feature.getProperty('skip')) {
-        return;
-      }
-
-      let map = this.get('map');
-      let tool = this.get('activeTool');
-      let toolId = this.get('toolId');
-      let results = this.get('results');
-      let found = results.find(function (item) {
-        if (item.feature && item.feature.getId) {
-          return item.feature.getId() === event.feature.getId();
-        } else if (item.feature) {
-          return item.feature === event.feature;
-        }
-      });
-
-      if (!found) {
-        let fillColorTransparent = copy(tool.fillColorTransparent);
-        let style = copy(tool.style || {});
-
-        event.feature.setProperty('name', tool.name);
-        event.feature.setProperty('mode', mode);
-        event.feature.setProperty('type', toolId);
-        event.feature.setProperty('isVisible', true);
-        event.feature.setProperty('style', style);
-        event.feature.setProperty('fillColorTransparent', fillColorTransparent);
-        event.feature.setProperty('distanceUnitId', tool.distanceUnitId);
-
-        let item = {
-          mode,
-          layer,
-          style,
-          fillColorTransparent,
-          isVisible: true,
-          type: toolId,
-          name: tool.name,
-          feature: event.feature,
-          options: tool.options,
-          distanceUnitId: tool.distanceUnitId,
-          isEditable: Object.keys(style).length ? true : false
-        };
-
-        if (item.style) {
-          item.style.zIndex = 111;
-          layer.data.overrideStyle(event.feature, item.style);
+    let listener = layer.data.addListener(
+      'addfeature',
+      run.bind(this, (event) => {
+        if (event.feature.getProperty('skip')) {
+          return;
         }
 
-        initMeasureLabel(item, map);
-        results.insertAt(0, item);
+        let map = this.get('map');
+        let tool = this.get('activeTool');
+        let toolId = this.get('toolId');
+        let results = this.get('results');
+        let found = results.find(function (item) {
+          if (item.feature && item.feature.getId) {
+            return item.feature.getId() === event.feature.getId();
+          } else if (item.feature) {
+            return item.feature === event.feature;
+          }
+        });
 
-        if (this.get('afterAddFeature')) {
-          this.get('afterAddFeature')(item);
+        if (!found) {
+          let fillColorTransparent = copy(tool.fillColorTransparent);
+          let style = copy(tool.style || {});
+
+          event.feature.setProperty('name', tool.name);
+          event.feature.setProperty('mode', mode);
+          event.feature.setProperty('type', toolId);
+          event.feature.setProperty('isVisible', true);
+          event.feature.setProperty('style', style);
+          event.feature.setProperty(
+            'fillColorTransparent',
+            fillColorTransparent
+          );
+          event.feature.setProperty('distanceUnitId', tool.distanceUnitId);
+
+          let item = {
+            mode,
+            layer,
+            style,
+            fillColorTransparent,
+            isVisible: true,
+            type: toolId,
+            name: tool.name,
+            feature: event.feature,
+            options: tool.options,
+            distanceUnitId: tool.distanceUnitId,
+            isEditable: Object.keys(style).length ? true : false,
+          };
+
+          if (item.style) {
+            item.style.zIndex = 111;
+            layer.data.overrideStyle(event.feature, item.style);
+          }
+
+          initMeasureLabel(item, map);
+          results.insertAt(0, item);
+
+          if (this.get('afterAddFeature')) {
+            this.get('afterAddFeature')(item);
+          }
+
+          let autoResetToPan = this.get('autoResetToPan');
+
+          if (autoResetToPan) {
+            run.later(
+              this,
+              function () {
+                this.send('changeTool', TOOLS.pan.id);
+              },
+              250
+            );
+          }
+
+          this.set('drawFinished', true);
         }
+      })
+    );
 
-        let autoResetToPan = this.get('autoResetToPan');
-
-        if (autoResetToPan) {
-          run.later(this, function () {
-            this.send('changeTool', TOOLS.pan.id);
-          }, 250);
-        }
-
-        this.set('drawFinished', true);
-      }
-    }));
-
-    this.get('listeners').pushObjects([
-      listener
-    ]);
+    this.get('listeners').pushObjects([listener]);
   }),
 
   didInsertElement() {
@@ -748,16 +800,19 @@ export default Component.extend(ParentMixin, {
     }
 
     // Enable all layers to show on map
-    layers.forEach(layer => layer.data.setMap(map));
+    layers.forEach((layer) => layer.data.setMap(map));
 
-    let listener = dm.addListener('overlaycomplete', run.bind(this, (event) => {
-      let activeLayer = this.get('activeLayer');
-      let feature = overlayToFeature(event.type, event.overlay, results);
+    let listener = dm.addListener(
+      'overlaycomplete',
+      run.bind(this, (event) => {
+        let activeLayer = this.get('activeLayer');
+        let feature = overlayToFeature(event.type, event.overlay, results);
 
-      event.overlay.setMap(null);
+        event.overlay.setMap(null);
 
-      activeLayer.data.add(feature);
-    }));
+        activeLayer.data.add(feature);
+      })
+    );
 
     this.get('listeners').pushObject(listener);
 
@@ -800,7 +855,11 @@ export default Component.extend(ParentMixin, {
         }
 
         if (mode === 'draw') {
-          if (withinMap && toolActive !== true && toolId === 'freeFormPolygon') {
+          if (
+            withinMap &&
+            toolActive !== true &&
+            toolId === 'freeFormPolygon'
+          ) {
             next(() => {
               this.enableFreeFormPolygon();
             });
@@ -826,7 +885,14 @@ export default Component.extend(ParentMixin, {
         if (withinMap && noPoints && !drawFinished) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
-          plotter = labelPlotter(currentLabel, currentPoints, toolId, event, map, tool.distanceUnitId);
+          plotter = labelPlotter(
+            currentLabel,
+            currentPoints,
+            toolId,
+            event,
+            map,
+            tool.distanceUnitId
+          );
         } else if (withinMap && !toolIsPan && !drawFinished) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
@@ -860,7 +926,7 @@ export default Component.extend(ParentMixin, {
       this.set('bodyListeners', [
         { event: 'click', handler: onClick },
         { event: 'dblclick', handler: onDblClick },
-        { event: 'mousemove', handler: onMouseMove }
+        { event: 'mousemove', handler: onMouseMove },
       ]);
     }
   },
@@ -875,7 +941,7 @@ export default Component.extend(ParentMixin, {
 
     // Cleanup all listeners
     if (listeners) {
-      listeners.forEach(listener => {
+      listeners.forEach((listener) => {
         google.maps.event.removeListener(listener);
       });
     }
@@ -883,11 +949,11 @@ export default Component.extend(ParentMixin, {
     if (bodyListeners) {
       let $body = $('body');
 
-      bodyListeners.forEach(listener => {
+      bodyListeners.forEach((listener) => {
         $body.off(listener.event, listener.handler);
       });
     }
-  }
+  },
 });
 
 function calculatePosition(mapPosition, event) {
@@ -898,7 +964,7 @@ function calculatePosition(mapPosition, event) {
 
   return {
     x: x - mapLeft,
-    y: y - mapTop
+    y: y - mapTop,
   };
 }
 
@@ -913,7 +979,10 @@ function calculateLatLng(map, event) {
   let mapPosition = $map.offset();
   let pos = calculatePosition(mapPosition, event);
   let scale = 1 << map.getZoom();
-  let point = new google.maps.Point(pos.x / scale + bottomLeft.x, pos.y / scale + topRight.y);
+  let point = new google.maps.Point(
+    pos.x / scale + bottomLeft.x,
+    pos.y / scale + topRight.y
+  );
   let latlng = projection.fromPointToLatLng(point);
 
   return latlng;
