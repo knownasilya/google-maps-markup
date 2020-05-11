@@ -15,15 +15,9 @@ import TOOLS from '../../utils/tools';
 import overlayToFeature from '../../utils/overlay-to-feature';
 import featureCenter from '../../utils/feature-center';
 import initMeasureLabel from '../../utils/init-measure-label';
-import MapLabel from '../../utils/map-label';
-import DynamicLabel from '../../utils/dynamic-label';
+import mapLabelFactory from '../../utils/map-label';
+import dynamicLabelFactory from '../../utils/dynamic-label';
 import labelPlotter from '../../utils/label-plotter';
-
-if (!window.google) {
-  throw new Error(
-    'Sorry, but `google` defined globally is required for this addon'
-  );
-}
 
 const clearAllConfirm =
   'Markup is unsaved. Do you wish to continue clearing all markup?';
@@ -43,17 +37,9 @@ export default Component.extend(ParentMixin, {
   results: alias('markupData.results'),
   mode: alias('markupData.mode'),
   textGeoJson: alias('markupData.textGeoJson'),
-  // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
-  dm: new google.maps.drawing.DrawingManager({
-    drawingControl: false,
-  }),
   listeners: boundArray(),
   toolListeners: boundArray(),
   currentPoints: boundArray(),
-  // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
-  currentLabel: new MapLabel(undefined, {
-    dontScale: true,
-  }),
   resultsHidden: false,
   activeLayer: undefined,
   toolId: TOOLS.pan.id,
@@ -79,6 +65,19 @@ export default Component.extend(ParentMixin, {
 
   init() {
     this._super(...arguments);
+
+    if (!window.google) {
+      throw new Error('Sorry, but `window.google` is required for this addon');
+    }
+
+    this.dm = new google.maps.drawing.DrawingManager({
+      drawingControl: false,
+    });
+    this.MapLabel = mapLabelFactory();
+    this.currentLabel = new this.MapLabel(undefined, {
+      dontScale: true,
+    });
+    this.DynamicLabel = dynamicLabelFactory();
 
     this.initPopupEvents();
 
@@ -123,7 +122,7 @@ export default Component.extend(ParentMixin, {
     let mode = this.get('mode');
     let map = this.get('map');
     let style = copy(tool.style || {});
-    let labelMarker = new DynamicLabel(position, {
+    let labelMarker = new this.DynamicLabel(position, {
       color: style.color,
       autoFocus: true,
       fontSize: style.fontSize,

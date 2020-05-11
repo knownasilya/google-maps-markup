@@ -1,5 +1,5 @@
 import featureCenter from './feature-center';
-import DynamicLabel from './dynamic-label';
+import factoryDynamicLabel from './dynamic-label';
 
 export default function initTextLabel(result, layer, map) {
   if (!result) {
@@ -10,10 +10,11 @@ export default function initTextLabel(result, layer, map) {
     let layerFeature = result.feature;
     let center = featureCenter(layerFeature);
     let style = layerFeature.getProperty('style');
+    let DynamicLabel = factoryDynamicLabel();
 
     result.feature = new DynamicLabel(center, {
       label: layerFeature.getProperty('label'),
-      color: style && style.color
+      color: style && style.color,
     });
 
     if (map) {

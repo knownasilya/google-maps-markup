@@ -2,25 +2,30 @@ import pathsToBounds from './paths-to-bounds';
 import pathDistance from './path-distance';
 import measureTypeResult from './measure-type-result';
 
-const LatLng = google.maps.LatLng;
-const {
-  computeArea,
-  computeDistanceBetween
-} = google.maps.geometry.spherical;
-
-export default function labelPlotter(label, points, type, event, map, distanceUnitId) {
+export default function labelPlotter(
+  label,
+  points,
+  type,
+  event,
+  map,
+  distanceUnitId
+) {
   if (type === 'circle') {
     label.position = points[0];
   }
 
   return {
     update(points) {
-      switch(type) {
-        case 'pan': return;
+      switch (type) {
+        case 'pan':
+          return;
 
         case 'circle': {
           if (points.length === 2) {
-            let radius = computeDistanceBetween(points[0], points[1]);
+            let radius = google.maps.geometry.spherical.computeDistanceBetween(
+              points[0],
+              points[1]
+            );
             let area = Math.PI * (radius * radius);
             let result = measureTypeResult(type, area, distanceUnitId);
 
@@ -47,12 +52,12 @@ export default function labelPlotter(label, points, type, event, map, distanceUn
           if (points.length === 2) {
             let calcPoints = [
               points[0],
-              new LatLng(points[0].lat(), points[1].lng()),
+              new google.maps.LatLng(points[0].lat(), points[1].lng()),
               points[1],
-              new LatLng(points[1].lat(), points[0].lng())
+              new google.maps.LatLng(points[1].lat(), points[0].lng()),
             ];
             let bounds = pathsToBounds(calcPoints);
-            let area = computeArea(calcPoints);
+            let area = google.maps.geometry.spherical.computeArea(calcPoints);
             let result = measureTypeResult(type, area, distanceUnitId);
 
             label.label = `${result.value} ${result.unit.display}`;
@@ -87,6 +92,6 @@ export default function labelPlotter(label, points, type, event, map, distanceUn
     finish() {
       label.setMap(null);
       points.removeObjects(points);
-    }
+    },
   };
 }
