@@ -1,6 +1,6 @@
 let MapLabelLocal;
 
-export function mapLabelFactory() {
+export default function mapLabelFactory() {
   if (MapLabelLocal) {
     return MapLabelLocal;
   }
