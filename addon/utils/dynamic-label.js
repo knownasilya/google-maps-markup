@@ -1,3 +1,4 @@
+import { v1 } from 'ember-uuid';
 import mapLabelFactory from './map-label';
 let DynamicLabelLocal;
 
@@ -28,6 +29,7 @@ function createDynamicLabel() {
 
       this.fontSize = options.fontSize;
       this.label = options.label;
+      this.id = v1();
     }
 
     onAdd() {
@@ -140,6 +142,11 @@ function createDynamicLabel() {
 
       this._element.style.height = contentHeight + 10 + 'px';
       this._element.style.width = contentWidth + 20 + 'px';
+    }
+
+    // To match Google's Data.Feature#getId()
+    getId() {
+      return this.id;
     }
 
     set editingText(val) {
