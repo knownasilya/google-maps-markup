@@ -38,10 +38,6 @@ export default function mapLabelFactory() {
       if (pane) {
         pane.appendChild(this._element);
       }
-
-      google.maps.event.addDomListener(this._element, 'click', function () {
-        google.maps.event.trigger(this, 'click');
-      });
     }
 
     // Required by GMaps

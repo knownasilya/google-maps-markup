@@ -362,13 +362,16 @@ export default Component.extend(ParentMixin, {
             map.setOptions({ draggableCursor: 'default' });
             event.stop();
           });
-          let dataListener = activeLayer.data.addListener('click', (event) => {
-            this.addTextLabel(tool, event.latLng);
-            map.setOptions({ draggableCursor: 'default' });
-            event.stop();
-          });
+          listeners.pushObject(mapListener);
 
-          listeners.pushObjects([mapListener, dataListener]);
+          this.dataLayers.forEach((layer) => {
+            let dataListener = layer.data.addListener('click', (event) => {
+              this.addTextLabel(tool, event.latLng);
+              map.setOptions({ draggableCursor: 'default' });
+              event.stop();
+            });
+            listeners.pushObject(dataListener);
+          });
         } else if (tool.dataId) {
           let style = copy(tool.style || {});
 
