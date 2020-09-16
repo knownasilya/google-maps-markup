@@ -1,6 +1,17 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [3.0.4](https://github.com/knownasilya/google-maps-markup/compare/v3.0.3...v3.0.4) (2020-09-16)
+
+
+### Bug Fixes
+
+* clicking edit on items throwing error for text features ([69a2a72](https://github.com/knownasilya/google-maps-markup/commit/69a2a7238def59873771825cdc627d8cf30aecfa))
+* codemods ([33e89da](https://github.com/knownasilya/google-maps-markup/commit/33e89dacdff20c3122290d0c81be4fa885df6101))
+* no imlicit this ([c987c61](https://github.com/knownasilya/google-maps-markup/commit/c987c61dd4df79164a2337753d76768cebb3522d))
+* not being able to place text on measured shapes ([61420a7](https://github.com/knownasilya/google-maps-markup/commit/61420a709035798a12804520f8104390c7690f69))
+* plotter computeArea being undefined ([2f6c465](https://github.com/knownasilya/google-maps-markup/commit/2f6c465da2610c0c74f5e90dbaca157c496f140d))
 
 <a name="3.0.3"></a>
 ## [3.0.3](https://github.com/knownasilya/google-maps-markup/compare/v3.0.2...v3.0.3) (2020-05-13)
