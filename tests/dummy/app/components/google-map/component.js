@@ -6,8 +6,8 @@ export default Component.extend({
   center: new google.maps.LatLng(42.43540000000001, -71.11295997924805),
 
   initMap: on('didInsertElement', function () {
-    var center = this.get('center');
-    var zoom = this.get('zoom');
+    var center = this.center;
+    var zoom = this.zoom;
     var el = this.$('#map').get(0);
 
     this.setup(el, center, zoom);

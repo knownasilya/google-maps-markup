@@ -23,7 +23,7 @@ export default Service.extend({
   activate(map) {
     this.set('map', map);
 
-    let layers = this.get('layers');
+    let layers = this.layers;
     let measureResults = this.get('markupResults.measure');
 
     // Enable all layers to show on map
@@ -42,7 +42,7 @@ export default Service.extend({
   },
 
   changeModeByResults() {
-    let markupResults = this.get('markupResults');
+    let markupResults = this.markupResults;
 
     for (let i = 0; i < MODES.length; i++) {
       let key = MODES[i];
@@ -57,8 +57,8 @@ export default Service.extend({
 
   layers: computed({
     get() {
-      let results = this.get('results');
-      let textGeoJson = this.get('textGeoJson');
+      let results = this.results;
+      let textGeoJson = this.textGeoJson;
       let setId = function (geom) {
         return createFeature(geom, results);
       };
@@ -79,7 +79,7 @@ export default Service.extend({
 
   results: computed('mode', {
     get() {
-      let mode = this.get('mode');
+      let mode = this.mode;
 
       if (!mode) {
         return;
@@ -88,7 +88,7 @@ export default Service.extend({
       return this.get(`markupResults.${mode}`);
     },
     set(key, data) {
-      let mode = this.get('mode');
+      let mode = this.mode;
 
       if (!mode) {
         return;
@@ -101,8 +101,8 @@ export default Service.extend({
   }),
 
   featureToResult(feature, layer) {
-    let map = this.get('map');
-    let textGeoJson = this.get('textGeoJson');
+    let map = this.map;
+    let textGeoJson = this.textGeoJson;
     let name = feature.getProperty('name');
     let mode = feature.getProperty('mode');
     let results = this.get(`markupResults.${mode}`);

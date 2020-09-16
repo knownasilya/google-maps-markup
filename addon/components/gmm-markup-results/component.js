@@ -6,7 +6,7 @@ export default Component.extend({
 
   actions: {
     sortEndAction() {
-      let results = this.get('results');
+      let results = this.results;
 
       results.forEach((result) => {
         result.style.zIndex = 0;

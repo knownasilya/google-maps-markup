@@ -30,8 +30,7 @@
           {{opt.name}}
         </label>
       </div>
-      {{log tool}}
-      {{log (concat tool.id '.fontSizes')}}
+
       {{#power-select
         options=(get optionsData (concat (tool-id tool) '.fontSizes'))
         selected=tool.style.fontSize

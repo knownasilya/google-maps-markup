@@ -25,7 +25,7 @@ export default Controller.extend({
   },
 
   loadMarkup(markupData) {
-    let markupService = this.get('markupDataService');
+    let markupService = this.markupDataService;
     let dataLayers = markupService.get('layers');
 
     dataLayers.forEach((layer, index) => {
@@ -38,7 +38,7 @@ export default Controller.extend({
 
   actions: {
     load() {
-      let exported = this.get('exported');
+      let exported = this.exported;
 
       if (exported) {
         this.loadMarkup(exported);

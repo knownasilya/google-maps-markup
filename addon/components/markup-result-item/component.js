@@ -13,7 +13,7 @@ export default Component.extend(ChildMixin, {
   init() {
     this._super(...arguments);
 
-    let data = this.get('data');
+    let data = this.data;
 
     if (data.feature.addListener) {
       let changeListener = data.feature.addListener('changelabel', run.bind(this, () => {
@@ -28,7 +28,7 @@ export default Component.extend(ChildMixin, {
   description: computed('data.mode', 'data.feature', {
     get() {
       let mode = this.get('data.mode');
-      let data = this.get('data');
+      let data = this.data;
 
       if (mode === MODE.measure.id) {
         let m = getMeasurement(data.type, data.feature, data.distanceUnitId);
@@ -44,20 +44,20 @@ export default Component.extend(ChildMixin, {
 
   actions: {
     edit(position) {
-      let data = this.get('data');
-      let wormhole = this.get('wormhole');
+      let data = this.data;
+      let wormhole = this.wormhole;
 
       this.sendAction('onedit', data, wormhole, position);
     },
 
     ok() {
-      let data = this.get('data');
+      let data = this.data;
       
       set(data, 'editing', false);
     },
 
     fillOpacity() {
-      let data = this.get('data');
+      let data = this.data;
 
       if (data && data.fillColorTransparent) {
         set(data, 'style.fillOpacity', 0);
@@ -74,7 +74,7 @@ export default Component.extend(ChildMixin, {
 
         set(tool, prop, value);
       } else {
-        let data = this.get('data');
+        let data = this.data;
         set(tool, prop, value);
         set(this.data, 'style.fillOpacity', 0.5);
 
@@ -84,7 +84,7 @@ export default Component.extend(ChildMixin, {
 
     toggleEditShape() {
       let edit = this.toggleProperty('data.editingShape');
-      let data = this.get('data');
+      let data = this.data;
       let listener;
 
       if (edit) {
@@ -126,9 +126,9 @@ export default Component.extend(ChildMixin, {
     },
 
     cancelEditShape() {
-      let data = this.get('data');
-      let shapeModified = this.get('shapeModified');
-      let originalGeometry = this.get('originalFeatureGeometry');
+      let data = this.data;
+      let shapeModified = this.shapeModified;
+      let originalGeometry = this.originalFeatureGeometry;
 
       if (shapeModified && originalGeometry) {
         this.set('originalFeatureGeometry');
@@ -142,7 +142,7 @@ export default Component.extend(ChildMixin, {
   willDestroyElement() {
     this._super(...arguments);
 
-    let changeListener = this.get('changeListener');
+    let changeListener = this.changeListener;
 
     if (changeListener) {
       google.maps.event.removeListener(changeListener);

@@ -1,16 +1,18 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render, find } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('gmm-tool-options', 'Integration | Component | gmm tool options', {
-  integration: true
-});
+module('Integration | Component | gmm tool options', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
+  test('it renders', async function(assert) {
 
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{gmm-tool-options}}`);
+    await render(hbs`{{gmm-tool-options}}`);
 
-  assert.equal(this.$().text().trim(), '');
+    assert.dom('*').hasText('');
+  });
 });

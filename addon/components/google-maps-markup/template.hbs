@@ -1,37 +1,61 @@
-<h4>Mode</h4>
-<div class="btn-group form-group" role="group" aria-label="Markup Modes">
+<h4>
+  Mode
+</h4>
+<div class='btn-group form-group' role='group' aria-label='Markup Modes'>
   {{#each modes as |item|}}
-    <button type="button" class="btn btn-default {{if (is-equal item.id mode) 'active'}}" title={{item.title}} onclick={{action 'changeMode' item}}>
+    <button
+      type='button'
+      class="btn btn-default {{if (is-equal item.id mode) 'active'}}"
+      title={{item.title}}
+      onclick={{action 'changeMode' item}}
+    >
       <i class="fa {{item.icon}}"></i>
       {{item.name}}
     </button>
   {{/each}}
 </div>
 
-<h4>Tools</h4>
+<h4>
+  Tools
+</h4>
 {{#if (is-equal mode 'draw')}}
-  <div class="form-group tools-group" role="group" aria-label="Drawing Tools">
+  <div class='form-group tools-group' role='group' aria-label='Drawing Tools'>
     {{#each drawingTools as |tool|}}
-      <button type="button" class="btn btn-default {{if (is-equal tool.id toolId) 'active'}}" title={{tool.title}} onclick={{action 'changeTool' tool.id}}>
+      <button
+        type='button'
+        class="btn btn-default {{if (is-equal tool.id toolId) 'active'}}"
+        title={{tool.title}}
+        onclick={{action 'changeTool' tool.id}}
+      >
         {{tool.name}}
       </button>
     {{/each}}
   </div>
 {{else if (is-equal mode 'measure')}}
-  <div class="form-group tools-group" role="group" aria-label="Measure Tools">
+  <div class='form-group tools-group' role='group' aria-label='Measure Tools'>
     {{#each measureTools as |tool|}}
-      <button type="button" class="btn btn-default {{if (is-equal tool.id toolId) 'active'}}" title={{tool.title}} onclick={{action 'changeTool' tool.id}}>
+      <button
+        type='button'
+        class="btn btn-default {{if (is-equal tool.id toolId) 'active'}}"
+        title={{tool.title}}
+        onclick={{action 'changeTool' tool.id}}
+      >
         {{tool.name}}
       </button>
     {{/each}}
   </div>
 {{/if}}
 
+{{! template-lint-disable simple-unless}}
 {{#unless (is-equal toolId 'pan')}}
   {{#if activeTool.options}}
-    <h4>Options</h4>
-    {{gmm-tool-options tool=activeTool
-      updateOptionValue=(action 'updateOptionValue')}}
+    <h4>
+      Options
+    </h4>
+    {{gmm-tool-options
+      tool=activeTool
+      updateOptionValue=(action 'updateOptionValue')
+    }}
   {{/if}}
 {{/unless}}
 
@@ -45,6 +69,7 @@
   onRemove=(action 'removeResult')
   onOver=(action 'highlightResult')
   onOut=(action 'resetResultStyle')
-  onEdit=(action 'editResult')}}
+  onEdit=(action 'editResult')
+}}
 
 {{yield}}

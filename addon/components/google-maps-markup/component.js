@@ -81,13 +81,13 @@ export default Component.extend(ParentMixin, {
 
     this.initPopupEvents();
 
-    if (!this.get('mapEventsSetup')) {
+    if (!this.mapEventsSetup) {
       this.addObserver('map', this, 'setupMapEvents');
     }
   },
 
   initPopupEvents() {
-    let editable = this.get('editable');
+    let editable = this.editable;
 
     if (editable) {
       let popup = new google.maps.InfoWindow();
@@ -117,10 +117,10 @@ export default Component.extend(ParentMixin, {
   },
 
   addTextLabel(tool, position) {
-    let autoResetToPan = this.get('autoResetToPan');
-    let results = this.get('results');
-    let mode = this.get('mode');
-    let map = this.get('map');
+    let autoResetToPan = this.autoResetToPan;
+    let results = this.results;
+    let mode = this.mode;
+    let map = this.map;
     let style = copy(tool.style || {});
     let labelMarker = new this.DynamicLabel(position, {
       color: style.color,
@@ -144,15 +144,15 @@ export default Component.extend(ParentMixin, {
     // TODO: convert to geojson and add to active layer
     // later load during results process
     let feature = this.createFeature(item, labelMarker.position);
-    let textGeoJson = this.get('textGeoJson');
+    let textGeoJson = this.textGeoJson;
 
     feature.toGeoJson((data) => {
       item.geojson = data;
       textGeoJson.pushObject(data);
     });
 
-    if (this.get('afterAddFeature')) {
-      this.get('afterAddFeature')(item);
+    if (this.afterAddFeature) {
+      this.afterAddFeature(item);
     }
 
     if (autoResetToPan) {
@@ -198,11 +198,11 @@ export default Component.extend(ParentMixin, {
   },
 
   enableFreeFormPolygon() {
-    let autoResetToPan = this.get('autoResetToPan');
-    let toolId = this.get('toolId');
-    let map = this.get('map');
-    let mode = this.get('mode');
-    let activeLayer = this.get('activeLayer');
+    let autoResetToPan = this.autoResetToPan;
+    let toolId = this.toolId;
+    let map = this.map;
+    let mode = this.mode;
+    let activeLayer = this.activeLayer;
     let tool = this.getTool(toolId);
     let style = copy(tool.style || {});
     let poly = new google.maps.Polyline({
@@ -234,8 +234,8 @@ export default Component.extend(ParentMixin, {
       };
       let feature = this.createFeature(item, polygon);
 
-      if (this.get('afterAddFeature')) {
-        this.get('afterAddFeature')(item);
+      if (this.afterAddFeature) {
+        this.afterAddFeature(item);
       }
 
       poly = null;
@@ -288,12 +288,12 @@ export default Component.extend(ParentMixin, {
     },
 
     changeTool(toolId) {
-      let markupDataService = this.get('markupData');
-      let activeLayer = this.get('activeLayer');
-      let map = this.get('map');
-      let dm = this.get('dm');
+      let markupDataService = this.markupData;
+      let activeLayer = this.activeLayer;
+      let map = this.map;
+      let dm = this.dm;
       let tool = this.getTool(toolId);
-      let listeners = this.get('toolListeners');
+      let listeners = this.toolListeners;
 
       this.set('activeTool', tool);
       this.set('drawFinished', false);
@@ -309,7 +309,7 @@ export default Component.extend(ParentMixin, {
 
         if (tool.id === 'pan') {
           let clickListener = activeLayer.data.addListener('click', (event) => {
-            let childComponents = this.get('childComponents');
+            let childComponents = this.childComponents;
             let found = childComponents.find(function (comp) {
               return comp.get('data').feature.getId() === event.feature.getId();
             });
@@ -322,7 +322,7 @@ export default Component.extend(ParentMixin, {
           let mouseoverListener = activeLayer.data.addListener(
             'mouseover',
             (event) => {
-              let childComponents = this.get('childComponents');
+              let childComponents = this.childComponents;
               let found = childComponents.find(function (comp) {
                 return (
                   comp.get('data').feature.getId() === event.feature.getId()
@@ -338,7 +338,7 @@ export default Component.extend(ParentMixin, {
           let mouseoutListener = activeLayer.data.addListener(
             'mouseout',
             () => {
-              let childComponents = this.get('childComponents');
+              let childComponents = this.childComponents;
 
               childComponents.forEach((comp) => {
                 this.send('resetResultStyle', comp.get('data'));
@@ -395,8 +395,8 @@ export default Component.extend(ParentMixin, {
 
     toggleResults() {
       let isHidden = this.toggleProperty('resultsHidden');
-      let activeLayer = this.get('activeLayer');
-      let results = this.get('results');
+      let activeLayer = this.activeLayer;
+      let results = this.results;
 
       results.forEach((result) => this.send('toggleResult', result, !isHidden));
       activeLayer.isHidden = isHidden;
@@ -404,10 +404,10 @@ export default Component.extend(ParentMixin, {
 
     clearResults() {
       if (confirm(clearAllConfirm)) {
-        let mode = this.get('mode');
-        let layer = this.get('activeLayer');
-        let results = this.get('results');
-        let textGeoJson = this.get('textGeoJson');
+        let mode = this.mode;
+        let layer = this.activeLayer;
+        let results = this.results;
+        let textGeoJson = this.textGeoJson;
 
         layer.data.forEach((feature) => {
           layer.data.remove(feature);
@@ -427,17 +427,17 @@ export default Component.extend(ParentMixin, {
 
         results.clear();
 
-        if (this.get('afterClearResults')) {
-          this.get('afterClearResults')(layer);
+        if (this.afterClearResults) {
+          this.afterClearResults(layer);
         }
       }
     },
 
     removeResult(result) {
-      let mode = this.get('mode');
-      let results = this.get('results');
-      let layer = this.get('activeLayer');
-      let textGeoJson = this.get('textGeoJson');
+      let mode = this.mode;
+      let results = this.results;
+      let layer = this.activeLayer;
+      let textGeoJson = this.textGeoJson;
 
       if (result.type === 'text') {
         result.feature.setMap(null);
@@ -460,8 +460,8 @@ export default Component.extend(ParentMixin, {
      * @param {Boolean} force Override the toggle, true for show and false for hide.
      */
     toggleResult(result, force) {
-      let layer = this.get('activeLayer');
-      let mode = this.get('mode');
+      let layer = this.activeLayer;
+      let mode = this.mode;
       let isMeasure = mode === 'measure';
       let hide =
         force !== undefined && force !== null
@@ -500,10 +500,10 @@ export default Component.extend(ParentMixin, {
     },
 
     editResult(data, wormhole, position) {
-      let popup = this.get('markupEditPopup');
-      let map = this.get('map');
-      let editable = this.get('editable');
-      let childComponents = this.get('childComponents');
+      let popup = this.markupEditPopup;
+      let map = this.map;
+      let editable = this.editable;
+      let childComponents = this.childComponents;
 
       set(data, 'editing', true);
 
@@ -557,7 +557,7 @@ export default Component.extend(ParentMixin, {
     },
 
     highlightResult(data) {
-      let layer = this.get('activeLayer');
+      let layer = this.activeLayer;
       let style;
 
       this.panToIfHidden(data.feature);
@@ -586,7 +586,7 @@ export default Component.extend(ParentMixin, {
     },
 
     resetResultStyle(data) {
-      let layer = this.get('activeLayer');
+      let layer = this.activeLayer;
 
       if (!data.editingShape) {
         if (data.type === 'text') {
@@ -610,7 +610,7 @@ export default Component.extend(ParentMixin, {
   },
 
   resetAllLayers() {
-    let layers = this.get('dataLayers');
+    let layers = this.dataLayers;
 
     layers.forEach((layer) => {
       layer.data.setDrawingMode(null);
@@ -618,20 +618,20 @@ export default Component.extend(ParentMixin, {
   },
 
   clearListeners() {
-    let listeners = this.get('toolListeners');
+    let listeners = this.toolListeners;
 
     listeners.forEach((l) => google.maps.event.removeListener(l));
     listeners.clear();
   },
 
   panToIfHidden(feature) {
-    let panForOffscreen = this.get('panForOffscreen');
+    let panForOffscreen = this.panForOffscreen;
 
     if (!panForOffscreen) {
       return;
     }
 
-    let map = this.get('map');
+    let map = this.map;
     let center = featureCenter(feature);
     let bounds = map.getBounds();
 
@@ -647,14 +647,14 @@ export default Component.extend(ParentMixin, {
   },
 
   panBack() {
-    let panForOffscreen = this.get('panForOffscreen');
+    let panForOffscreen = this.panForOffscreen;
 
     if (!panForOffscreen) {
       return;
     }
 
-    let map = this.get('map');
-    let center = this.get('originalCenter');
+    let map = this.map;
+    let center = this.originalCenter;
 
     if (center) {
       map.setCenter(center);
@@ -664,11 +664,11 @@ export default Component.extend(ParentMixin, {
   changeLayer: on(
     'init',
     observes('mode', 'map', function () {
-      let modeId = this.get('mode');
-      let map = this.get('map');
-      let toolId = this.get('toolId');
-      let dataLayers = this.get('dataLayers');
-      let activeLayer = this.get('activeLayer');
+      let modeId = this.mode;
+      let map = this.map;
+      let toolId = this.toolId;
+      let dataLayers = this.dataLayers;
+      let activeLayer = this.activeLayer;
 
       this.set('lastActiveLayer', activeLayer);
 
@@ -694,9 +694,9 @@ export default Component.extend(ParentMixin, {
   ),
 
   activeLayerSetup: observes('activeLayer', function () {
-    let mode = this.get('mode');
-    let layer = this.get('activeLayer');
-    let lastLayer = this.get('lastActiveLayer');
+    let mode = this.mode;
+    let layer = this.activeLayer;
+    let lastLayer = this.lastActiveLayer;
 
     if (!layer) {
       return;
@@ -713,10 +713,10 @@ export default Component.extend(ParentMixin, {
           return;
         }
 
-        let map = this.get('map');
-        let tool = this.get('activeTool');
-        let toolId = this.get('toolId');
-        let results = this.get('results');
+        let map = this.map;
+        let tool = this.activeTool;
+        let toolId = this.toolId;
+        let results = this.results;
         let found = results.find(function (item) {
           if (item.feature && item.feature.getId) {
             return item.feature.getId() === event.feature.getId();
@@ -762,11 +762,11 @@ export default Component.extend(ParentMixin, {
           initMeasureLabel(item, map);
           results.insertAt(0, item);
 
-          if (this.get('afterAddFeature')) {
-            this.get('afterAddFeature')(item);
+          if (this.afterAddFeature) {
+            this.afterAddFeature(item);
           }
 
-          let autoResetToPan = this.get('autoResetToPan');
+          let autoResetToPan = this.autoResetToPan;
 
           if (autoResetToPan) {
             run.later(
@@ -783,18 +783,18 @@ export default Component.extend(ParentMixin, {
       })
     );
 
-    this.get('listeners').pushObjects([listener]);
+    this.listeners.pushObjects([listener]);
   }),
 
   didInsertElement() {
     this._super(...arguments);
 
-    let dm = this.get('dm');
-    let results = this.get('results');
-    let layers = this.get('dataLayers');
-    let map = this.get('map');
+    let dm = this.dm;
+    let results = this.results;
+    let layers = this.dataLayers;
+    let map = this.map;
 
-    if (!this.get('mode')) {
+    if (!this.mode) {
       this.set('mode', MODE.draw.id);
     }
 
@@ -804,7 +804,7 @@ export default Component.extend(ParentMixin, {
     let listener = dm.addListener(
       'overlaycomplete',
       run.bind(this, (event) => {
-        let activeLayer = this.get('activeLayer');
+        let activeLayer = this.activeLayer;
         let feature = overlayToFeature(event.type, event.overlay, results);
 
         event.overlay.setMap(null);
@@ -813,23 +813,23 @@ export default Component.extend(ParentMixin, {
       })
     );
 
-    this.get('listeners').pushObject(listener);
+    this.listeners.pushObject(listener);
 
-    if (!this.get('mapEventsSetup')) {
+    if (!this.mapEventsSetup) {
       this.setupMapEvents();
     }
   },
 
   didReceiveAttrs() {
-    if (!this.get('mapEventsSetup')) {
+    if (!this.mapEventsSetup) {
       this.setupMapEvents();
     }
   },
 
   setupMapEvents() {
-    let map = this.get('map');
-    let currentPoints = this.get('currentPoints');
-    let currentLabel = this.get('currentLabel');
+    let map = this.map;
+    let currentPoints = this.currentPoints;
+    let currentLabel = this.currentLabel;
 
     if (map) {
       this.set('mapEventsSetup', true);
@@ -838,14 +838,14 @@ export default Component.extend(ParentMixin, {
       let plotter;
 
       let onClick = run.bind(this, (event) => {
-        let mode = this.get('mode');
-        let toolId = this.get('toolId');
-        let toolActive = this.get('toolActive');
+        let mode = this.mode;
+        let toolId = this.toolId;
+        let toolActive = this.toolActive;
         let tool = this.getTool(toolId, mode);
         let mapDiv = map.getDiv();
         let target = event.target;
         let withinMap = mapDiv.contains(target);
-        let results = this.get('results');
+        let results = this.results;
         let data = results.get('lastObject');
 
         // Set distanceUnitId if not set yet and available
@@ -874,7 +874,7 @@ export default Component.extend(ParentMixin, {
         }
 
         let toolIsPan = toolId === 'pan';
-        let drawFinished = this.get('drawFinished');
+        let drawFinished = this.drawFinished;
         let noPoints = !currentPoints.get('length');
 
         if (toolIsPan || (noPoints && drawFinished)) {
@@ -933,8 +933,8 @@ export default Component.extend(ParentMixin, {
   willDestroyElement() {
     this._super(...arguments);
 
-    let listeners = this.get('listeners');
-    let bodyListeners = this.get('bodyListeners');
+    let listeners = this.listeners;
+    let bodyListeners = this.bodyListeners;
 
     this.send('changeTool', TOOLS.pan.id);
 
