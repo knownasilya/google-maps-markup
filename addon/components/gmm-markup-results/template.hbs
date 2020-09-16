@@ -1,27 +1,18 @@
-{{#if results}}
+{{#if this.results}}
   <h4>Results</h4>
   <div class="form-group">
-    <button type="button" class="btn btn-default" title="Clear Results" onclick={{action onClearAll}}>
+    <button type="button" class="btn btn-default" title="Clear Results" onclick={{action this.onClearAll}}>
       Clear All
     </button>
-    <button type="button" class="btn btn-default" title="{{if resultsHidden 'Show' 'Hide'}} Results" onclick={{action onToggleAll}}>
-      {{if resultsHidden 'Show' 'Hide'}} All
+    <button type="button" class="btn btn-default" title="{{if this.resultsHidden 'Show' 'Hide'}} Results" onclick={{action this.onToggleAll}}>
+      {{if this.resultsHidden 'Show' 'Hide'}} All
     </button>
   </div>
 
-  {{#sortable-objects sortableObjectList=results sortEndAction='sortEndAction'
-    class='list-group results-list'
-    tagName='ul'}}
-    {{#each results as |result|}}
-      {{#draggable-object content=result isSortable=true
-        mouseEnter=(action onOver result)
-        mouseLeave=(action onOut result)
-        class='list-group-item clearfix'
-        tagName='li'}}
-        {{markup-result-item data=result editable=editable
-          onremove=(action onRemove)
-          ontoggle=(action onToggle)
-          onedit=(action onEdit)
+  {{#sortable-objects sortableObjectList=this.results sortEndAction='sortEndAction' class='list-group results-list' tagName='ul'}}
+    {{#each this.results as |result|}}
+      {{#draggable-object content=result isSortable=true mouseEnter=(action this.onOver result) mouseLeave=(action this.onOut result) class='list-group-item clearfix' tagName='li'}}
+        {{markup-result-item data=result editable=this.editable onremove=(action this.onRemove) ontoggle=(action this.onToggle) onedit=(action this.onEdit)
         }}
       {{/draggable-object}}
     {{/each}}

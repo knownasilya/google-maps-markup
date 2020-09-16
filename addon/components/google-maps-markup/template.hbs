@@ -2,10 +2,10 @@
   Mode
 </h4>
 <div class='btn-group form-group' role='group' aria-label='Markup Modes'>
-  {{#each modes as |item|}}
+  {{#each this.modes as |item|}}
     <button
       type='button'
-      class="btn btn-default {{if (is-equal item.id mode) 'active'}}"
+      class="btn btn-default {{if (is-equal item.id this.mode) 'active'}}"
       title={{item.title}}
       onclick={{action 'changeMode' item}}
     >
@@ -18,12 +18,12 @@
 <h4>
   Tools
 </h4>
-{{#if (is-equal mode 'draw')}}
+{{#if (is-equal this.mode 'draw')}}
   <div class='form-group tools-group' role='group' aria-label='Drawing Tools'>
-    {{#each drawingTools as |tool|}}
+    {{#each this.drawingTools as |tool|}}
       <button
         type='button'
-        class="btn btn-default {{if (is-equal tool.id toolId) 'active'}}"
+        class="btn btn-default {{if (is-equal tool.id this.toolId) 'active'}}"
         title={{tool.title}}
         onclick={{action 'changeTool' tool.id}}
       >
@@ -31,12 +31,12 @@
       </button>
     {{/each}}
   </div>
-{{else if (is-equal mode 'measure')}}
+{{else if (is-equal this.mode 'measure')}}
   <div class='form-group tools-group' role='group' aria-label='Measure Tools'>
-    {{#each measureTools as |tool|}}
+    {{#each this.measureTools as |tool|}}
       <button
         type='button'
-        class="btn btn-default {{if (is-equal tool.id toolId) 'active'}}"
+        class="btn btn-default {{if (is-equal tool.id this.toolId) 'active'}}"
         title={{tool.title}}
         onclick={{action 'changeTool' tool.id}}
       >
@@ -47,22 +47,22 @@
 {{/if}}
 
 {{! template-lint-disable simple-unless}}
-{{#unless (is-equal toolId 'pan')}}
-  {{#if activeTool.options}}
+{{#unless (is-equal this.toolId 'pan')}}
+  {{#if this.activeTool.options}}
     <h4>
       Options
     </h4>
     {{gmm-tool-options
-      tool=activeTool
+      tool=this.activeTool
       updateOptionValue=(action 'updateOptionValue')
     }}
   {{/if}}
 {{/unless}}
 
 {{gmm-markup-results
-  results=results
-  resultsHidden=resultsHidden
-  editable=editable
+  results=this.results
+  resultsHidden=this.resultsHidden
+  editable=this.editable
   onClearAll=(action 'clearResults')
   onToggleAll=(action 'toggleResults')
   onToggle=(action 'toggleResult')
