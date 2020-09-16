@@ -79,7 +79,7 @@ export default function labelPlotter(
         default: {
           if (points.length > 1) {
             let bounds = pathsToBounds(points);
-            let area = computeArea(points);
+            let area = google.maps.geometry.spherical.computeArea(points);
             let result = measureTypeResult(type, area, distanceUnitId);
             label.label = `${result.value} ${result.unit.display}`;
             label.position = bounds.getCenter();
