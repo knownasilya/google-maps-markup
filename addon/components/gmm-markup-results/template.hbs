@@ -28,22 +28,22 @@
     tagName='ul'
   }}
     {{#each this.results as |result|}}
-      {{#draggable-object
-        content=result
-        isSortable=true
-        mouseEnter=(action this.onOver result)
-        mouseLeave=(action this.onOut result)
+      <DraggableObject
+        @content={{result}}
+        @isSortable={{true}}
+        @mouseEnter={{fn this.onOver result}}
+        @mouseLeave={{fn this.onOut result}}
+        @tagName='li'
         class='list-group-item clearfix'
-        tagName='li'
-      }}
-        {{markup-result-item
-          data=result
-          editable=this.editable
-          onremove=(action this.onRemove)
-          ontoggle=(action this.onToggle)
-          onedit=(action this.onEdit)
-        }}
-      {{/draggable-object}}
+      >
+        <MarkupResultItem
+          @data={{result}}
+          @editable={{this.editable}}
+          @onremove={{this.onRemove}}
+          @ontoggle={{this.onToggle}}
+          @onedit={{this.onEdit}}
+        />
+      </DraggableObject>
     {{/each}}
   {{/sortable-objects}}
 {{/if}}
