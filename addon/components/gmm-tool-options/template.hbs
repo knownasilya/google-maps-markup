@@ -15,7 +15,9 @@
         {{opt.name}}
       </label>
       {{#power-select
-        options=(get this.optionsData (concat (tool-id this.tool) '.strokeWeights'))
+        options=(get
+          this.optionsData (concat (tool-id this.tool) '.strokeWeights')
+        )
         selected=this.tool.style.strokeWeight
         searchEnabled=false
         onChange=(action this.updateOptionValue this.tool opt.id) as |width|
@@ -49,7 +51,9 @@
           </label>
         </div>
         {{#power-select
-          options=(get this.optionsData (concat (tool-id this.tool) '.distanceUnits'))
+          options=(get
+            this.optionsData (concat (tool-id this.tool) '.distanceUnits')
+          )
           selected=this.tool.distanceUnit
           searchEnabled=false
           onChange=(action this.updateOptionValue this.tool opt.id) as |unit|

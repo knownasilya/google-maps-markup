@@ -1,36 +1,61 @@
-<b>{{this.data.name}}</b>
-{{~if this.description ':'}}
+<b>
+  {{this.data.name}}
+</b>{{if this.description ':'}}
 {{this.description}}
-<button type="button" class="btn btn-link btn-xs" onclick={{action this.ontoggle this.data undefined}}>
+<button
+  type='button'
+  class='btn btn-link btn-xs'
+  onclick={{action this.ontoggle this.data undefined}}
+>
   <i class="fa {{if this.data.isVisible 'fa-eye-slash' 'fa-eye'}}"></i>
 </button>
 
-<div class="pull-right">
+<div class='pull-right'>
   {{#if this.data.editing}}
-    <button type="button" class="btn btn-default btn-xs" onclick={{action 'ok' this.data.feature.position}}>
+    <button
+      type='button'
+      class='btn btn-default btn-xs'
+      onclick={{action 'ok' this.data.feature.position}}
+    >
       OK
     </button>
   {{else if this.data.isEditable}}
-    <button type="button" class="btn btn-default btn-xs" onclick={{action 'edit' this.data.feature.position}}>
+    <button
+      type='button'
+      class='btn btn-default btn-xs'
+      onclick={{action 'edit' this.data.feature.position}}
+    >
       Edit
     </button>
   {{/if}}
 
-  <button type="button" class="btn btn-danger btn-xs" onclick={{action this.onremove this.data}}>
+  <button
+    type='button'
+    class='btn btn-danger btn-xs'
+    onclick={{action this.onremove this.data}}
+  >
     Remove
   </button>
 </div>
 
 {{#if this.data.editing}}
   {{#if this.editable}}
-    {{#ember-wormhole to="google-maps-markup-infowindow" viewName="wormhole"}}
+    {{#ember-wormhole to='google-maps-markup-infowindow' viewName='wormhole'}}
       {{#if this.shapeModified}}
-        <button type="button" class="btn btn-warning btn-sm" {{action 'cancelEditShape'}}>
+        <button
+          type='button'
+          class='btn btn-warning btn-sm'
+          {{action 'cancelEditShape'}}
+        >
           Reset Shape
         </button>
       {{/if}}
 
-      <button type="button" class="btn btn-default btn-sm" {{action 'toggleEditShape'}}>
+      <button
+        type='button'
+        class='btn btn-default btn-sm'
+        {{action 'toggleEditShape'}}
+      >
         {{if this.data.editingShape 'Finish Editing' 'Edit Shape'}}
       </button>
     {{/ember-wormhole}}
@@ -38,8 +63,10 @@
 
   {{#if this.data.isEditable}}
     {{#if this.data.options}}
-      {{gmm-tool-options tool=this.data
-        updateOptionValue=(action 'updateOptionValue')}}
+      {{gmm-tool-options
+        tool=this.data
+        updateOptionValue=(action 'updateOptionValue')
+      }}
     {{/if}}
   {{/if}}
 {{/if}}

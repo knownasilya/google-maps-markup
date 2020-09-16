@@ -16,10 +16,13 @@ export default Component.extend(ChildMixin, {
     let data = this.data;
 
     if (data.feature.addListener) {
-      let changeListener = data.feature.addListener('changelabel', run.bind(this, () => {
-        data.geojson.properties.label = data.feature.label;
-        this.set('description', data.feature.label);
-      }));
+      let changeListener = data.feature.addListener(
+        'changelabel',
+        run.bind(this, () => {
+          data.geojson.properties.label = data.feature.label;
+          this.set('description', data.feature.label);
+        })
+      );
 
       this.set('changeListener', changeListener);
     }
@@ -39,7 +42,7 @@ export default Component.extend(ChildMixin, {
       } else if (data.type === 'text') {
         return data.feature.label;
       }
-    }
+    },
   }),
 
   actions: {
@@ -47,12 +50,12 @@ export default Component.extend(ChildMixin, {
       let data = this.data;
       let wormhole = this.wormhole;
 
-      this.sendAction('onedit', data, wormhole, position);
+      this.onedit(data, wormhole, position, this.elementId);
     },
 
     ok() {
       let data = this.data;
-      
+
       set(data, 'editing', false);
     },
 
@@ -93,18 +96,22 @@ export default Component.extend(ChildMixin, {
           data.feature.draggable = true;
           // TODO: implement label dragging
         } else {
-          listener = google.maps.event.addListener(data.feature, 'setgeometry', run.bind(this, function () {
-            if (data.label) {
-              data.label.position = featureCenter(data.feature);
-            }
-            // force recalculation
-            this.set('shapeModified', true);
-            this.notifyPropertyChange('description');
-          }));
+          listener = google.maps.event.addListener(
+            data.feature,
+            'setgeometry',
+            run.bind(this, function () {
+              if (data.label) {
+                data.label.position = featureCenter(data.feature);
+              }
+              // force recalculation
+              this.set('shapeModified', true);
+              this.notifyPropertyChange('description');
+            })
+          );
           this.set('originalFeatureGeometry', data.feature.getGeometry());
           data.layer.data.overrideStyle(data.feature, {
             editable: true,
-            draggable: true
+            draggable: true,
           });
         }
       } else {
@@ -136,7 +143,7 @@ export default Component.extend(ChildMixin, {
         data.feature.setGeometry(originalGeometry);
         this.set('shapeModified', false);
       }
-    }
+    },
   },
 
   willDestroyElement() {
@@ -147,5 +154,5 @@ export default Component.extend(ChildMixin, {
     if (changeListener) {
       google.maps.event.removeListener(changeListener);
     }
-  }
+  },
 });

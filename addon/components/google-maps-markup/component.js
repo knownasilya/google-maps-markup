@@ -502,7 +502,7 @@ export default Component.extend(ParentMixin, {
       }
     },
 
-    editResult(data, wormhole, position) {
+    editResult(data, wormhole, position, elementId) {
       let popup = this.markupEditPopup;
       let map = this.map;
       let editable = this.editable;
@@ -512,7 +512,7 @@ export default Component.extend(ParentMixin, {
 
       // disable editing on other items
       childComponents.forEach((comp) => {
-        if (comp.get('data').feature.getId() !== data.feature.getId()) {
+        if (comp.elementId !== elementId) {
           set(comp, 'data.editing', false);
         }
       });
