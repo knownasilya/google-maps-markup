@@ -1,0 +1,41 @@
+2020-09-17T20:54:32.485Z [warn] [addon/utils/path-distance.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:54:32.497Z [warn] [addon/utils/create-circle.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:54:32.523Z [warn] [addon/utils/init-text-label.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:54:32.555Z [warn] [addon/utils/paths-to-bounds.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:54:32.573Z [warn] [addon/utils/init-measure-label.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:54:32.579Z [warn] [addon/utils/create-feature.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:54:32.711Z [warn] [addon/helpers/is-equal.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:54:32.804Z [warn] [addon/helpers/tool-id.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:54:50.804Z [warn] [addon/utils/modes.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:54:53.704Z [warn] [addon/utils/number-commas.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:54:55.969Z [warn] [addon/utils/layer.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:00.974Z [warn] [addon/utils/distance.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:01.114Z [info] [addon/components/gmm-markup-results/component.js]: SUCCESS
+2020-09-17T20:55:01.130Z [warn] [addon/utils/guid.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:01.245Z [warn] [addon/utils/options-data.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:01.438Z [warn] [addon/utils/feature-center.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:01.743Z [info] [addon/components/gmm-tool-options/component.js]: SUCCESS
+2020-09-17T20:55:01.779Z [warn] [addon/utils/shape-area.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:01.803Z [warn] [addon/utils/format-number.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:01.806Z [warn] [addon/utils/get-measurement.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:02.049Z [warn] [addon/utils/label-plotter.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:02.097Z [warn] [addon/utils/overlay-to-feature.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:02.555Z [warn] [addon/utils/map-label.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:02.581Z [warn] [addon/utils/dynamic-label.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:02.587Z [warn] [addon/utils/tools.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:02.667Z [warn] [addon/services/markup-data.js]: FAILURE 
+Validation errors: 
+	[markupResults]: Transform not supported - need option '--decorators=true' or the property type CallExpression can not be transformed
+	[markupResults]: Transform not supported - value has modifiers like 'property' or 'meta'
+	[textGeoJson]: Transform not supported - need option '--decorators=true' or the property type CallExpression can not be transformed
+2020-09-17T20:55:02.732Z [warn] [addon/utils/measure-type-result.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:02.782Z [warn] [addon/utils/area.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-09-17T20:55:04.284Z [warn] [addon/components/google-maps-markup/component.js]: FAILURE 
+Validation errors: 
+	[listeners]: Transform not supported - need option '--decorators=true' or the property type CallExpression can not be transformed
+	[toolListeners]: Transform not supported - need option '--decorators=true' or the property type CallExpression can not be transformed
+	[currentPoints]: Transform not supported - need option '--decorators=true' or the property type CallExpression can not be transformed
+	[drawingTools]: Transform not supported - need option '--decorators=true' or the property type CallExpression can not be transformed
+	[measureTools]: Transform not supported - need option '--decorators=true' or the property type CallExpression can not be transformed
+	[fillColorTransparent]: Transform not supported - calling the passed action would cause an infinite loop. See https://github.com/scalvert/eslint-plugin-ember-es6-class/pull/2 for more details
+2020-09-17T20:55:05.032Z [info] [addon/components/markup-result-item/component.js]: SUCCESS

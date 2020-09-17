@@ -21,7 +21,7 @@
       <button
         type='button'
         class='btn btn-default btn-xs'
-        {{on 'click' (action 'ok' this.data.feature.position)}}
+        {{on 'click' (fn this.ok this.data.feature.position)}}
       >
         OK
       </button>
@@ -29,7 +29,7 @@
       <button
         type='button'
         class='btn btn-default btn-xs'
-        {{on 'click' (action 'edit' this.data.feature.position)}}
+        {{on 'click' (fn this.edit this.data.feature.position)}}
       >
         Edit
       </button>
@@ -52,7 +52,7 @@
         <button
           type='button'
           class='btn btn-warning btn-sm'
-          {{action 'cancelEditShape'}}
+          {{on 'click' this.cancelEditShape}}
         >
           Reset Shape
         </button>
@@ -61,7 +61,7 @@
       <button
         type='button'
         class='btn btn-default btn-sm'
-        {{action 'toggleEditShape'}}
+        {{on 'click' this.toggleEditShape}}
       >
         {{if this.data.editingShape 'Finish Editing' 'Edit Shape'}}
       </button>
@@ -72,7 +72,7 @@
     {{#if this.data.options}}
       {{gmm-tool-options
         tool=this.data
-        updateOptionValue=(action 'updateOptionValue')
+        updateOptionValue=this.updateOptionValue
       }}
     {{/if}}
   {{/if}}
