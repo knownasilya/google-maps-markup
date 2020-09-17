@@ -9,6 +9,22 @@
         onselect=(action this.updateOptionValue this.tool opt.id)
       }}
     </div>
+  {{else if (is-equal opt.type 'opacity')}}
+    <div class='col-xs-3 col-sm-4 form-group'>
+      <label>
+        {{opt.name}}
+      </label>
+      {{input
+        type='range'
+        min='0'
+        max='1'
+        step='0.05'
+        value=this.tool.style.fillOpacity
+        oninput=(action
+          (fn @updateOptionValue this.tool opt.id) value='target.value'
+        )
+      }}
+    </div>
   {{else if (is-equal opt.type 'width')}}
     <div class='col-xs-3 col-sm-4 form-group'>
       <label>

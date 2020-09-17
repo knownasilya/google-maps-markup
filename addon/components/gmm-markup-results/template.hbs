@@ -21,16 +21,17 @@
     </button>
   </div>
 
-  {{#sortable-objects
-    sortableObjectList=this.results
-    sortEndAction='sortEndAction'
+  <SortableObjects
+    @sortableObjectList={{this.results}}
+    @sortEndAction={{action 'sortEndAction'}}
+    @tagName='ul'
     class='list-group results-list'
-    tagName='ul'
-  }}
+  >
     {{#each this.results as |result|}}
       <DraggableObject
         @content={{result}}
         @isSortable={{true}}
+        @dragHandle='.item-header'
         @mouseEnter={{fn this.onOver result}}
         @mouseLeave={{fn this.onOut result}}
         @tagName='li'
@@ -45,5 +46,5 @@
         />
       </DraggableObject>
     {{/each}}
-  {{/sortable-objects}}
+  </SortableObjects>
 {{/if}}

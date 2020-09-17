@@ -2,7 +2,7 @@ export default {
   pan: {
     id: 'pan',
     name: 'Pan',
-    title: 'Pan Tool'
+    title: 'Pan Tool',
   },
   text: {
     id: 'text',
@@ -10,18 +10,18 @@ export default {
     title: 'Text Label Tool',
     options: [
       { name: 'Font Size', type: 'size', id: 'style.fontSize' },
-      { name: 'Color', type: 'color', id: 'style.color' }
+      { name: 'Color', type: 'color', id: 'style.color' },
     ],
     style: {
       color: '#374046',
-      fontSize: '12'
-    }
+      fontSize: '12',
+    },
   },
   marker: {
     id: 'marker',
     dataId: 'Point',
     name: 'Marker',
-    title: 'Marker Tool'
+    title: 'Marker Tool',
   },
   polyline: {
     id: 'polyline',
@@ -31,13 +31,13 @@ export default {
     options: [
       { name: 'Distance Unit', type: 'distanceUnit', id: 'distanceUnit' },
       { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
-      { name: 'Color', type: 'color', id: 'style.strokeColor' }
+      { name: 'Color', type: 'color', id: 'style.strokeColor' },
     ],
     style: {
       strokeColor: '#374046',
-      strokeWeight: 2
+      strokeWeight: 2,
     },
-    distanceUnitId: 'ft'
+    distanceUnitId: 'ft',
   },
   polygon: {
     id: 'polygon',
@@ -47,17 +47,23 @@ export default {
     options: [
       { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
       { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
-      { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
-      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
+      {
+        name: 'Fill Color',
+        type: 'color',
+        id: 'style.fillColor',
+        fillOptional: true,
+      },
+      { name: 'Fill Opacity', type: 'opacity', id: 'style.fillOpacity' },
+      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
     ],
     style: {
       strokeColor: '#374046',
       fillColor: '#374046',
       strokeWeight: 2,
-      fillOpacity: 0.5
+      fillOpacity: 0.5,
     },
     fillColorTransparent: true,
-    distanceUnitId: 'sq ft'
+    distanceUnitId: 'sq ft',
   },
   freeFormPolygon: {
     id: 'freeFormPolygon',
@@ -65,16 +71,22 @@ export default {
     title: 'Freeform Polygon Tool',
     options: [
       { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
-      { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
+      {
+        name: 'Fill Color',
+        type: 'color',
+        id: 'style.fillColor',
+        fillOptional: true,
+      },
+      { name: 'Fill Opacity', type: 'opacity', id: 'style.fillOpacity' },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
     ],
     style: {
       strokeColor: '#374046',
       fillColor: '#374046',
-      strokeWeight: 2
+      strokeWeight: 2,
     },
     fillColorTransparent: true,
-    distanceUnitId: 'sq ft'
+    distanceUnitId: 'sq ft',
   },
   circle: {
     id: 'circle',
@@ -84,17 +96,23 @@ export default {
     options: [
       { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
       { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
-      { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
-      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
+      {
+        name: 'Fill Color',
+        type: 'color',
+        id: 'style.fillColor',
+        fillOptional: true,
+      },
+      { name: 'Fill Opacity', type: 'opacity', id: 'style.fillOpacity' },
+      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
     ],
     style: {
       strokeColor: '#374046',
       fillColor: '#374046',
       fillOpacity: 0.5,
-      strokeWeight: 2
+      strokeWeight: 2,
     },
     fillColorTransparent: true,
-    distanceUnitId: 'sq ft'
+    distanceUnitId: 'sq ft',
   },
   rectangle: {
     id: 'rectangle',
@@ -104,16 +122,22 @@ export default {
     options: [
       { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
       { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
-      { name: 'Fill Color', type: 'color', id: 'style.fillColor', fillOptional: true },
-      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' }
+      {
+        name: 'Fill Color',
+        type: 'color',
+        id: 'style.fillColor',
+        fillOptional: true,
+      },
+      { name: 'Fill Opacity', type: 'opacity', id: 'style.fillOpacity' },
+      { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
     ],
     style: {
       strokeColor: '#374046',
       fillColor: '#374046',
       fillOpacity: 0.5,
-      strokeWeight: 2
+      strokeWeight: 2,
     },
     fillColorTransparent: true,
-    distanceUnitId: 'sq ft'
-  }
+    distanceUnitId: 'sq ft',
+  },
 };
