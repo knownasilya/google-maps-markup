@@ -126,6 +126,14 @@ export default Component.extend(ParentMixin, {
       color: style.color,
       autoFocus: true,
       fontSize: style.fontSize,
+      onOver() {
+        console.log('over');
+        labelMarker.highlight();
+      },
+      onOut() {
+        console.log('out');
+        labelMarker.clearHighlight();
+      },
     });
     let item = {
       mode,

@@ -29,6 +29,8 @@ function createDynamicLabel() {
 
       this.fontSize = options.fontSize;
       this.label = options.label;
+      this.onOver = options.onOver;
+      this.onOut = options.onOut;
       this.id = v1();
     }
 
@@ -68,6 +70,22 @@ function createDynamicLabel() {
         google.maps.event.addDomListener(this._element, 'click', (event) => {
           this._element.focus();
           event.stopPropagation();
+        });
+        google.maps.event.addDomListener(
+          this._element,
+          'mouseover',
+          (event) => {
+            event.stopPropagation();
+            if (this.onOver) {
+              this.onOver();
+            }
+          }
+        );
+        google.maps.event.addDomListener(this._element, 'mouseout', (event) => {
+          event.stopPropagation();
+          if (this.onOut) {
+            this.onOut();
+          }
         });
         google.maps.event.addDomListener(this._element, 'focusin', (event) => {
           this.editingText = true;
@@ -181,15 +199,6 @@ function createDynamicLabel() {
     }
 
     onRemove() {
-      /*
-    this._element.removeEventListener('keydown');
-    this._element.removeEventListener('dblclick');
-    this._element.removeEventListener('click');
-    this._element.removeEventListener('focusin');
-    this._element.removeEventListener('focusout');
-    this._element.removeEventListener('mousemove');
-    this._element.removeEventListener('input');
-    */
       google.maps.event.clearInstanceListeners(this._element);
 
       super.onRemove(...arguments);
