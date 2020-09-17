@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/knownasilya/google-maps-markup/compare/v3.1.0...v3.2.0) (2020-09-17)
+
+
+### Features
+
+* fill opacity ([7e7cd45](https://github.com/knownasilya/google-maps-markup/commit/7e7cd454a6439b978f9d0632c1b6abe68823a104))
+
+
+### Bug Fixes
+
+* opacity not setting untill mouse out, make options ui a grid, over only over header now ([c09adcd](https://github.com/knownasilya/google-maps-markup/commit/c09adcd1b710fa17e4af786493359d59db5894a0))
+
 ## [3.1.0](https://github.com/knownasilya/google-maps-markup/compare/v3.0.4...v3.1.0) (2020-09-17)
 
 
