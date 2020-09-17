@@ -2,6 +2,13 @@
   background-color: #fafafa;
 }
 
+.google-maps-markup .tool-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  grid-gap: 1rem;
+}
+
 .google-maps-markup .results-list .tool-options {
   margin: 9px -15px -10px -15px;
   padding: 8px 15px;

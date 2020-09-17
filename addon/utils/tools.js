@@ -53,8 +53,8 @@ export default {
         id: 'style.fillColor',
         fillOptional: true,
       },
-      { name: 'Fill Opacity', type: 'opacity', id: 'style.fillOpacity' },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
+      { name: 'Fill Opacity', type: 'opacity', id: 'style.fillOpacity' },
     ],
     style: {
       strokeColor: '#374046',
@@ -77,8 +77,8 @@ export default {
         id: 'style.fillColor',
         fillOptional: true,
       },
-      { name: 'Fill Opacity', type: 'opacity', id: 'style.fillOpacity' },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
+      { name: 'Fill Opacity', type: 'opacity', id: 'style.fillOpacity' },
     ],
     style: {
       strokeColor: '#374046',
@@ -102,8 +102,8 @@ export default {
         id: 'style.fillColor',
         fillOptional: true,
       },
-      { name: 'Fill Opacity', type: 'opacity', id: 'style.fillOpacity' },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
+      { name: 'Fill Opacity', type: 'opacity', id: 'style.fillOpacity' },
     ],
     style: {
       strokeColor: '#374046',
@@ -128,8 +128,8 @@ export default {
         id: 'style.fillColor',
         fillOptional: true,
       },
-      { name: 'Fill Opacity', type: 'opacity', id: 'style.fillOpacity' },
       { name: 'Stroke Color', type: 'color', id: 'style.strokeColor' },
+      { name: 'Fill Opacity', type: 'opacity', id: 'style.fillOpacity' },
     ],
     style: {
       strokeColor: '#374046',

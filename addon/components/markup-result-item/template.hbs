@@ -1,4 +1,9 @@
-<div class='item-header'>
+{{! template-lint-disable no-invalid-interactive}}
+<div
+  class='item-header'
+  {{on 'mouseenter' @onOverHeader}}
+  {{on 'mouseleave' @onOutHeader}}
+>
   <b>
     {{this.data.name}}
   </b>{{if this.description ':'}}

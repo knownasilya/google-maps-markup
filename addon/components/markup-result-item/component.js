@@ -79,7 +79,6 @@ export default Component.extend(ChildMixin, {
       } else {
         let data = this.data;
         set(tool, prop, value);
-        set(this.data, 'style.fillOpacity', 0.5);
 
         data.layer.data.overrideStyle(data.feature, data.style);
       }

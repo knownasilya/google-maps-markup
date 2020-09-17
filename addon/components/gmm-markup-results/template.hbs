@@ -32,14 +32,14 @@
         @content={{result}}
         @isSortable={{true}}
         @dragHandle='.item-header'
-        @mouseEnter={{fn this.onOver result}}
-        @mouseLeave={{fn this.onOut result}}
         @tagName='li'
         class='list-group-item clearfix'
       >
         <MarkupResultItem
           @data={{result}}
           @editable={{this.editable}}
+          @onOverHeader={{fn this.onOver result}}
+          @onOutHeader={{fn this.onOut result}}
           @onremove={{this.onRemove}}
           @ontoggle={{this.onToggle}}
           @onedit={{this.onEdit}}

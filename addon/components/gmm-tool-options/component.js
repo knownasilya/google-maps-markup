@@ -4,6 +4,6 @@ import optionsData from '../../utils/options-data';
 
 export default Component.extend({
   layout,
-  classNames: ['tool-options', 'row'],
-  optionsData
+  classNames: ['tool-options'],
+  optionsData,
 });
