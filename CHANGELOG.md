@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/knownasilya/google-maps-markup/compare/v3.0.4...v3.1.0) (2020-09-17)
+
+
+### Features
+
+* text highlight on mouseover ([a9d6635](https://github.com/knownasilya/google-maps-markup/commit/a9d66357546f497d220bb4c36907c1926a456999))
+
+
+### Bug Fixes
+
+* hovering over items if text present on map ([9cc549b](https://github.com/knownasilya/google-maps-markup/commit/9cc549bde7ceb94222c8c266e9de6f589c44b1e6))
+* remove scrollbar from tall text ([7330c7e](https://github.com/knownasilya/google-maps-markup/commit/7330c7ee410e0be89f118d7456743249250ef39a))
+
 ### [3.0.4](https://github.com/knownasilya/google-maps-markup/compare/v3.0.3...v3.0.4) (2020-09-16)
 
 
