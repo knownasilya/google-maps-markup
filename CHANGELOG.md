@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.1](https://github.com/knownasilya/google-maps-markup/compare/v3.2.0...v3.2.1) (2020-09-17)
+
+
+### Bug Fixes
+
+* update dnd library ([5d49f92](https://github.com/knownasilya/google-maps-markup/commit/5d49f92d5714c9b27c8c178966321a72f70594e9))
+
 ## [3.2.0](https://github.com/knownasilya/google-maps-markup/compare/v3.1.0...v3.2.0) (2020-09-17)
 
 
