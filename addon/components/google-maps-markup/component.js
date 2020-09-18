@@ -5,8 +5,7 @@ import { copy } from 'ember-copy';
 import Component from '@ember/component';
 import { run, next } from '@ember/runloop';
 import { A as boundArray } from '@ember/array';
-// eslint-disable-next-line ember/no-observers
-import { observer as observes, set } from '@ember/object';
+import { set } from '@ember/object';
 import { v1 } from 'ember-uuid';
 import { ParentMixin } from 'ember-composability-tools';
 import layout from './template';
@@ -80,15 +79,6 @@ export default Component.extend(ParentMixin, {
     this.DynamicLabel = dynamicLabelFactory();
 
     this.initPopupEvents();
-
-    /* eslint-disable ember/no-observers */
-    if (!this.mapEventsSetup) {
-      this.addObserver('map', this, 'setupMapEvents');
-    }
-
-    this.addObserver('mode', this, 'changeLayer');
-    this.addObserver('map', this, 'changeLayer');
-    /* eslint-enable ember/no-observers */
   },
 
   initPopupEvents() {
@@ -284,6 +274,7 @@ export default Component.extend(ParentMixin, {
 
     changeMode(mode) {
       this.set('mode', mode.id);
+      this.changeLayer();
     },
 
     fillColorTransparent() {
@@ -677,7 +668,6 @@ export default Component.extend(ParentMixin, {
     }
   },
 
-  // Observed in init
   changeLayer() {
     let modeId = this.mode;
     let map = this.map;
@@ -704,10 +694,11 @@ export default Component.extend(ParentMixin, {
       activeLayer.data.setDrawingMode(tool && tool.dataId);
 
       this.set('activeLayer', activeLayer);
+      this.setupActiveLayer();
     }
   },
 
-  activeLayerSetup: observes('activeLayer', function () {
+  setupActiveLayer() {
     let mode = this.mode;
     let layer = this.activeLayer;
     let lastLayer = this.lastActiveLayer;
@@ -798,7 +789,7 @@ export default Component.extend(ParentMixin, {
     );
 
     this.listeners.pushObjects([listener]);
-  }),
+  },
 
   didInsertElement() {
     this._super(...arguments);
@@ -835,6 +826,10 @@ export default Component.extend(ParentMixin, {
   },
 
   didReceiveAttrs() {
+    if (!this.mapSetup && this.map) {
+      this.mapSetup = true;
+      this.changeLayer();
+    }
     if (!this.mapEventsSetup) {
       this.setupMapEvents();
     }
