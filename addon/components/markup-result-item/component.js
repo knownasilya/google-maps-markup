@@ -30,7 +30,7 @@ export default class MarkupResultItem extends Component.extend(ChildMixin) {
     }
   }
 
-  @computed('data.mode', 'data.feature')
+  @computed('data.{mode,feature}')
   get description() {
     let mode = this.get('data.mode');
     let data = this.data;
@@ -44,6 +44,8 @@ export default class MarkupResultItem extends Component.extend(ChildMixin) {
     } else if (data.type === 'text') {
       return data.feature.label;
     }
+
+    return '';
   }
 
   @action

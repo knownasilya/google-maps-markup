@@ -3,9 +3,9 @@ import { alias } from '@ember/object/computed';
 import $ from 'jquery';
 import { copy } from 'ember-copy';
 import Component from '@ember/component';
-import { on } from '@ember/object/evented';
 import { run, next } from '@ember/runloop';
 import { A as boundArray } from '@ember/array';
+// eslint-disable-next-line ember/no-observers
 import { observer as observes, set } from '@ember/object';
 import { v1 } from 'ember-uuid';
 import { ParentMixin } from 'ember-composability-tools';
@@ -81,9 +81,14 @@ export default Component.extend(ParentMixin, {
 
     this.initPopupEvents();
 
+    /* eslint-disable ember/no-observers */
     if (!this.mapEventsSetup) {
       this.addObserver('map', this, 'setupMapEvents');
     }
+
+    this.addObserver('mode', this, 'changeLayer');
+    this.addObserver('map', this, 'changeLayer');
+    /* eslint-enable ember/no-observers */
   },
 
   initPopupEvents() {
@@ -672,37 +677,35 @@ export default Component.extend(ParentMixin, {
     }
   },
 
-  changeLayer: on(
-    'init',
-    observes('mode', 'map', function () {
-      let modeId = this.mode;
-      let map = this.map;
-      let toolId = this.toolId;
-      let dataLayers = this.dataLayers;
-      let activeLayer = this.activeLayer;
+  // Observed in init
+  changeLayer() {
+    let modeId = this.mode;
+    let map = this.map;
+    let toolId = this.toolId;
+    let dataLayers = this.dataLayers;
+    let activeLayer = this.activeLayer;
 
-      this.set('lastActiveLayer', activeLayer);
+    this.set('lastActiveLayer', activeLayer);
 
-      if (modeId === MODE.draw.id || modeId === MODE.measure.id) {
-        let tool = this.getTool(toolId, modeId);
+    if (modeId === MODE.draw.id || modeId === MODE.measure.id) {
+      let tool = this.getTool(toolId, modeId);
 
-        activeLayer = dataLayers[modeId === MODE.draw.id ? 0 : 1];
+      activeLayer = dataLayers[modeId === MODE.draw.id ? 0 : 1];
 
-        if (!activeLayer.isHidden) {
-          activeLayer.data.setMap(map);
-        }
-
-        // tool doesn't exist for this mode, revert to pan
-        if (!tool) {
-          this.send('changeTool', TOOLS.pan.id);
-        }
-
-        activeLayer.data.setDrawingMode(tool && tool.dataId);
-
-        this.set('activeLayer', activeLayer);
+      if (!activeLayer.isHidden) {
+        activeLayer.data.setMap(map);
       }
-    })
-  ),
+
+      // tool doesn't exist for this mode, revert to pan
+      if (!tool) {
+        this.send('changeTool', TOOLS.pan.id);
+      }
+
+      activeLayer.data.setDrawingMode(tool && tool.dataId);
+
+      this.set('activeLayer', activeLayer);
+    }
+  },
 
   activeLayerSetup: observes('activeLayer', function () {
     let mode = this.mode;

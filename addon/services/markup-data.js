@@ -88,7 +88,7 @@ export default class MarkupData extends Service {
     let mode = this.mode;
 
     if (!mode) {
-      return;
+      return undefined;
     }
 
     return this.get(`markupResults.${mode}`);
