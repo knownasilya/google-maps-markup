@@ -111,16 +111,19 @@ export default class MarkupData extends Service {
     let textGeoJson = this.textGeoJson;
     let name = feature.getProperty('name');
     let mode = feature.getProperty('mode');
+    let style = feature.getProperty('style');
     let results = this.get(`markupResults.${mode}`);
     let result = {
-      name,
       mode,
-      feature,
       layer,
-      style: feature.getProperty('style'),
-      type: feature.getProperty('type'),
+      style,
+      fillColorTransparent: feature.getProperty('fillColorTransparent'),
       isVisible: feature.getProperty('isVisible'),
+      type: feature.getProperty('type'),
+      name,
+      feature,
       distanceUnitId: feature.getProperty('distanceUnitId'),
+      isEditable: Object.keys(style).length ? true : false,
     };
 
     if (result.style) {
