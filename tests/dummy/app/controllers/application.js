@@ -9,16 +9,15 @@ export default Controller.extend({
     let dataLayers = this.get('markupDataService.layers');
 
     if (dataLayers) {
-      let promises = dataLayers.map(layer => {
+      let promises = dataLayers.map((layer) => {
         return layer.toGeoJson();
       });
 
-      return all(promises)
-        .then(layers => {
-          // make sure empty feature collections aren't exported
-          this.set('exported', layers);
-          return layers;
-        });
+      return all(promises).then((layers) => {
+        // make sure empty feature collections aren't exported
+        this.set('exported', layers);
+        return layers;
+      });
     } else {
       return resolve();
     }
@@ -26,11 +25,13 @@ export default Controller.extend({
 
   loadMarkup(markupData) {
     let markupService = this.markupDataService;
-    let dataLayers = markupService.get('layers');
+    let dataLayers = markupService.layers;
 
     dataLayers.forEach((layer, index) => {
       layer.data.addGeoJson(markupData[index]);
-      layer.data.forEach(feature => markupService.featureToResult(feature, layer));
+      layer.data.forEach((feature) =>
+        markupService.featureToResult(feature, layer)
+      );
     });
 
     markupService.changeModeByResults();
@@ -47,6 +48,6 @@ export default Controller.extend({
 
     save() {
       this.exportMarkup();
-    }
-  }
+    },
+  },
 });
