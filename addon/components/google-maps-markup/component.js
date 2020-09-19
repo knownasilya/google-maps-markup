@@ -3,10 +3,9 @@ import { alias } from '@ember/object/computed';
 import $ from 'jquery';
 import { copy } from 'ember-copy';
 import Component from '@ember/component';
-import { on } from '@ember/object/evented';
 import { run, next } from '@ember/runloop';
 import { A as boundArray } from '@ember/array';
-import { observer as observes, set } from '@ember/object';
+import { set } from '@ember/object';
 import { v1 } from 'ember-uuid';
 import { ParentMixin } from 'ember-composability-tools';
 import layout from './template';
@@ -80,10 +79,6 @@ export default Component.extend(ParentMixin, {
     this.DynamicLabel = dynamicLabelFactory();
 
     this.initPopupEvents();
-
-    if (!this.mapEventsSetup) {
-      this.addObserver('map', this, 'setupMapEvents');
-    }
   },
 
   initPopupEvents() {
@@ -279,6 +274,7 @@ export default Component.extend(ParentMixin, {
 
     changeMode(mode) {
       this.set('mode', mode.id);
+      this.changeLayer();
     },
 
     fillColorTransparent() {
@@ -672,39 +668,37 @@ export default Component.extend(ParentMixin, {
     }
   },
 
-  changeLayer: on(
-    'init',
-    observes('mode', 'map', function () {
-      let modeId = this.mode;
-      let map = this.map;
-      let toolId = this.toolId;
-      let dataLayers = this.dataLayers;
-      let activeLayer = this.activeLayer;
+  changeLayer() {
+    let modeId = this.mode;
+    let map = this.map;
+    let toolId = this.toolId;
+    let dataLayers = this.dataLayers;
+    let activeLayer = this.activeLayer;
 
-      this.set('lastActiveLayer', activeLayer);
+    this.set('lastActiveLayer', activeLayer);
 
-      if (modeId === MODE.draw.id || modeId === MODE.measure.id) {
-        let tool = this.getTool(toolId, modeId);
+    if (modeId === MODE.draw.id || modeId === MODE.measure.id) {
+      let tool = this.getTool(toolId, modeId);
 
-        activeLayer = dataLayers[modeId === MODE.draw.id ? 0 : 1];
+      activeLayer = dataLayers[modeId === MODE.draw.id ? 0 : 1];
 
-        if (!activeLayer.isHidden) {
-          activeLayer.data.setMap(map);
-        }
-
-        // tool doesn't exist for this mode, revert to pan
-        if (!tool) {
-          this.send('changeTool', TOOLS.pan.id);
-        }
-
-        activeLayer.data.setDrawingMode(tool && tool.dataId);
-
-        this.set('activeLayer', activeLayer);
+      if (!activeLayer.isHidden) {
+        activeLayer.data.setMap(map);
       }
-    })
-  ),
 
-  activeLayerSetup: observes('activeLayer', function () {
+      // tool doesn't exist for this mode, revert to pan
+      if (!tool) {
+        this.send('changeTool', TOOLS.pan.id);
+      }
+
+      activeLayer.data.setDrawingMode(tool && tool.dataId);
+
+      this.set('activeLayer', activeLayer);
+      this.setupActiveLayer();
+    }
+  },
+
+  setupActiveLayer() {
     let mode = this.mode;
     let layer = this.activeLayer;
     let lastLayer = this.lastActiveLayer;
@@ -795,7 +789,7 @@ export default Component.extend(ParentMixin, {
     );
 
     this.listeners.pushObjects([listener]);
-  }),
+  },
 
   didInsertElement() {
     this._super(...arguments);
@@ -832,6 +826,10 @@ export default Component.extend(ParentMixin, {
   },
 
   didReceiveAttrs() {
+    if (!this.mapSetup && this.map) {
+      this.mapSetup = true;
+      this.changeLayer();
+    }
     if (!this.mapEventsSetup) {
       this.setupMapEvents();
     }

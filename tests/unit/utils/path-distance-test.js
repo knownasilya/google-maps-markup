@@ -1,9 +1,9 @@
 import pathDistance from '../../../utils/path-distance';
 import { module, test } from 'qunit';
 
-module('Unit | Utility | path distance', function() {
+module('Unit | Utility | path distance', function () {
   // Replace this with your real tests.
-  test('it works', function(assert) {
+  test('it works', function (assert) {
     var result = pathDistance();
     assert.ok(result);
   });
