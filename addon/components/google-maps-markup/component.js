@@ -35,6 +35,9 @@ export default Component.extend(ParentMixin, {
   dataLayers: alias('markupData.layers'),
   results: alias('markupData.results'),
   mode: alias('markupData.mode'),
+  modes: alias('markupData.modes'),
+  drawTools: alias('markupData.drawTools'),
+  measureTools: alias('markupData.measureTools'),
   textGeoJson: alias('markupData.textGeoJson'),
   listeners: boundArray(),
   toolListeners: boundArray(),
@@ -43,24 +46,6 @@ export default Component.extend(ParentMixin, {
   activeLayer: undefined,
   toolId: TOOLS.pan.id,
   // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
-  modes: [MODE.draw, MODE.measure],
-  drawingTools: boundArray([
-    TOOLS.pan,
-    TOOLS.text,
-    TOOLS.marker,
-    TOOLS.polyline,
-    TOOLS.circle,
-    TOOLS.rectangle,
-    TOOLS.polygon,
-    TOOLS.freeFormPolygon,
-  ]),
-  measureTools: boundArray([
-    TOOLS.pan,
-    TOOLS.polyline,
-    TOOLS.circle,
-    TOOLS.rectangle,
-    TOOLS.polygon,
-  ]),
 
   init() {
     this._super(...arguments);
@@ -100,15 +85,6 @@ export default Component.extend(ParentMixin, {
 
       this.set('markupEditPopup', popup);
     }
-  },
-
-  getTool(id, mode) {
-    let isDrawingMode = mode === 'draw';
-    let toolIds = mode
-      ? this.get((isDrawingMode ? 'drawing' : mode) + 'Tools')
-      : TOOLS;
-
-    return Array.isArray(toolIds) ? toolIds.findBy('id', id) : toolIds[id];
   },
 
   addTextLabel(tool, position) {
@@ -164,7 +140,7 @@ export default Component.extend(ParentMixin, {
         run.later(
           this,
           function () {
-            let freshTool = this.getTool(tool.id);
+            let freshTool = this.markupData.getTool(tool.id);
             let freshStyle = copy(freshTool.style);
 
             labelMarker.color = freshStyle.color;
@@ -206,7 +182,7 @@ export default Component.extend(ParentMixin, {
     let map = this.map;
     let mode = this.mode;
     let activeLayer = this.activeLayer;
-    let tool = this.getTool(toolId);
+    let tool = this.markupData.getTool(toolId);
     let style = copy(tool.style || {});
     let poly = new google.maps.Polyline({
       map,
@@ -275,6 +251,7 @@ export default Component.extend(ParentMixin, {
     changeMode(mode) {
       this.set('mode', mode.id);
       this.changeLayer();
+      this.send('changeTool', this.toolId);
     },
 
     fillColorTransparent() {
@@ -296,7 +273,7 @@ export default Component.extend(ParentMixin, {
       let activeLayer = this.activeLayer;
       let map = this.map;
       let dm = this.dm;
-      let tool = this.getTool(toolId);
+      let tool = this.markupData.getTool(toolId);
       let listeners = this.toolListeners;
 
       this.set('activeTool', tool);
@@ -678,7 +655,7 @@ export default Component.extend(ParentMixin, {
     this.set('lastActiveLayer', activeLayer);
 
     if (modeId === MODE.draw.id || modeId === MODE.measure.id) {
-      let tool = this.getTool(toolId, modeId);
+      let tool = this.markupData.getTool(toolId, modeId);
 
       activeLayer = dataLayers[modeId === MODE.draw.id ? 0 : 1];
 
@@ -850,7 +827,7 @@ export default Component.extend(ParentMixin, {
         let mode = this.mode;
         let toolId = this.toolId;
         let toolActive = this.toolActive;
-        let tool = this.getTool(toolId, mode);
+        let tool = this.markupData.getTool(toolId, mode);
         let mapDiv = map.getDiv();
         let target = event.target;
         let withinMap = mapDiv.contains(target);

@@ -20,7 +20,7 @@
 </h4>
 {{#if (is-equal this.mode 'draw')}}
   <div class='form-group tools-group' role='group' aria-label='Drawing Tools'>
-    {{#each this.drawingTools as |tool|}}
+    {{#each this.drawTools as |tool|}}
       <button
         type='button'
         class="btn btn-default {{if (is-equal tool.id this.toolId) 'active'}}"

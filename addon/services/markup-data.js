@@ -1,10 +1,11 @@
 import Service from '@ember/service';
-import EmberObject, { computed, get } from '@ember/object';
+import EmberObject, { action, computed, get } from '@ember/object';
 import { A as boundArray } from '@ember/array';
 import createFeature from '../utils/create-feature';
 import initMeasureLabel from '../utils/init-measure-label';
 import initTextLabel from '../utils/init-text-label';
 import MODE from '../utils/modes';
+import TOOLS from '../utils/tools';
 import Layer from '../utils/layer';
 
 const MODES = [MODE.draw.id, MODE.measure.id];
@@ -16,10 +17,24 @@ export default class MarkupData extends Service {
     measure: boundArray(),
   });
   textGeoJson = boundArray();
-
-  constructor() {
-    super(...arguments);
-  }
+  modes = [MODE.draw, MODE.measure];
+  drawTools = boundArray([
+    TOOLS.pan,
+    TOOLS.text,
+    TOOLS.marker,
+    TOOLS.polyline,
+    TOOLS.circle,
+    TOOLS.rectangle,
+    TOOLS.polygon,
+    TOOLS.freeFormPolygon,
+  ]);
+  measureTools = boundArray([
+    TOOLS.pan,
+    TOOLS.polyline,
+    TOOLS.circle,
+    TOOLS.rectangle,
+    TOOLS.polygon,
+  ]);
 
   activate(map) {
     this.set('map', map);
@@ -106,22 +121,33 @@ export default class MarkupData extends Service {
     return data;
   }
 
+  @action
+  getTool(id, mode) {
+    let toolIds = mode ? this.get(mode + 'Tools') : TOOLS;
+
+    return Array.isArray(toolIds) ? toolIds.findBy('id', id) : toolIds[id];
+  }
+
+  @action
   featureToResult(feature, layer) {
     let map = this.map;
     let textGeoJson = this.textGeoJson;
     let name = feature.getProperty('name');
     let mode = feature.getProperty('mode');
     let style = feature.getProperty('style');
+    let type = feature.getProperty('type');
     let results = this.get(`markupResults.${mode}`);
+    let tool = this.getTool(type, mode);
     let result = {
       mode,
       layer,
       style,
       fillColorTransparent: feature.getProperty('fillColorTransparent'),
       isVisible: feature.getProperty('isVisible'),
-      type: feature.getProperty('type'),
+      type,
       name,
       feature,
+      options: tool?.options,
       distanceUnitId: feature.getProperty('distanceUnitId'),
       isEditable: Object.keys(style).length ? true : false,
     };
