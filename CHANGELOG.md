@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.4](https://github.com/knownasilya/google-maps-markup/compare/v3.2.3...v3.2.4) (2020-09-30)
+
+
+### Bug Fixes
+
+* tools using google before init ([041b60c](https://github.com/knownasilya/google-maps-markup/commit/041b60c27c614872d3889f0e1ead8e12da8aa44f))
+
 ### [3.2.3](https://github.com/knownasilya/google-maps-markup/compare/v3.2.2...v3.2.3) (2020-09-24)
 
 
