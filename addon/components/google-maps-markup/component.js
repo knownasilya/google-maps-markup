@@ -10,7 +10,6 @@ import { v1 } from 'ember-uuid';
 import { ParentMixin } from 'ember-composability-tools';
 import layout from './template';
 import MODE from '../../utils/modes';
-import TOOLS from '../../utils/tools';
 import overlayToFeature from '../../utils/overlay-to-feature';
 import featureCenter from '../../utils/feature-center';
 import initMeasureLabel from '../../utils/init-measure-label';
@@ -39,12 +38,13 @@ export default Component.extend(ParentMixin, {
   drawTools: alias('markupData.drawTools'),
   measureTools: alias('markupData.measureTools'),
   textGeoJson: alias('markupData.textGeoJson'),
+  tools: alias('markupData.tools'),
   listeners: boundArray(),
   toolListeners: boundArray(),
   currentPoints: boundArray(),
   resultsHidden: false,
   activeLayer: undefined,
-  toolId: TOOLS.pan.id,
+  toolId: undefined,
   // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
 
   init() {
@@ -53,7 +53,7 @@ export default Component.extend(ParentMixin, {
     if (!window.google) {
       throw new Error('Sorry, but `window.google` is required for this addon');
     }
-
+    this.toolId = this.tools.pan.id;
     this.dm = new google.maps.drawing.DrawingManager({
       drawingControl: false,
     });
@@ -148,7 +148,7 @@ export default Component.extend(ParentMixin, {
             set(item, 'geojson.properties.style', freshStyle);
             this.toolNotFinished = false;
 
-            this.send('changeTool', TOOLS.pan.id);
+            this.send('changeTool', this.tools.pan.id);
           },
           250
         );
@@ -225,7 +225,7 @@ export default Component.extend(ParentMixin, {
         run.later(
           this,
           function () {
-            this.send('changeTool', TOOLS.pan.id);
+            this.send('changeTool', this.tools.pan.id);
           },
           250
         );
@@ -665,7 +665,7 @@ export default Component.extend(ParentMixin, {
 
       // tool doesn't exist for this mode, revert to pan
       if (!tool) {
-        this.send('changeTool', TOOLS.pan.id);
+        this.send('changeTool', this.tools.pan.id);
       }
 
       activeLayer.data.setDrawingMode(tool && tool.dataId);
@@ -754,7 +754,7 @@ export default Component.extend(ParentMixin, {
             run.later(
               this,
               function () {
-                this.send('changeTool', TOOLS.pan.id);
+                this.send('changeTool', this.tools.pan.id);
               },
               250
             );
@@ -922,7 +922,7 @@ export default Component.extend(ParentMixin, {
     let listeners = this.listeners;
     let bodyListeners = this.bodyListeners;
 
-    this.send('changeTool', TOOLS.pan.id);
+    this.send('changeTool', this.tools.pan.id);
 
     // Cleanup all listeners
     if (listeners) {

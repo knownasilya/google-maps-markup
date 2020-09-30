@@ -5,7 +5,7 @@ import createFeature from '../utils/create-feature';
 import initMeasureLabel from '../utils/init-measure-label';
 import initTextLabel from '../utils/init-text-label';
 import MODE from '../utils/modes';
-import TOOLS from '../utils/tools';
+import getTools from '../utils/tools';
 import Layer from '../utils/layer';
 
 const MODES = [MODE.draw.id, MODE.measure.id];
@@ -18,23 +18,36 @@ export default class MarkupData extends Service {
   });
   textGeoJson = boundArray();
   modes = [MODE.draw, MODE.measure];
-  drawTools = boundArray([
-    TOOLS.pan,
-    TOOLS.text,
-    TOOLS.marker,
-    TOOLS.polyline,
-    TOOLS.circle,
-    TOOLS.rectangle,
-    TOOLS.polygon,
-    TOOLS.freeFormPolygon,
-  ]);
-  measureTools = boundArray([
-    TOOLS.pan,
-    TOOLS.polyline,
-    TOOLS.circle,
-    TOOLS.rectangle,
-    TOOLS.polygon,
-  ]);
+
+  constructor() {
+    super(...arguments);
+    let tools = getTools();
+
+    this.set('tools', tools);
+    this.set(
+      'drawTools',
+      boundArray([
+        tools.pan,
+        tools.text,
+        tools.marker,
+        tools.polyline,
+        tools.circle,
+        tools.rectangle,
+        tools.polygon,
+        tools.freeFormPolygon,
+      ])
+    );
+    this.set(
+      'measureTools',
+      boundArray([
+        tools.pan,
+        tools.polyline,
+        tools.circle,
+        tools.rectangle,
+        tools.polygon,
+      ])
+    );
+  }
 
   activate(map) {
     this.set('map', map);
@@ -123,7 +136,7 @@ export default class MarkupData extends Service {
 
   @action
   getTool(id, mode) {
-    let toolIds = mode ? this.get(mode + 'Tools') : TOOLS;
+    let toolIds = mode ? this.get(mode + 'Tools') : this.tools;
 
     return Array.isArray(toolIds) ? toolIds.findBy('id', id) : toolIds[id];
   }
