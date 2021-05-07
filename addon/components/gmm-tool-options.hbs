@@ -1,0 +1,89 @@
+<div class='tool-options' ...attributes>
+  {{#each @tool.options as |opt|}}
+    {{#if (is-equal opt.type 'color')}}
+      <div class='form-group'>
+        <label>
+          {{opt.name}}
+        </label>
+        <ColorPalette
+          @selected={{get @tool opt.id}}
+          @onselect={{fn @updateOptionValue @tool opt.id}}
+        />
+      </div>
+    {{else if (is-equal opt.type 'opacity')}}
+      <div class='form-group'>
+        <label>
+          {{opt.name}}
+        </label>
+        <input
+          type='range'
+          min='0'
+          max='1'
+          step='0.05'
+          value={{@tool.style.fillOpacity}}
+          {{on 'input' (fn this.updateOpacity opt.id)}}
+        />
+      </div>
+    {{else if (is-equal opt.type 'width')}}
+      <div class='form-group'>
+        <label>
+          {{opt.name}}
+        </label>
+        <PowerSelect
+          @options={{get
+            this.optionsData
+            (concat (tool-id @tool) '.strokeWeights')
+          }}
+          @selected={{@tool.style.strokeWeight}}
+          @searchEnabled={{false}}
+          @onChange={{fn @updateOptionValue @tool opt.id}} as |width|
+        >
+          {{width}}
+        </PowerSelect>
+      </div>
+    {{else if (is-equal opt.type 'size')}}
+      <div class='form-group'>
+        <div>
+          <label>
+            {{opt.name}}
+          </label>
+        </div>
+
+        <PowerSelect
+          @options={{get
+            this.optionsData
+            (concat (tool-id @tool) '.fontSizes')
+          }}
+          @selected={{@tool.style.fontSize}}
+          @searchEnabled={{false}}
+          @onChange={{fn @updateOptionValue @tool opt.id}} as |size|
+        >
+          {{size}}
+        </PowerSelect>
+      </div>
+    {{else if (is-equal @mode 'measure')}}
+      {{#if (is-equal opt.type 'distanceUnit')}}
+        <div class='form-group'>
+          <div>
+            <label>
+              {{opt.name}}
+            </label>
+          </div>
+          <PowerSelect
+            @options={{get
+              this.optionsData
+              (concat (tool-id @tool) '.distanceUnits')
+            }}
+            @selected={{@tool.distanceUnit}}
+            @searchEnabled={{false}}
+            @onChange={{fn @updateOptionValue @tool opt.id}} as |unit|
+          >
+            <strong>
+              {{unit.display}}
+            </strong>
+          </PowerSelect>
+        </div>
+      {{/if}}
+    {{/if}}
+  {{/each}}
+</div>
