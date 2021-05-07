@@ -1,32 +1,30 @@
-import classic from 'ember-classic-decorator';
-import { layout as templateLayout } from '@ember-decorators/component';
-import Component from '@ember/component';
 import { run } from '@ember/runloop';
+import { tracked } from '@glimmer/tracking';
 import { set, action, computed } from '@ember/object';
-import { ChildMixin } from 'ember-composability-tools';
-import layout from './template';
-import MODE from '../../utils/modes';
-import getMeasurement from '../../utils/get-measurement';
-import featureCenter from '../../utils/feature-center';
+import { Node } from 'ember-composability-tools';
+import MODE from '../utils/modes';
+import getMeasurement from '../utils/get-measurement';
+import featureCenter from '../utils/feature-center';
 
-@classic
-@templateLayout(layout)
-export default class MarkupResultItem extends Component.extend(ChildMixin) {
-  init() {
-    super.init(...arguments);
+export default class MarkupResultItem extends Node {
+  @tracked description;
+  @tracked data;
 
-    let data = this.data;
+  constructor() {
+    super(...arguments);
+
+    let data = this.args.data;
 
     if (data.feature.addListener) {
       let changeListener = data.feature.addListener(
         'changelabel',
         run.bind(this, () => {
           data.geojson.properties.label = data.feature.label;
-          this.set('description', data.feature.label);
+          this.description = data.feature.label;
         })
       );
 
-      this.set('changeListener', changeListener);
+      this.changeListener = changeListener;
     }
   }
 
@@ -53,7 +51,7 @@ export default class MarkupResultItem extends Component.extend(ChildMixin) {
     let data = this.data;
     let wormhole = this.wormhole;
 
-    this.onedit(data, wormhole, position, this.elementId);
+    this.args.onedit(data, wormhole, position, this.elementId);
   }
 
   @action
@@ -83,13 +81,15 @@ export default class MarkupResultItem extends Component.extend(ChildMixin) {
 
   @action
   toggleEditShape() {
-    let edit = this.toggleProperty('data.editingShape');
     let data = this.data;
+    let edit = !data.editingShape;
     let listener;
+
+    set(this.data, 'editingShape', edit);
 
     if (edit) {
       if (data.type === 'text') {
-        this.set('originalFeatureGeometry', data.feature.position);
+        this.originalFeatureGeometry = data.feature.position;
         data.feature.draggable = true;
         // TODO: implement label dragging
       } else {
@@ -101,11 +101,11 @@ export default class MarkupResultItem extends Component.extend(ChildMixin) {
               data.label.position = featureCenter(data.feature);
             }
             // force recalculation
-            this.set('shapeModified', true);
-            this.notifyPropertyChange('description');
+            this.shapeModified = true;
+            // this.notifyPropertyChange('description');
           })
         );
-        this.set('originalFeatureGeometry', data.feature.getGeometry());
+        this.originalFeatureGeometry = data.feature.getGeometry();
         data.layer.data.overrideStyle(data.feature, {
           editable: true,
           draggable: true,
@@ -119,14 +119,14 @@ export default class MarkupResultItem extends Component.extend(ChildMixin) {
         if (data.style) {
           data.layer.data.overrideStyle(data.feature, data.style);
         }
-        this.set('shapeModified', false);
+        this.shapeModified = false;
         if (listener) {
           google.maps.event.removeListener(listener);
         }
       }
     }
 
-    this.set('data', data);
+    this.data = data;
   }
 
   @action
@@ -136,16 +136,15 @@ export default class MarkupResultItem extends Component.extend(ChildMixin) {
     let originalGeometry = this.originalFeatureGeometry;
 
     if (shapeModified && originalGeometry) {
-      this.set('originalFeatureGeometry');
-      this.send('toggleEditShape');
+      this.originalFeatureGeometry = undefined;
+      this.toggleEditShape();
       data.feature.setGeometry(originalGeometry);
-      this.set('shapeModified', false);
+      this.shapeModified = false;
     }
   }
 
-  willDestroyElement() {
-    super.willDestroyElement(...arguments);
-
+  @action
+  beforeRemove() {
     let changeListener = this.changeListener;
 
     if (changeListener) {

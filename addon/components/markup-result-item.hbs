@@ -3,6 +3,7 @@
   class='item-header'
   {{on 'mouseenter' @onOverHeader}}
   {{on 'mouseleave' @onOutHeader}}
+  {{will-destroy this.beforeRemove}}
 >
   <b>
     {{this.data.name}}
