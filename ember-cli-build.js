@@ -24,5 +24,5 @@ module.exports = function (defaults) {
   });
 
   const { maybeEmbroider } = require('@embroider/test-setup');
-  return maybeEmbroider(mergeTrees([app.toTree(), fonts]));
+  return mergeTrees([maybeEmbroider(app), fonts]);
 };
