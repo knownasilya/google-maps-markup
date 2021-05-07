@@ -1,4 +1,4 @@
-{{#if this.results}}
+{{#if @results}}
   <h4>
     Results
   </h4>
@@ -7,27 +7,27 @@
       type='button'
       class='btn btn-default'
       title='Clear Results'
-      onclick={{action this.onClearAll}}
+      {{on 'click' @onClearAll}}
     >
       Clear All
     </button>
     <button
       type='button'
       class='btn btn-default'
-      title="{{if this.resultsHidden 'Show' 'Hide'}} Results"
-      onclick={{action this.onToggleAll}}
+      title="{{if @resultsHidden 'Show' 'Hide'}} Results"
+      {{on 'click' @onToggleAll}}
     >
-      {{if this.resultsHidden 'Show' 'Hide'}} All
+      {{if @resultsHidden 'Show' 'Hide'}} All
     </button>
   </div>
 
   <SortableObjects
-    @sortableObjectList={{this.results}}
+    @sortableObjectList={{@results}}
     @sortEndAction={{this.sortEndAction}}
     @tagName='ul'
     class='list-group results-list'
   >
-    {{#each this.results as |result|}}
+    {{#each @results as |result|}}
       <DraggableObject
         @content={{result}}
         @isSortable={{true}}
@@ -37,12 +37,12 @@
       >
         <MarkupResultItem
           @data={{result}}
-          @editable={{this.editable}}
-          @onOverHeader={{fn this.onOver result}}
-          @onOutHeader={{fn this.onOut result}}
-          @onremove={{this.onRemove}}
-          @ontoggle={{this.onToggle}}
-          @onedit={{this.onEdit}}
+          @editable={{@editable}}
+          @onOverHeader={{fn @onOver result}}
+          @onOutHeader={{fn @onOut result}}
+          @onremove={{@onRemove}}
+          @ontoggle={{@onToggle}}
+          @onedit={{@onEdit}}
         />
       </DraggableObject>
     {{/each}}
