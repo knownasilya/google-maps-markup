@@ -1,20 +1,32 @@
-<h2 id="title">google-maps-markup</h2>
+{{page-title 'Google Maps Markup'}}
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-6 col-sm-12">
-      <GoogleMapsMarkup @map={{map}} @editable={{false}} @panForOffscreen={{false}} @autoResetToPan={{true}} />
-      <hr>
-      <button type='button' class='btn btn-default' onclick={{action 'save'}}>Save Markup</button>
+<h2 id='title'>
+  google-maps-markup
+</h2>
+
+<div class='container-fluid'>
+  <div class='row'>
+    <div class='col-md-6 col-sm-12'>
+      <GoogleMapsMarkup
+        @map={{map}}
+        @editable={{false}}
+        @panForOffscreen={{false}}
+        @autoResetToPan={{true}}
+      />
+      <hr />
+      <button type='button' class='btn btn-default' onclick={{action 'save'}}>
+        Save Markup
+      </button>
       {{#if exported}}
-        <button type='button' class='btn btn-default' onclick={{action 'load'}}>Load Markup</button>
+        <button type='button' class='btn btn-default' onclick={{action 'load'}}>
+          Load Markup
+        </button>
       {{/if}}
     </div>
-    <div class="col-md-6 col-sm-12">
+    <div class='col-md-6 col-sm-12'>
       <GoogleMap @map={{map}} />
     </div>
   </div>
 </div>
 
 {{outlet}}
-

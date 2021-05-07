@@ -23,5 +23,6 @@ module.exports = function (defaults) {
     destDir: 'assets/fonts',
   });
 
-  return mergeTrees([app.toTree(), fonts]);
+  const { maybeEmbroider } = require('@embroider/test-setup');
+  return maybeEmbroider(mergeTrees([app.toTree(), fonts]));
 };
