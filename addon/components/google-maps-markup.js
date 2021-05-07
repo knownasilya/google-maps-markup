@@ -6,7 +6,7 @@ import { copy } from 'ember-copy';
 import { run, next } from '@ember/runloop';
 import { A as boundArray } from '@ember/array';
 import { set, action } from '@ember/object';
-import { v1 } from 'ember-uuid';
+import { v1 } from 'uuid';
 import { Root } from 'ember-composability-tools';
 import MODE from '../utils/modes';
 import overlayToFeature from '../utils/overlay-to-feature';
@@ -24,15 +24,15 @@ export default class GoogleMapsMarkup extends Root {
 
   // Start Attrs
   get editable() {
-    return this.args.editable || true;
+    return this.args.editable ?? true;
   }
 
   get panForOffscreen() {
-    return this.args.panForOffscreen || true;
+    return this.args.panForOffscreen ?? true;
   }
 
   get autoResetToPan() {
-    return this.args.autoResetToPan || false;
+    return this.args.autoResetToPan ?? false;
   }
 
   get map() {
@@ -42,29 +42,20 @@ export default class GoogleMapsMarkup extends Root {
 
   @alias('markupData.layers')
   dataLayers;
-
   @alias('markupData.results')
   results;
-
-  @alias('markupData.mode')
-  mode;
-
   @alias('markupData.modes')
   modes;
-
   @alias('markupData.drawTools')
   drawTools;
-
   @alias('markupData.measureTools')
   measureTools;
-
   @alias('markupData.textGeoJson')
   textGeoJson;
-
   @alias('markupData.tools')
   tools;
 
-  @tracked mode;
+  @tracked mode = this.markupData.mode;
   @tracked drawFinished;
   @tracked toolActive;
   @tracked lastActiveLayer;
@@ -107,14 +98,11 @@ export default class GoogleMapsMarkup extends Root {
 
       popup.setContent(`<div id='google-maps-markup-infowindow'></div>`);
 
-      popup.addListener(
-        'closeclick',
-        run.bind(this, function () {
-          set(popup, 'lastData.editing', false);
-          set(popup, 'lastData', undefined);
-          // cleanup?
-        })
-      );
+      popup.addListener('closeclick', () => {
+        set(popup, 'lastData.editing', false);
+        set(popup, 'lastData', undefined);
+        // cleanup?
+      });
 
       this.markupEditPopup = popup;
     }
@@ -515,7 +503,7 @@ export default class GoogleMapsMarkup extends Root {
   }
 
   @action
-  editResult(data, wormhole, position, elementId) {
+  editResult(data, guid) {
     let popup = this.markupEditPopup;
     let map = this.map;
     let editable = this.editable;
@@ -525,12 +513,12 @@ export default class GoogleMapsMarkup extends Root {
 
     // disable editing on other items
     childComponents.forEach((comp) => {
-      if (comp.elementId !== elementId) {
+      if (comp.guid !== guid) {
         set(comp, 'data.editing', false);
       }
     });
 
-    if (!editable || !position) {
+    if (!editable) {
       return;
     }
 
@@ -543,32 +531,18 @@ export default class GoogleMapsMarkup extends Root {
     }
 
     if (data) {
-      let geometry = data.feature.getGeometry
-        ? data.feature.getGeometry()
-        : data.feature.position;
-      let latlng =
-        position && position instanceof google.maps.LatLng
-          ? position
-          : featureCenter(data.feature);
+      let latlng = featureCenter(data.feature);
 
-      if (geometry.getType && geometry.getType() === 'Point') {
-        popup.setOptions({
-          pixelOffset: new google.maps.Size(0, -40),
-        });
-      } else {
-        popup.setOptions({
-          pixelOffset: new google.maps.Size(0, 0),
-        });
+      if (!latlng) {
+        return;
       }
 
+      popup.setOptions({
+        pixelOffset: new google.maps.Size(0, 0),
+      });
       popup.setPosition(latlng);
       popup.open(map);
       popup.lastData = data;
-
-      // see routable-site template for wormhole/infowindow layout
-      if (wormhole && !wormhole.isDestroying && !wormhole.isDestroyed) {
-        wormhole.rerender();
-      }
     }
   }
 

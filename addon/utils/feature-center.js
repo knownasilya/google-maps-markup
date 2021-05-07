@@ -1,6 +1,11 @@
 import pathsToBounds from './paths-to-bounds';
 
 export default function featureCenter(feature) {
+  // DynamicLabel
+  if (!feature.getGeometry && feature.latlng) {
+    return feature.latlng;
+  }
+
   let geometry = feature.getGeometry();
   let type = geometry.getType();
 

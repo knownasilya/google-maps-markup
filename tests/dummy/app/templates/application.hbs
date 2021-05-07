@@ -8,7 +8,7 @@
   <div class='row'>
     <div class='col-md-6 col-sm-12'>
       <GoogleMapsMarkup
-        @map={{map}}
+        @map={{this.map}}
         @editable={{false}}
         @panForOffscreen={{false}}
         @autoResetToPan={{true}}
@@ -17,14 +17,14 @@
       <button type='button' class='btn btn-default' onclick={{action 'save'}}>
         Save Markup
       </button>
-      {{#if exported}}
+      {{#if this.exported}}
         <button type='button' class='btn btn-default' onclick={{action 'load'}}>
           Load Markup
         </button>
       {{/if}}
     </div>
     <div class='col-md-6 col-sm-12'>
-      <GoogleMap @map={{map}} />
+      <GoogleMap @map={{this.map}} />
     </div>
   </div>
 </div>

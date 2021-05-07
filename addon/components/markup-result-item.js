@@ -1,4 +1,4 @@
-import { run } from '@ember/runloop';
+import { guidFor } from '@ember/object/internals';
 import { tracked } from '@glimmer/tracking';
 import { set, action, computed } from '@ember/object';
 import { Node } from 'ember-composability-tools';
@@ -7,8 +7,8 @@ import getMeasurement from '../utils/get-measurement';
 import featureCenter from '../utils/feature-center';
 
 export default class MarkupResultItem extends Node {
-  @tracked description;
-  @tracked data;
+  guid = guidFor(this);
+  @tracked textLabel;
 
   constructor() {
     super(...arguments);
@@ -16,22 +16,23 @@ export default class MarkupResultItem extends Node {
     let data = this.args.data;
 
     if (data.feature.addListener) {
-      let changeListener = data.feature.addListener(
-        'changelabel',
-        run.bind(this, () => {
-          data.geojson.properties.label = data.feature.label;
-          this.description = data.feature.label;
-        })
-      );
+      let changeListener = data.feature.addListener('changelabel', () => {
+        data.geojson.properties.label = data.feature.label;
+        this.textLabel = data.feature.label;
+      });
 
       this.changeListener = changeListener;
     }
   }
 
-  @computed('data.{mode,feature}')
+  @computed('data.{mode,feature}', 'textLabel')
   get description() {
-    let mode = this.get('data.mode');
-    let data = this.data;
+    if (this.textLabel) {
+      return this.textLabel;
+    }
+
+    let data = this.args.data;
+    let mode = data.mode;
 
     if (mode === MODE.measure.id) {
       let m = getMeasurement(data.type, data.feature, data.distanceUnitId);
@@ -47,32 +48,30 @@ export default class MarkupResultItem extends Node {
   }
 
   @action
-  edit(position) {
-    let data = this.data;
-    let wormhole = this.wormhole;
-
-    this.args.onedit(data, wormhole, position, this.elementId);
+  edit() {
+    this.args.onedit(this.args.data, this.guid);
   }
 
   @action
   ok() {
-    let data = this.data;
+    let data = this.args.data;
 
     set(data, 'editing', false);
   }
 
   @action
   updateOptionValue(tool, prop, value) {
+    let data = this.args.data;
+
     if (tool.type === 'text') {
       let [type, specific] = prop.split('.');
 
       if (type && type === 'style' && specific) {
-        this.data.feature[specific] = value;
+        data.feature[specific] = value;
       }
 
       set(tool, prop, value);
     } else {
-      let data = this.data;
       set(tool, prop, value);
 
       data.layer.data.overrideStyle(data.feature, data.style);
@@ -81,11 +80,11 @@ export default class MarkupResultItem extends Node {
 
   @action
   toggleEditShape() {
-    let data = this.data;
+    let data = this.args.data;
     let edit = !data.editingShape;
     let listener;
 
-    set(this.data, 'editingShape', edit);
+    set(data, 'editingShape', edit);
 
     if (edit) {
       if (data.type === 'text') {
@@ -96,14 +95,14 @@ export default class MarkupResultItem extends Node {
         listener = google.maps.event.addListener(
           data.feature,
           'setgeometry',
-          run.bind(this, function () {
+          () => {
             if (data.label) {
               data.label.position = featureCenter(data.feature);
             }
             // force recalculation
             this.shapeModified = true;
             // this.notifyPropertyChange('description');
-          })
+          }
         );
         this.originalFeatureGeometry = data.feature.getGeometry();
         data.layer.data.overrideStyle(data.feature, {
@@ -126,12 +125,12 @@ export default class MarkupResultItem extends Node {
       }
     }
 
-    this.data = data;
+    this.args.data = data;
   }
 
   @action
   cancelEditShape() {
-    let data = this.data;
+    let data = this.args.data;
     let shapeModified = this.shapeModified;
     let originalGeometry = this.originalFeatureGeometry;
 

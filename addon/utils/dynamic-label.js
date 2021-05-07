@@ -1,4 +1,4 @@
-import { v1 } from 'ember-uuid';
+import { v1 } from 'uuid';
 import mapLabelFactory from './map-label';
 let DynamicLabelLocal;
 
