@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/knownasilya/google-maps-markup/compare/v3.2.5...v4.0.0) (2021-05-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop Ember < 3.16
+
+### Bug Fixes
+
+* embroider maybe test ([c03f109](https://github.com/knownasilya/google-maps-markup/commit/c03f109448adbfd1344a66137776e2c831a5b7d5))
+* v3.17.0...v3.26.1 ([260785e](https://github.com/knownasilya/google-maps-markup/commit/260785ec415b7d4d0ae22b13d3ee686ae0df2b3e))
+
 ### [3.2.5](https://github.com/knownasilya/google-maps-markup/compare/v3.2.4...v3.2.5) (2021-04-07)
 
 
