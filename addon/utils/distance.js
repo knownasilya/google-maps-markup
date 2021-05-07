@@ -7,14 +7,14 @@ const FEET_DISTANCE_CONVERT_MAP = {
   ft: 1,
 };
 const NEXT_UNIT = {
-  'ft': {
+  ft: {
     unit: 'mi',
-    threshold: 1320
+    threshold: 1320,
   },
-  'meter': {
+  meter: {
     unit: 'km',
-    threshold: 1000
-  }
+    threshold: 1000,
+  },
 };
 
 export default function miles(result) {

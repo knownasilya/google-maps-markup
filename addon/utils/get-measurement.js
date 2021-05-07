@@ -1,14 +1,9 @@
-import {
-  polygonArea,
-  circleArea,
-  rectangleArea
-} from './shape-area';
+import { polygonArea, circleArea, rectangleArea } from './shape-area';
 import pathDistance from './path-distance';
 import measureTypeResult from './measure-type-result';
 
 export default function getMeasurement(type, feature, distanceUnitId) {
-
-  switch(type) {
+  switch (type) {
     case 'polyline': {
       let geometry = feature.getGeometry();
       let paths = geometry.getArray();

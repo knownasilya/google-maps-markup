@@ -23,7 +23,7 @@ module.exports = {
     google: true,
   },
   rules: {
-    'ember/no-jquery': 0
+    'ember/no-jquery': 0,
   },
   overrides: [
     // node files
@@ -54,7 +54,7 @@ module.exports = {
         node: true,
       },
       plugins: ['node'],
-      extends: ['plugin:node/recommended']
+      extends: ['plugin:node/recommended'],
     },
   ],
 };

@@ -9,10 +9,10 @@ export default function measureTypeResult(type, value, unitId) {
   let result = {
     measurementType: 'Distance',
     unit: units && units.findBy('id', unitId),
-    value: 0
+    value: 0,
   };
 
-  switch(type) {
+  switch (type) {
     case 'polyline': {
       // meters->feet conversion
       result.value = value * 3.28084;

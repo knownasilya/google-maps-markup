@@ -4,7 +4,7 @@ export default function featureCenter(feature) {
   let geometry = feature.getGeometry();
   let type = geometry.getType();
 
-  switch(type) {
+  switch (type) {
     case 'Point': {
       return geometry.get();
     }
@@ -24,4 +24,3 @@ export default function featureCenter(feature) {
     }
   }
 }
-

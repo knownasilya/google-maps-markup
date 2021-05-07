@@ -1,7 +1,7 @@
 import formatNumber from './format-number';
 
 const SQUARE_FEET_AREA_CONVERT_MAP = {
-  'acres': 2.29568e-5,
+  acres: 2.29568e-5,
   'sq km': 9.2903e-8,
   'sq mi': 3.587e-8,
   'sq ft': 1,
@@ -9,12 +9,12 @@ const SQUARE_FEET_AREA_CONVERT_MAP = {
 const NEXT_UNIT = {
   'sq ft': {
     unit: 'acres',
-    threshold: 43560
+    threshold: 43560,
   },
-  'acres': {
+  acres: {
     unit: 'sq mi',
-    threshold: 27880000
-  }
+    threshold: 27880000,
+  },
 };
 
 export default function acres(result) {
