@@ -90,6 +90,9 @@
   "engines": {
     "node": "10.* || >= 12"
   },
+  "ember": {
+    "edition": "octane"
+  },
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "demoURL": "http://knownasilya.github.io/google-maps-markup/"
