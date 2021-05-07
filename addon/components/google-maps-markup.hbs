@@ -12,7 +12,9 @@
     {{#each this.modes as |item|}}
       <button
         type='button'
-        class="btn btn-default {{if (is-equal item.id this.mode) 'active'}}"
+        class="btn btn-default
+
+          {{if (is-equal item.id this.markupData.mode) 'active'}}"
         title={{item.title}}
         {{on 'click' (fn this.changeMode item)}}
       >
@@ -26,7 +28,7 @@
     Tools
   </h4>
 
-  {{#if (is-equal this.mode 'draw')}}
+  {{#if (is-equal this.markupData.mode 'draw')}}
     <div class='form-group tools-group' role='group' aria-label='Drawing Tools'>
       {{#each this.drawTools as |tool|}}
         <button
@@ -39,7 +41,7 @@
         </button>
       {{/each}}
     </div>
-  {{else if (is-equal this.mode 'measure')}}
+  {{else if (is-equal this.markupData.mode 'measure')}}
     <div class='form-group tools-group' role='group' aria-label='Measure Tools'>
       {{#each this.measureTools as |tool|}}
         <button

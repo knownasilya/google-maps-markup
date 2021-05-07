@@ -55,7 +55,6 @@ export default class GoogleMapsMarkup extends Root {
   @alias('markupData.tools')
   tools;
 
-  @tracked mode = this.markupData.mode;
   @tracked drawFinished;
   @tracked toolActive;
   @tracked lastActiveLayer;
@@ -111,7 +110,7 @@ export default class GoogleMapsMarkup extends Root {
   addTextLabel(tool, position) {
     let autoResetToPan = this.autoResetToPan;
     let results = this.results;
-    let mode = this.mode;
+    let mode = this.markupData.mode;
     let map = this.map;
     let style = copy(tool.style || {});
     let labelMarker = new this.DynamicLabel(position, {
@@ -201,7 +200,7 @@ export default class GoogleMapsMarkup extends Root {
     let autoResetToPan = this.autoResetToPan;
     let toolId = this.toolId;
     let map = this.map;
-    let mode = this.mode;
+    let mode = this.markupData.mode;
     let activeLayer = this.activeLayer;
     let tool = this.markupData.getTool(toolId);
     let style = copy(tool.style || {});
@@ -271,7 +270,7 @@ export default class GoogleMapsMarkup extends Root {
 
   @action
   changeMode(mode) {
-    this.mode = mode.id;
+    this.markupData.mode = mode.id;
     this.changeLayer();
     this.changeTool(this.toolId);
   }
@@ -405,7 +404,7 @@ export default class GoogleMapsMarkup extends Root {
   @action
   clearResults() {
     if (confirm(clearAllConfirm)) {
-      let mode = this.mode;
+      let mode = this.markupData.mode;
       let layer = this.activeLayer;
       let results = this.results;
       let textGeoJson = this.textGeoJson;
@@ -436,7 +435,7 @@ export default class GoogleMapsMarkup extends Root {
 
   @action
   removeResult(result) {
-    let mode = this.mode;
+    let mode = this.markupData.mode;
     let results = this.results;
     let layer = this.activeLayer;
     let textGeoJson = this.textGeoJson;
@@ -464,7 +463,7 @@ export default class GoogleMapsMarkup extends Root {
   @action
   toggleResult(result, force) {
     let layer = this.activeLayer;
-    let mode = this.mode;
+    let mode = this.markupData.mode;
     let isMeasure = mode === 'measure';
     let hide =
       force !== undefined && force !== null
@@ -653,7 +652,7 @@ export default class GoogleMapsMarkup extends Root {
   }
 
   changeLayer() {
-    let modeId = this.mode;
+    let modeId = this.markupData.mode;
     let map = this.map;
     let toolId = this.toolId;
     let dataLayers = this.dataLayers;
@@ -683,7 +682,7 @@ export default class GoogleMapsMarkup extends Root {
   }
 
   setupActiveLayer() {
-    let mode = this.mode;
+    let mode = this.markupData.mode;
     let layer = this.activeLayer;
     let lastLayer = this.lastActiveLayer;
 
@@ -791,7 +790,7 @@ export default class GoogleMapsMarkup extends Root {
     let map = this.map;
 
     if (!this.mode) {
-      this.mode = MODE.draw.id;
+      this.markupData.mode = MODE.draw.id;
     }
 
     // Enable all layers to show on map
@@ -828,7 +827,7 @@ export default class GoogleMapsMarkup extends Root {
       let plotter;
 
       let onClick = run.bind(this, (event) => {
-        let mode = this.mode;
+        let mode = this.markupData.mode;
         let toolId = this.toolId;
         let toolActive = this.toolActive;
         let tool = this.markupData.getTool(toolId, mode);

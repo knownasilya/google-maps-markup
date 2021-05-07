@@ -1,4 +1,5 @@
 import Service from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 import EmberObject, { action, computed, get } from '@ember/object';
 import { A as boundArray } from '@ember/array';
 import createFeature from '../utils/create-feature';
@@ -11,7 +12,7 @@ import Layer from '../utils/layer';
 const MODES = [MODE.draw.id, MODE.measure.id];
 
 export default class MarkupData extends Service {
-  mode = MODE.draw.id;
+  @tracked mode = MODE.draw.id;
   markupResults = EmberObject.create({
     draw: boundArray(),
     measure: boundArray(),
