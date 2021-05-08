@@ -1,26 +1,23 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
+import { next } from '@ember/runloop';
 
-export default Component.extend({
-  map: null,
+export default class GoogleMap extends Component {
+  get center() {
+    return (
+      this.args.center ??
+      new google.maps.LatLng(42.43540000000001, -71.11295997924805)
+    );
+  }
 
-  init() {
-    this._super(...arguments);
-    this.center = new google.maps.LatLng(42.43540000000001, -71.11295997924805);
-  },
+  get zoom() {
+    return this.args.zoom ?? 10;
+  }
 
-  didInsertElement() {
+  @action
+  setupMap(el) {
     let center = this.center;
     let zoom = this.zoom;
-    let el = this.element.querySelector('#map');
-
-    this.setup(el, center, zoom);
-  },
-
-  setup(el, center, zoom = 10) {
-    let map;
-
-    google.maps.visualRefresh = true;
-
     let options = {
       zoom,
       center,
@@ -28,15 +25,14 @@ export default Component.extend({
       gestureHandling: 'greedy',
     };
 
-    map = new google.maps.Map(el, options);
+    google.maps.visualRefresh = true;
+    let map = new google.maps.Map(el, options);
 
     // debugging
     window.gmap = map;
 
-    this.setProperties({
-      map: map,
+    next(() => {
+      this.args.onLoaded(map);
     });
-
-    return map;
-  },
-});
+  }
+}

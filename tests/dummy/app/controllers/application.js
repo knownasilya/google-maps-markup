@@ -1,12 +1,13 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import { all, resolve } from 'rsvp';
+import { all } from 'rsvp';
 import { tracked } from '@glimmer/tracking';
 
 export default class ApplicationController extends Controller {
   @service('markupData') markupDataService;
   @tracked exported;
+  @tracked map;
 
   async exportMarkup() {
     let dataLayers = this.markupDataService.layers;

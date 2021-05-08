@@ -19,35 +19,28 @@ export default class MarkupData extends Service {
   });
   textGeoJson = boundArray();
   modes = [MODE.draw, MODE.measure];
+  tools = getTools();
 
   constructor() {
     super(...arguments);
-    let tools = getTools();
-
-    this.set('tools', tools);
-    this.set(
-      'drawTools',
-      boundArray([
-        tools.pan,
-        tools.text,
-        tools.marker,
-        tools.polyline,
-        tools.circle,
-        tools.rectangle,
-        tools.polygon,
-        tools.freeFormPolygon,
-      ])
-    );
-    this.set(
-      'measureTools',
-      boundArray([
-        tools.pan,
-        tools.polyline,
-        tools.circle,
-        tools.rectangle,
-        tools.polygon,
-      ])
-    );
+    let tools = this.tools;
+    this.drawTools = boundArray([
+      tools.pan,
+      tools.text,
+      tools.marker,
+      tools.polyline,
+      tools.circle,
+      tools.rectangle,
+      tools.polygon,
+      tools.freeFormPolygon,
+    ]);
+    this.measureTools = boundArray([
+      tools.pan,
+      tools.polyline,
+      tools.circle,
+      tools.rectangle,
+      tools.polygon,
+    ]);
   }
 
   activate(map) {
@@ -137,6 +130,9 @@ export default class MarkupData extends Service {
 
   @action
   getTool(id, mode) {
+    if (!id) {
+      id = this.tools.pan.id;
+    }
     let toolIds = mode ? this.get(mode + 'Tools') : this.tools;
 
     return Array.isArray(toolIds) ? toolIds.findBy('id', id) : toolIds[id];

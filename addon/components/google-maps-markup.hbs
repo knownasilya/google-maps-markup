@@ -1,8 +1,8 @@
 <div
   class='google-maps-markup'
   ...attributes
-  {{did-insert this.onInsert}}
   {{will-destroy this.beforeRemove}}
+  {{did-update this.setup @map}}
 >
   <h4>
     Mode

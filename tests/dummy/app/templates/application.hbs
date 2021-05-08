@@ -24,7 +24,7 @@
       {{/if}}
     </div>
     <div class='col-md-6 col-sm-12'>
-      <GoogleMap @map={{this.map}} />
+      <GoogleMap @map={{this.map}} @onLoaded={{fn (mut this.map)}} />
     </div>
   </div>
 </div>

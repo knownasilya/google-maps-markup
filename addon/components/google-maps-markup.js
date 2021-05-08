@@ -1,7 +1,6 @@
 import { inject as service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
 import { alias } from '@ember/object/computed';
-import $ from 'jquery';
 import { copy } from 'ember-copy';
 import { run, next } from '@ember/runloop';
 import { A as boundArray } from '@ember/array';
@@ -23,20 +22,26 @@ export default class GoogleMapsMarkup extends Root {
   @service('markupData') markupData;
 
   // Start Attrs
+  @cached
   get editable() {
     return this.args.editable ?? true;
   }
 
+  @cached
   get panForOffscreen() {
     return this.args.panForOffscreen ?? true;
   }
 
+  @cached
   get autoResetToPan() {
     return this.args.autoResetToPan ?? false;
   }
 
+  @cached
   get map() {
-    return this.args.map || this.markupData.map;
+    let map = this.args.map || this.markupData.map;
+
+    return map;
   }
   // End Attrs
 
@@ -83,6 +88,15 @@ export default class GoogleMapsMarkup extends Root {
     this.DynamicLabel = dynamicLabelFactory();
 
     this.initPopupEvents();
+  }
+
+  @action
+  setup(el, [map]) {
+    if (!this.mapSetup && map) {
+      this.mapSetup = true;
+      this.setupLayers();
+      this.changeMode(MODE.draw);
+    }
   }
 
   get childComponents() {
@@ -775,23 +789,10 @@ export default class GoogleMapsMarkup extends Root {
   }
 
   @action
-  onInsert() {
-    if (!this.mapSetup && this.map) {
-      this.mapSetup = true;
-      this.changeLayer();
-    }
-    if (!this.mapEventsSetup) {
-      this.setupMapEvents();
-    }
-
+  setupLayers(map) {
     let dm = this.dm;
     let results = this.results;
     let layers = this.dataLayers;
-    let map = this.map;
-
-    if (!this.mode) {
-      this.markupData.mode = MODE.draw.id;
-    }
 
     // Enable all layers to show on map
     layers.forEach((layer) => layer.data.setMap(map));
@@ -811,19 +812,18 @@ export default class GoogleMapsMarkup extends Root {
     this.listeners.pushObject(listener);
 
     if (!this.mapEventsSetup) {
-      this.setupMapEvents();
+      this.setupMapEvents(map);
     }
   }
 
-  setupMapEvents() {
-    let map = this.map;
+  setupMapEvents(map) {
     let currentPoints = this.currentPoints;
     let currentLabel = this.currentLabel;
 
     if (map) {
       this.mapEventsSetup = true;
 
-      let $body = $('body');
+      let body = document.body;
       let plotter;
 
       let onClick = run.bind(this, (event) => {
@@ -907,9 +907,9 @@ export default class GoogleMapsMarkup extends Root {
       });
 
       // Setup raw click handling - workaround for no basic events for drawing
-      $body.on('click', onClick);
-      $body.on('dblclick', onDblClick);
-      $body.on('mousemove', onMouseMove);
+      body.addEventListener('click', onClick);
+      body.addEventListener('dblclick', onDblClick);
+      body.addEventListener('mousemove', onMouseMove);
 
       this.bodyListeners = [
         { event: 'click', handler: onClick },
@@ -934,10 +934,10 @@ export default class GoogleMapsMarkup extends Root {
     }
 
     if (bodyListeners) {
-      let $body = $('body');
+      let body = document.body;
 
       bodyListeners.forEach((listener) => {
-        $body.off(listener.event, listener.handler);
+        body.removeEventListener(listener.event, listener.handler);
       });
     }
   }
@@ -956,14 +956,14 @@ function calculatePosition(mapPosition, event) {
 }
 
 function calculateLatLng(map, event) {
-  let $map = $(map.getDiv());
+  let mapEl = map.getDiv();
   let projection = map.getProjection();
   let bounds = map.getBounds();
   let ne = bounds.getNorthEast();
   let sw = bounds.getSouthWest();
   let topRight = projection.fromLatLngToPoint(ne);
   let bottomLeft = projection.fromLatLngToPoint(sw);
-  let mapPosition = $map.offset();
+  let mapPosition = getOffset(mapEl);
   let pos = calculatePosition(mapPosition, event);
   let scale = 1 << map.getZoom();
   let point = new google.maps.Point(
@@ -973,4 +973,17 @@ function calculateLatLng(map, event) {
   let latlng = projection.fromPointToLatLng(point);
 
   return latlng;
+}
+
+function getOffset(element) {
+  if (!element.getClientRects().length) {
+    return { top: 0, left: 0 };
+  }
+
+  let rect = element.getBoundingClientRect();
+  let win = element.ownerDocument.defaultView;
+  return {
+    top: rect.top + win.pageYOffset,
+    left: rect.left + win.pageXOffset,
+  };
 }
