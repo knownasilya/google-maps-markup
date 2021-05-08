@@ -43,6 +43,10 @@ export default class GoogleMapsMarkup extends Root {
 
     return map;
   }
+
+  get childComponents() {
+    return [...this.children];
+  }
   // End Attrs
 
   @alias('markupData.layers')
@@ -91,16 +95,12 @@ export default class GoogleMapsMarkup extends Root {
   }
 
   @action
-  setup(el, [map]) {
+  setup(_el, [map]) {
     if (!this.mapSetup && map) {
       this.mapSetup = true;
       this.setupLayers(map);
       this.changeMode(MODE.draw);
     }
-  }
-
-  get childComponents() {
-    return [...this.children];
   }
 
   initPopupEvents() {
@@ -328,7 +328,7 @@ export default class GoogleMapsMarkup extends Root {
       if (tool.id === 'pan') {
         let clickListener = activeLayer.data.addListener('click', (event) => {
           let found = this.childComponents.find(function (comp) {
-            return comp.get('data').feature.getId() === event.feature.getId();
+            return comp.args.data?.feature.getId() === event.feature.getId();
           });
 
           if (found) {
@@ -340,18 +340,18 @@ export default class GoogleMapsMarkup extends Root {
           'mouseover',
           (event) => {
             let found = this.childComponents.find(function (comp) {
-              return comp.get('data').feature.getId() === event.feature.getId();
+              return comp.args.data?.feature.getId() === event.feature.getId();
             });
 
             if (found) {
               // invoke action here
-              this.highlightResult(found.get('data'));
+              this.highlightResult(found.args.data);
             }
           }
         );
         let mouseoutListener = activeLayer.data.addListener('mouseout', () => {
           this.childComponents.forEach((comp) => {
-            this.resetResultStyle(comp.get('data'));
+            this.resetResultStyle(comp.args.data);
           });
         });
 
@@ -835,7 +835,7 @@ export default class GoogleMapsMarkup extends Root {
         let target = event.target;
         let withinMap = mapDiv.contains(target);
         let results = this.results;
-        let data = results.get('lastObject');
+        let data = results.lastObject;
 
         // Set distanceUnitId if not set yet and available
         if (data && withinMap && !data.distanceUnitId && tool.distanceUnitId) {
@@ -864,7 +864,7 @@ export default class GoogleMapsMarkup extends Root {
 
         let toolIsPan = toolId === 'pan';
         let drawFinished = this.drawFinished;
-        let noPoints = !currentPoints.get('length');
+        let noPoints = !currentPoints.length;
 
         if (toolIsPan || (noPoints && drawFinished)) {
           return;

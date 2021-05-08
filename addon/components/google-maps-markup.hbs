@@ -78,6 +78,7 @@
     @onToggleAll={{this.toggleResults}} as |result|
   >
     <GmmResultItem
+      @parent={{this}}
       @data={{result}}
       @editable={{this.editable}}
       @onOverHeader={{fn this.highlightResult result}}
