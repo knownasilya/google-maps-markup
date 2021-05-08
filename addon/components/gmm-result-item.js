@@ -48,11 +48,6 @@ export default class GmmResultItem extends Node {
   }
 
   @action
-  edit() {
-    this.args.onedit(this.args.data, this.guid);
-  }
-
-  @action
   ok() {
     let data = this.args.data;
 

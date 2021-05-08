@@ -15,7 +15,7 @@
   <button
     type='button'
     class='btn btn-link btn-xs'
-    {{on 'click' (fn @ontoggle @data undefined)}}
+    {{on 'click' (fn @onToggle @data undefined)}}
   >
     <i class="fa {{if @data.isVisible 'fa-eye-slash' 'fa-eye'}}"></i>
   </button>
@@ -33,7 +33,7 @@
       <button
         type='button'
         class='btn btn-default btn-xs'
-        {{on 'click' this.edit}}
+        {{on 'click' (fn @onEdit @data this.guid)}}
       >
         Edit
       </button>
@@ -42,7 +42,7 @@
     <button
       type='button'
       class='btn btn-danger btn-xs'
-      {{on 'click' (fn @onremove @data)}}
+      {{on 'click' (fn @onRemove @data)}}
     >
       Remove
     </button>
