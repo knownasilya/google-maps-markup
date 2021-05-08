@@ -94,7 +94,7 @@ export default class GoogleMapsMarkup extends Root {
   setup(el, [map]) {
     if (!this.mapSetup && map) {
       this.mapSetup = true;
-      this.setupLayers();
+      this.setupLayers(map);
       this.changeMode(MODE.draw);
     }
   }
