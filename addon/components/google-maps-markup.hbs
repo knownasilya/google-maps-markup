@@ -14,6 +14,7 @@
         type='button'
         class="btn btn-default
 
+
           {{if (is-equal item.id this.markupData.mode) 'active'}}"
         title={{item.title}}
         {{on 'click' (fn this.changeMode item)}}
@@ -69,19 +70,23 @@
     {{/if}}
   {{/unless}}
 
-  <GmmMarkupResults
+  <GmmSortableResults
     @popupElement={{this.markupEditPopup}}
     @results={{this.results}}
     @resultsHidden={{this.resultsHidden}}
-    @editable={{this.editable}}
     @onClearAll={{this.clearResults}}
-    @onToggleAll={{this.toggleResults}}
-    @onToggle={{this.toggleResult}}
-    @onRemove={{this.removeResult}}
-    @onOver={{this.highlightResult}}
-    @onOut={{this.resetResultStyle}}
-    @onEdit={{this.editResult}}
-  />
+    @onToggleAll={{this.toggleResults}} as |result|
+  >
+    <GmmResultItem
+      @data={{result}}
+      @editable={{this.editable}}
+      @onOverHeader={{fn this.highlightResult result}}
+      @onOutHeader={{fn this.resetResultStyle result}}
+      @onremove={{this.removeResult}}
+      @ontoggle={{this.toggleResult}}
+      @onedit={{this.editResult}}
+    />
+  </GmmSortableResults>
 
   {{yield}}
 </div>

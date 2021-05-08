@@ -14,11 +14,11 @@
         @autoResetToPan={{true}}
       />
       <hr />
-      <button type='button' class='btn btn-default' onclick={{action 'save'}}>
+      <button type='button' class='btn btn-default' {{on 'click' this.save}}>
         Save Markup
       </button>
       {{#if this.exported}}
-        <button type='button' class='btn btn-default' onclick={{action 'load'}}>
+        <button type='button' class='btn btn-default' {{on 'click' this.load}}>
           Load Markup
         </button>
       {{/if}}

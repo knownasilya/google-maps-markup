@@ -6,7 +6,7 @@ import MODE from '../utils/modes';
 import getMeasurement from '../utils/get-measurement';
 import featureCenter from '../utils/feature-center';
 
-export default class MarkupResultItem extends Node {
+export default class GmmResultItem extends Node {
   guid = guidFor(this);
   @tracked textLabel;
 

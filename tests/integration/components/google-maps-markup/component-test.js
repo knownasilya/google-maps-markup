@@ -12,8 +12,8 @@ module('Integration | Component | google maps markup', function (hooks) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.on('myAction', function(val) { ... });
 
-    await render(hbs`{{google-maps-markup}}`);
+    await render(hbs`<GoogleMapsMarkup/>`);
 
-    assert.equal(this.$().find('h4').first().text(), 'Mode');
+    assert.equal(this.element.find('h4').first().text(), 'Mode');
   });
 });

@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 
-export default class GmmMarkupResults extends Component {
+export default class GmmSortableResults extends Component {
   @action
   sortEndAction() {
     let results = this.args.results;

@@ -35,15 +35,7 @@
         @tagName='li'
         class='list-group-item clearfix'
       >
-        <MarkupResultItem
-          @data={{result}}
-          @editable={{@editable}}
-          @onOverHeader={{fn @onOver result}}
-          @onOutHeader={{fn @onOut result}}
-          @onremove={{@onRemove}}
-          @ontoggle={{@onToggle}}
-          @onedit={{@onEdit}}
-        />
+        {{yield result}}
       </DraggableObject>
     {{/each}}
   </SortableObjects>

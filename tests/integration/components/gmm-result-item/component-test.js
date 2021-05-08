@@ -3,7 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render, find } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | markup result item', function (hooks) {
+module('Integration | Component | gmm result item', function (hooks) {
   setupRenderingTest(hooks);
 
   test('it renders', async function (assert) {
@@ -16,7 +16,7 @@ module('Integration | Component | markup result item', function (hooks) {
       type: 'circle',
     });
 
-    await render(hbs`{{markup-result-item data=data}}`);
+    await render(hbs`<GmmResultItem @data={{this.data}}/>`);
 
     let text = find('*')
       .textContent.trim()

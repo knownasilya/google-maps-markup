@@ -1,27 +1,31 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 import { all, resolve } from 'rsvp';
+import { tracked } from '@glimmer/tracking';
 
-export default Controller.extend({
-  markupDataService: service('markupData'),
+export default class ApplicationController extends Controller {
+  @service('markupData') markupDataService;
+  @tracked exported;
 
-  exportMarkup() {
-    let dataLayers = this.get('markupDataService.layers');
+  async exportMarkup() {
+    let dataLayers = this.markupDataService.layers;
 
     if (dataLayers) {
       let promises = dataLayers.map((layer) => {
         return layer.toGeoJson();
       });
 
-      return all(promises).then((layers) => {
-        // make sure empty feature collections aren't exported
-        this.set('exported', layers);
-        return layers;
-      });
+      let layers = await all(promises);
+
+      // make sure empty feature collections aren't exported
+      this.exported = layers;
+
+      return layers;
     } else {
-      return resolve();
+      return;
     }
-  },
+  }
 
   loadMarkup(markupData) {
     let markupService = this.markupDataService;
@@ -35,19 +39,19 @@ export default Controller.extend({
     });
 
     markupService.changeModeByResults();
-  },
+  }
 
-  actions: {
-    load() {
-      let exported = this.exported;
+  @action
+  load() {
+    let exported = this.exported;
 
-      if (exported) {
-        this.loadMarkup(exported);
-      }
-    },
+    if (exported) {
+      this.loadMarkup(exported);
+    }
+  }
 
-    save() {
-      this.exportMarkup();
-    },
-  },
-});
+  @action
+  save() {
+    this.exportMarkup();
+  }
+}
