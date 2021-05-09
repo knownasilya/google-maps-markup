@@ -30,6 +30,7 @@ export default function getTools() {
       name: 'Line',
       title: 'Multi segmented line tool',
       options: [
+        { name: 'Show Distance', type: 'boolean', id: 'showMeasurement' },
         { name: 'Distance Unit', type: 'distanceUnit', id: 'distanceUnit' },
         { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
         { name: 'Color', type: 'color', id: 'style.strokeColor' },
@@ -46,6 +47,7 @@ export default function getTools() {
       name: 'Polygon',
       title: 'Polygon Tool',
       options: [
+        { name: 'Show Area', type: 'boolean', id: 'showMeasurement' },
         { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
         { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
         {
@@ -71,6 +73,8 @@ export default function getTools() {
       name: 'Freeform Polygon',
       title: 'Freeform Polygon Tool',
       options: [
+        { name: 'Show Area', type: 'boolean', id: 'showMeasurement' },
+        { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
         { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
         {
           name: 'Fill Color',
@@ -95,6 +99,7 @@ export default function getTools() {
       name: 'Circle',
       title: 'Circle Tool',
       options: [
+        { name: 'Show Area', type: 'boolean', id: 'showMeasurement' },
         { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
         { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
         {
@@ -121,6 +126,7 @@ export default function getTools() {
       name: 'Rectangle',
       title: 'Rectangle Tool',
       options: [
+        { name: 'Show Area', type: 'boolean', id: 'showMeasurement' },
         { name: 'Area Unit', type: 'distanceUnit', id: 'distanceUnit' },
         { name: 'Line Width', type: 'width', id: 'style.strokeWeight' },
         {

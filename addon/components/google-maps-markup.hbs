@@ -5,57 +5,21 @@
   {{did-update this.setup @map}}
 >
   <h4>
-    Mode
-  </h4>
-
-  <div class='btn-group form-group' role='group' aria-label='Markup Modes'>
-    {{#each this.modes as |item|}}
-      <button
-        type='button'
-        class="btn btn-default
-
-
-          {{if (is-equal item.id this.markupData.mode) 'active'}}"
-        title={{item.title}}
-        {{on 'click' (fn this.changeMode item)}}
-      >
-        <i class="fa {{item.icon}}"></i>
-        {{item.name}}
-      </button>
-    {{/each}}
-  </div>
-
-  <h4>
     Tools
   </h4>
 
-  {{#if (is-equal this.markupData.mode 'draw')}}
-    <div class='form-group tools-group' role='group' aria-label='Drawing Tools'>
-      {{#each this.drawTools as |tool|}}
-        <button
-          type='button'
-          class="btn btn-default {{if (is-equal tool.id this.toolId) 'active'}}"
-          title={{tool.title}}
-          {{on 'click' (fn this.changeTool tool.id)}}
-        >
-          {{tool.name}}
-        </button>
-      {{/each}}
-    </div>
-  {{else if (is-equal this.markupData.mode 'measure')}}
-    <div class='form-group tools-group' role='group' aria-label='Measure Tools'>
-      {{#each this.measureTools as |tool|}}
-        <button
-          type='button'
-          class="btn btn-default {{if (is-equal tool.id this.toolId) 'active'}}"
-          title={{tool.title}}
-          {{on 'click' (fn this.changeTool tool.id)}}
-        >
-          {{tool.name}}
-        </button>
-      {{/each}}
-    </div>
-  {{/if}}
+  <div class='form-group tools-group' role='group' aria-label='Tools'>
+    {{#each this.markupData.orderedTools as |tool|}}
+      <button
+        type='button'
+        class="btn btn-default {{if (is-equal tool.id this.toolId) 'active'}}"
+        title={{tool.title}}
+        {{on 'click' (fn this.changeTool tool.id)}}
+      >
+        {{tool.name}}
+      </button>
+    {{/each}}
+  </div>
 
   {{! template-lint-disable simple-unless}}
   {{#unless (is-equal this.toolId 'pan')}}

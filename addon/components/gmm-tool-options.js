@@ -6,7 +6,7 @@ export default class GmmToolOptions extends Component {
   optionsData = optionsData;
 
   @action
-  updateOpacity(id, event) {
+  updateOption(id, event) {
     this.args.updateOptionValue(this.args.tool, id, event.target.value);
   }
 }

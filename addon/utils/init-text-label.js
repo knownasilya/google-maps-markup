@@ -6,7 +6,7 @@ export default function initTextLabel(result, layer, map) {
     return;
   }
 
-  if (result.mode === 'draw' && result.type === 'text') {
+  if (result.type === 'text') {
     let layerFeature = result.feature;
     let center = featureCenter(layerFeature);
     let style = layerFeature.getProperty('style');
