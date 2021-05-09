@@ -72,29 +72,27 @@
           {{size}}
         </PowerSelect>
       </div>
-    {{else if (is-equal @mode 'measure')}}
-      {{#if (is-equal opt.type 'distanceUnit')}}
-        <div class='form-group'>
-          <div>
-            <label>
-              {{opt.name}}
-            </label>
-          </div>
-          <PowerSelect
-            @options={{get
-              this.optionsData
-              (concat (tool-id @tool) '.distanceUnits')
-            }}
-            @selected={{@tool.distanceUnit}}
-            @searchEnabled={{false}}
-            @onChange={{fn @updateOptionValue @tool opt.id}} as |unit|
-          >
-            <strong>
-              {{unit.display}}
-            </strong>
-          </PowerSelect>
+    {{else if (is-equal opt.type 'distanceUnit')}}
+      <div class='form-group'>
+        <div>
+          <label>
+            {{opt.name}}
+          </label>
         </div>
-      {{/if}}
+        <PowerSelect
+          @options={{get
+            this.optionsData
+            (concat (tool-id @tool) '.distanceUnits')
+          }}
+          @selected={{@tool.distanceUnit}}
+          @searchEnabled={{false}}
+          @onChange={{fn @updateOptionValue @tool opt.id}} as |unit|
+        >
+          <strong>
+            {{unit.display}}
+          </strong>
+        </PowerSelect>
+      </div>
     {{/if}}
   {{/each}}
 </div>

@@ -31,36 +31,19 @@ export default class MarkupData extends Service {
   activate(map) {
     this.set('map', map);
 
-    let layers = this.layers;
-    let measureResults = this.get('markupResults.measure');
-
-    // Enable all layers to show on map
-    layers.forEach((layer) => {
-      layer.data.setMap(map);
-    });
+    // Enable layer to show on map
+    this.layer.data.setMap(map);
 
     // Init measure labels
-    measureResults.forEach((result) => {
-      if (result.label) {
-        result.label.setMap(map);
-      } else {
-        initMeasureLabel(result, map);
-      }
-    });
-  }
-
-  changeModeByResults() {
-    let markupResults = this.markupResults;
-
-    for (let i = 0; i < MODES.length; i++) {
-      let key = MODES[i];
-      let modeResults = get(markupResults, key);
-
-      if (modeResults && modeResults.length) {
-        this.set('mode', key);
-        return;
-      }
-    }
+    this.results
+      .filter((item) => item.showMeasurement)
+      .forEach((result) => {
+        if (result.label) {
+          result.label.setMap(map);
+        } else {
+          initMeasureLabel(result, map);
+        }
+      });
   }
 
   get layer() {

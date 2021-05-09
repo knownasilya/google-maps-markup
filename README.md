@@ -10,9 +10,10 @@ Drawing and measurement tools for a Google Map
 [Preview Demo]
 
 ## Compatibility
-* Ember.js v3.16 or above
-* Ember CLI v2.13 or above
-* Node.js v10 or above
+
+- Ember.js v3.16 or above
+- Ember CLI v2.13 or above
+- Node.js v10 or above
 
 ## Usage
 
@@ -34,7 +35,7 @@ ember install google-maps-markup
 #### Actions
 
 - `afterAddFeature` - Fires after finishing some markup on the map. Passes the result as the first argument, i.e. `afterAddFeature(result) {}`.
-- `afterClearResults` - Fires after clicking "Clear" for a mode. Passes the mode as the first argument, i.e `afterClearResults(mode) {}`.
+- `afterClearResults` - Fires after clicking "Clear"
 
 ### Service
 
@@ -47,15 +48,12 @@ markupData: Ember.inject.service();
 
 #### Properties
 
-- `layers` - Array of Google Maps Data layers, one for draw and one for measure.
-- `results` - Markup data for each markup you create, based on mode. See `markupResults` for all results.
-- `markupResults` - The object of all the results, no matter the mode.
-- `mode` - The drawing mode, either 'draw' or 'measure'.
+- `layer` - Google Maps Data layer
+- `results` - Markup data for each markup you create
 
 #### Methods
 
-- `activate` - Add all layers to the map. `activate(map)`.
-- `changeModeByResults` - Changes the mode to the first layer with results.
+- `activate` - Add the google layer to the map. `activate(map)`.
 - `featureToResult` - Converts a Google Maps Data Feature to a markup result, for loading data without
   actually drawing on the map (ie, load via url). `featureToResult(feature, layer)`.
 

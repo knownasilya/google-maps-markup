@@ -90,6 +90,7 @@ export default class GoogleMapsMarkup extends Root {
   setup(_el, [map]) {
     if (!this.mapSetup && map) {
       this.mapSetup = true;
+      this.setupLayer();
       this.activateLayer(map);
     }
   }
@@ -381,11 +382,12 @@ export default class GoogleMapsMarkup extends Root {
 
   @action
   toggleResults() {
-    let isHidden = this.toggleProperty('resultsHidden');
+    let isHidden = !this.resultsHidden;
     let results = this.results;
 
-    results.forEach((result) => this.toggleResult(result, !isHidden));
+    results.forEach((result) => this.toggleResult(result, isHidden));
     this.layer.isHidden = isHidden;
+    this.resultsHidden = isHidden;
   }
 
   @action
@@ -630,7 +632,7 @@ export default class GoogleMapsMarkup extends Root {
     }
   }
 
-  changeLayer() {
+  setupLayer() {
     let map = this.map;
     let toolId = this.toolId;
     let layer = this.layer;
@@ -641,12 +643,6 @@ export default class GoogleMapsMarkup extends Root {
     }
 
     layer.data.setDrawingMode(tool && tool.dataId);
-
-    this.setupLayer();
-  }
-
-  setupLayer() {
-    let layer = this.layer;
 
     let listener = layer.data.addListener('addfeature', (event) => {
       if (event.feature.getProperty('skip')) {
@@ -789,7 +785,7 @@ export default class GoogleMapsMarkup extends Root {
           return;
         }
 
-        if (withinMap && noPoints && !drawFinished) {
+        if (tool.showMeasurement && withinMap && noPoints && !drawFinished) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
           plotter = labelPlotter(
