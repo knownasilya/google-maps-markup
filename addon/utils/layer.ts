@@ -1,7 +1,15 @@
 import RSVP from 'rsvp';
 
 class Layer {
-  constructor(options) {
+  isHidden: boolean;
+  data: google.maps.Data;
+  textData: any[];
+
+  constructor(options: {
+    isHidden?: boolean;
+    featureFactory?: () => any;
+    textGeoJson?: any[];
+  }) {
     this.isHidden = options.isHidden ?? false;
     this.data = new google.maps.Data({
       featureFactory: options.featureFactory,
@@ -9,11 +17,11 @@ class Layer {
     this.textData = options.textGeoJson || [];
   }
 
-  toGeoJson() {
-    let textData = this.textData;
+  toGeoJson(): Promise<GeoJSON.FeatureCollection> {
+    const textData = this.textData;
 
     return new RSVP.Promise((resolve) => {
-      this.data.toGeoJson((data) => {
+      this.data.toGeoJson((data: GeoJSON.FeatureCollection) => {
         data.features = data.features.concat(textData);
         resolve(data);
       });

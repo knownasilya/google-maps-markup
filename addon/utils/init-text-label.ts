@@ -1,7 +1,11 @@
 import featureCenter from './feature-center';
 import factoryDynamicLabel from './dynamic-label';
 
-export default function initTextLabel(result, layer, map) {
+export default function initTextLabel(
+  result,
+  layer: google.maps.Data,
+  map: google.maps.Map
+) {
   if (!result) {
     return;
   }

@@ -1,4 +1,4 @@
-export default function formatNumber(value) {
+export default function formatNumber(value: number): number {
   if (value < 1) {
     // 4 decimal places
     value = Math.round(value * 10000) / 10000;

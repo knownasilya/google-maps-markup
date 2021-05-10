@@ -1,13 +1,30 @@
 let MapLabelLocal;
 
+export type MapLabelOptions = {
+  dontScale?: boolean;
+  element?: HTMLElement;
+  className?: string;
+  color?: string;
+  label?: string;
+};
+
 export default function mapLabelFactory() {
   if (MapLabelLocal) {
     return MapLabelLocal;
   }
 
   class MapLabel extends google.maps.OverlayView {
-    constructor(latlng, options) {
-      super(...arguments);
+    latlng: google.maps.LatLng;
+    dontScale?: boolean;
+    options: MapLabelOptions;
+    _element: HTMLElement;
+    center = true;
+    lastZoom?: number;
+    scaleMaxZoom?: number;
+    scale?: number;
+
+    constructor(latlng: google.maps.LatLng, options: MapLabelOptions) {
+      super();
 
       options = options || {};
 
@@ -25,15 +42,18 @@ export default function mapLabelFactory() {
       }
 
       // Requires element to be present
-      this.color = options.color;
-      this.label = options.label;
-      this.center = true;
+      if (options.color) {
+        this.color = options.color;
+      }
+      if (options.label) {
+        this.label = options.label;
+      }
     }
 
     // Required by GMaps
     onAdd() {
-      let panes = this.getPanes();
-      let pane = panes.markerLayer;
+      const panes = this.getPanes();
+      const pane = panes.markerLayer;
 
       if (pane) {
         pane.appendChild(this._element);
@@ -42,37 +62,37 @@ export default function mapLabelFactory() {
 
     // Required by GMaps
     draw() {
-      let map = this.getMap();
+      const map = this.getMap();
 
       if (!map || !this.latlng) {
         return;
       }
 
-      let projection = this.getProjection();
+      const projection = this.getProjection();
 
       if (!projection) {
         return;
       }
 
-      let position = projection.fromLatLngToDivPixel(this.latlng);
-      let div = this._element;
+      const position = projection.fromLatLngToDivPixel(this.latlng);
+      const div = this._element;
 
       if (position && position.x && position.y) {
-        let width = this._element.clientWidth;
-        let height = this._element.clientHeight;
-        let center = this.center;
+        const width = this._element.clientWidth;
+        const height = this._element.clientHeight;
+        const center = this.center;
 
         div.style.display = 'block';
 
         if (map) {
-          let zoom = map.getZoom();
+          const zoom = map.getZoom();
 
           this.updateScale(zoom, this.lastZoom);
           this.lastZoom = zoom;
         }
 
-        let left = center ? position.x - width / 2 : position.x;
-        let top = center ? position.y - height / 2 : position.y;
+        const left = center ? position.x - width / 2 : position.x;
+        const top = center ? position.y - height / 2 : position.y;
 
         div.style.left = left + 'px';
         div.style.top = top + 'px';
@@ -83,7 +103,7 @@ export default function mapLabelFactory() {
 
     // Required by GMaps
     onRemove() {
-      this._element.parentNode.removeChild(this._element);
+      this._element?.parentNode?.removeChild(this._element);
     }
 
     set label(value) {
@@ -123,7 +143,7 @@ export default function mapLabelFactory() {
       this._element.style.display = 'block';
     }
 
-    updateScale(newZoom, oldZoom) {
+    updateScale(newZoom: number, oldZoom?: number) {
       if (this.dontScale) {
         return;
       }
@@ -132,6 +152,10 @@ export default function mapLabelFactory() {
         this._element.style.transform = 'scale(1)';
         this.scale = 1;
         this.scaleMaxZoom = newZoom;
+        return;
+      }
+
+      if (!this.scale || !this.scaleMaxZoom) {
         return;
       }
 

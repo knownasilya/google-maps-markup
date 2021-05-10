@@ -4,8 +4,26 @@ import area from './area';
 import distance from './distance';
 import optionsData from './options-data';
 
-export default function measureTypeResult(type, value, unitId) {
-  let units = A(optionsData[type].distanceUnits);
+export type Options = {
+  [M in keyof typeof optionsData]: typeof optionsData[M];
+};
+export type OptionId = keyof Options;
+export type Option = Options[OptionId];
+
+const validTypes: OptionId[] = ['polyline', 'polygon', 'circle', 'rectangle'];
+
+export default function measureTypeResult(
+  type: OptionId,
+  value: number,
+  unitId: string
+) {
+  const option = optionsData[type];
+
+  if (!isValidType(type, option)) {
+    return;
+  }
+
+  const units = A<typeof option.distanceUnits[0]>(option.distanceUnits);
   let result = {
     measurementType: 'Distance',
     unit: units && units.findBy('id', unitId),
@@ -37,4 +55,18 @@ export default function measureTypeResult(type, value, unitId) {
 
   result.value = commaifyNumber(result.value);
   return result;
+}
+
+function isValidType(
+  type: OptionId,
+  option: unknown
+): option is
+  | Options['circle']
+  | Options['rectangle']
+  | Options['polygon']
+  | Options['polyline'] {
+  if (validTypes.includes(type)) {
+    return true;
+  }
+  return false;
 }
