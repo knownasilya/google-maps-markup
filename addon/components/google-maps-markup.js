@@ -321,16 +321,17 @@ export default class GoogleMapsMarkup extends Root {
             this.editResult(found.args.data, found.guid);
           }
         });
+
         let mouseoverListener = layer.data.addListener('mouseover', (event) => {
           let found = this.childComponents.find(function (comp) {
             return comp.args.data?.feature.getId() === event.feature.getId();
           });
 
           if (found) {
-            // invoke action here
             this.highlightResult(found.args.data);
           }
         });
+
         let mouseoutListener = layer.data.addListener('mouseout', () => {
           this.childComponents.forEach((comp) => {
             this.resetResultStyle(comp.args.data);
