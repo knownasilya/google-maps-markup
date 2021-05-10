@@ -1,6 +1,6 @@
 import { guidFor } from '@ember/object/internals';
 import { tracked } from '@glimmer/tracking';
-import { set, action, computed } from '@ember/object';
+import { set, action } from '@ember/object';
 import { Node } from 'ember-composability-tools';
 import getMeasurement from '../utils/get-measurement';
 import featureCenter from '../utils/feature-center';
@@ -24,7 +24,6 @@ export default class GmmResultItem extends Node {
     }
   }
 
-  @computed('data.feature', 'textLabel')
   get description() {
     if (this.textLabel) {
       return this.textLabel;
@@ -117,8 +116,6 @@ export default class GmmResultItem extends Node {
         }
       }
     }
-
-    this.args.data = data;
   }
 
   @action

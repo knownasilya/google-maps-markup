@@ -1,6 +1,5 @@
 import { inject as service } from '@ember/service';
 import { tracked, cached } from '@glimmer/tracking';
-import { alias } from '@ember/object/computed';
 import { copy } from 'ember-copy';
 import { run, next } from '@ember/runloop';
 import { A as boundArray } from '@ember/array';
@@ -48,14 +47,21 @@ export default class GoogleMapsMarkup extends Root {
   }
   // End Attrs
 
-  @alias('markupData.results')
-  results;
-  @alias('markupData.textGeoJson')
-  textGeoJson;
-  @alias('markupData.tools')
-  tools;
-  @alias('markupData.layer')
-  layer;
+  get results() {
+    return this.markupData.results;
+  }
+
+  get textGeoJson() {
+    return this.markupData.textGeoJson;
+  }
+
+  get tools() {
+    return this.markupData.tools;
+  }
+
+  get layer() {
+    return this.markupData.layer;
+  }
 
   @tracked drawFinished;
   @tracked toolActive;
