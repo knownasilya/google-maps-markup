@@ -319,7 +319,7 @@ export default class GoogleMapsMarkup extends Root {
 
           if (found) {
             // invoke action on the component
-            found.send('edit', event.latLng);
+            this.editResult(found.args.data, found.guid);
           }
         });
         let mouseoverListener = layer.data.addListener('mouseover', (event) => {
