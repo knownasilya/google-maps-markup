@@ -318,7 +318,6 @@ export default class GoogleMapsMarkup extends Root {
           });
 
           if (found) {
-            // invoke action on the component
             this.editResult(found.args.data, found.guid);
           }
         });
