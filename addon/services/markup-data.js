@@ -1,17 +1,19 @@
 import Service from '@ember/service';
-import { tracked } from '@glimmer/tracking';
-import { action, get } from '@ember/object';
+import { action } from '@ember/object';
 import { A as boundArray } from '@ember/array';
 import createFeature from '../utils/create-feature';
 import initMeasureLabel from '../utils/init-measure-label';
 import initTextLabel from '../utils/init-text-label';
 import getTools from '../utils/tools';
 import Layer from '../utils/layer';
+import { cached, tracked } from '@glimmer/tracking';
 
 export default class MarkupData extends Service {
   results = boundArray();
   textGeoJson = boundArray();
   tools = getTools();
+
+  @tracked map;
 
   constructor() {
     super(...arguments);
@@ -29,7 +31,7 @@ export default class MarkupData extends Service {
   }
 
   activate(map) {
-    this.set('map', map);
+    this.map = map;
 
     // Enable layer to show on map
     this.layer.data.setMap(map);
@@ -46,10 +48,8 @@ export default class MarkupData extends Service {
       });
   }
 
+  @cached
   get layer() {
-    if (this._cachedLayer) {
-      return this._cachedLayer;
-    }
     let results = this.results;
     let textGeoJson = this.textGeoJson;
     let featureFactory = function (geom) {
@@ -61,8 +61,6 @@ export default class MarkupData extends Service {
       isHidden: false,
       featureFactory,
     });
-
-    this._cachedLayer = layer;
 
     return layer;
   }

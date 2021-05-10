@@ -498,7 +498,7 @@ export default class GoogleMapsMarkup extends Root {
     // disable editing on other items
     childComponents.forEach((comp) => {
       if (comp.guid !== guid) {
-        set(comp, 'data.editing', false);
+        set(comp.args, 'data.editing', false);
       }
     });
 

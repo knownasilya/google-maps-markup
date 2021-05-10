@@ -24,9 +24,9 @@ export default class ApplicationController extends Controller {
   loadMarkup(markupData) {
     let layer = this.markupDataService.layer;
 
-    layer.data.addGeoJson(markupData[index]);
+    layer.data.addGeoJson(markupData);
     layer.data.forEach((feature) =>
-      markupService.featureToResult(feature, layer)
+      this.markupDataService.featureToResult(feature, layer)
     );
   }
 
