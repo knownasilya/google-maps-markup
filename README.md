@@ -42,7 +42,12 @@ The service is called `markupData` and allows access to the result data that get
 create markup on the map. It also has some helper functions.
 
 ```js
-markupData: Ember.inject.service();
+import Component from '@glimmer/component';
+
+export default class MyComponent extends Component {
+  @service('markup-data')
+  markupDataService;
+}
 ```
 
 #### Properties
@@ -62,8 +67,7 @@ markupData: Ember.inject.service();
 ## Installation
 
 - `git clone` this repository
-- `npm install`
-- `bower install`
+- `yarn`
 
 ### Linting
 
