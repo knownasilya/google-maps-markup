@@ -273,6 +273,16 @@ export default class GoogleMapsMarkup extends Root {
   @action
   updateOptionValue(tool, prop, value) {
     set(tool, prop, value);
+
+    switch (prop) {
+      case 'showMeasurement': {
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
   }
 
   @action
@@ -409,7 +419,7 @@ export default class GoogleMapsMarkup extends Root {
 
       results.forEach((result) => {
         if (result.showMeasurement) {
-          result.label.onRemove();
+          result.label?.onRemove();
         } else if (result.feature.setMap) {
           // remove text marker
           result.feature.setMap(null);
@@ -441,7 +451,7 @@ export default class GoogleMapsMarkup extends Root {
     }
 
     if (result.showMeasurement) {
-      result.label.onRemove();
+      result.label?.onRemove();
     }
 
     results.removeObject(result);
@@ -473,7 +483,7 @@ export default class GoogleMapsMarkup extends Root {
         layer.data.remove(result.feature);
 
         if (result.showMeasurement) {
-          result.label.hide();
+          result.label?.hide();
         }
       }
     } else {
@@ -486,7 +496,7 @@ export default class GoogleMapsMarkup extends Root {
         layer.data.add(result.feature);
 
         if (result.showMeasurement) {
-          result.label.show();
+          result.label?.show();
         }
       }
     }
@@ -559,9 +569,7 @@ export default class GoogleMapsMarkup extends Root {
       };
     }
 
-    if (data.label) {
-      data.label.highlight();
-    }
+    data.label?.highlight();
 
     layer.data.overrideStyle(data.feature, style);
   }
@@ -579,9 +587,7 @@ export default class GoogleMapsMarkup extends Root {
           layer.data.overrideStyle(data.feature, data.style);
         }
 
-        if (data.label) {
-          data.label.clearHighlight();
-        }
+        data.label?.clearHighlight();
       }
     }
 
