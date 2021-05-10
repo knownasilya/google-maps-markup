@@ -787,11 +787,11 @@ export default class GoogleMapsMarkup extends Root {
         let drawFinished = this.drawFinished;
         let noPoints = !currentPoints.length;
 
-        if (toolIsPan || (noPoints && drawFinished)) {
+        if (toolIsPan || !tool.showMeasurement || (noPoints && drawFinished)) {
           return;
         }
 
-        if (tool.showMeasurement && withinMap && noPoints && !drawFinished) {
+        if (withinMap && noPoints && !drawFinished) {
           let latlng = calculateLatLng(map, event);
           currentPoints.push(latlng);
           plotter = labelPlotter(
