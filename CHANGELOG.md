@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.0.0](https://github.com/knownasilya/google-maps-markup/compare/v4.0.0...v5.0.0) (2021-06-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* internal components renamed, which might have been used by consumers directly.
+* drop Node.js < 12
+
+### Bug Fixes
+
+* changing mode not changing results ([2b33f28](https://github.com/knownasilya/google-maps-markup/commit/2b33f2848d58a3d36e80f678bbeb29de661ac5c5))
+* convert results component to glimmer component ([ab18a13](https://github.com/knownasilya/google-maps-markup/commit/ab18a13bfd7fbbd68239b79e24ade9a91206a0a4))
+* convert tools to gc ([041b80d](https://github.com/knownasilya/google-maps-markup/commit/041b80d4e5893d7f585eb1791f9fb1b6469300b3))
+* general fixes around editable, popups, and rendering items ([ba25220](https://github.com/knownasilya/google-maps-markup/commit/ba252205c0b34959f9c926b0b1e4b09125ab506f))
+* map events setup ([12d6862](https://github.com/knownasilya/google-maps-markup/commit/12d68622d9f87d000871992fa560b287f5e240a4))
+* parent/child registration (hover on geom highlights ui) ([97af4f2](https://github.com/knownasilya/google-maps-markup/commit/97af4f24d4f71442630008b809c59dc594557836)), closes [/github.com/miguelcobain/ember-composability-tools/issues/47#issuecomment-835463333](https://github.com/knownasilya//github.com/miguelcobain/ember-composability-tools/issues/47/issues/issuecomment-835463333)
+* rename internal components ([a49429e](https://github.com/knownasilya/google-maps-markup/commit/a49429e9ee09e47353ad6615adc58422260d2866))
+* update deps, and drop node < 12 ([fb7ef16](https://github.com/knownasilya/google-maps-markup/commit/fb7ef16dd31536594dcd3e63fd795783089c9f4f))
+* update setup on map load, and remove jquery ([713482d](https://github.com/knownasilya/google-maps-markup/commit/713482d636289ac9fdfe2151a16151f6db44316a))
+* update the rest to GC and use new composability tools ([73e5640](https://github.com/knownasilya/google-maps-markup/commit/73e5640cb45b0a908f0beec017495c5f620d12f0))
+
 ## [4.0.0](https://github.com/knownasilya/google-maps-markup/compare/v3.2.5...v4.0.0) (2021-05-07)
 
 
