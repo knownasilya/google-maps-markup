@@ -7,7 +7,7 @@ export default function initMeasureLabel(result, map) {
     return;
   }
 
-  if (result.mode === 'measure' && !result.label) {
+  if (result.showMeasurement && !result.label) {
     let center = featureCenter(result.feature);
     let measurement = getMeasurement(
       result.type,

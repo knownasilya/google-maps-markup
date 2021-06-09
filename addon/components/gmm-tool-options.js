@@ -6,7 +6,10 @@ export default class GmmToolOptions extends Component {
   optionsData = optionsData;
 
   @action
-  updateOpacity(id, event) {
-    this.args.updateOptionValue(this.args.tool, id, event.target.value);
+  updateOption(id, event) {
+    let option = this.args.tool.options?.find((opt) => opt.id === id);
+    let value =
+      option?.type === 'boolean' ? event.target.checked : event.target.value;
+    this.args.updateOptionValue(this.args.tool, id, value);
   }
 }

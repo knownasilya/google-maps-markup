@@ -1,8 +1,7 @@
 import { guidFor } from '@ember/object/internals';
 import { tracked } from '@glimmer/tracking';
-import { set, action, computed } from '@ember/object';
+import { set, action } from '@ember/object';
 import { Node } from 'ember-composability-tools';
-import MODE from '../utils/modes';
 import getMeasurement from '../utils/get-measurement';
 import featureCenter from '../utils/feature-center';
 
@@ -25,16 +24,14 @@ export default class GmmResultItem extends Node {
     }
   }
 
-  @computed('data.{mode,feature}', 'textLabel')
   get description() {
     if (this.textLabel) {
       return this.textLabel;
     }
 
     let data = this.args.data;
-    let mode = data.mode;
 
-    if (mode === MODE.measure.id) {
+    if (data.showMeasurement) {
       let m = getMeasurement(data.type, data.feature, data.distanceUnitId);
       // update the measure label
       data.label.label = `${m.value} ${m.unit.display}`;
@@ -119,8 +116,6 @@ export default class GmmResultItem extends Node {
         }
       }
     }
-
-    this.args.data = data;
   }
 
   @action

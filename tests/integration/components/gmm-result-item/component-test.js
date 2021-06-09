@@ -12,7 +12,6 @@ module('Integration | Component | gmm result item', function (hooks) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.on('myAction', function(val) { ... });
     this.set('data', {
-      mode: 'draw',
       type: 'circle',
     });
 

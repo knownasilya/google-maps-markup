@@ -14,6 +14,6 @@ module('Integration | Component | google maps markup', function (hooks) {
 
     await render(hbs`<GoogleMapsMarkup/>`);
 
-    assert.equal(this.element.find('h4').first().text(), 'Mode');
+    assert.equal(this.element.find('h4').first().text(), 'Tools');
   });
 });

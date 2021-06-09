@@ -1,13 +1,11 @@
 import { inject as service } from '@ember/service';
 import { tracked, cached } from '@glimmer/tracking';
-import { alias } from '@ember/object/computed';
 import { copy } from 'ember-copy';
 import { run, next } from '@ember/runloop';
 import { A as boundArray } from '@ember/array';
 import { set, action } from '@ember/object';
 import { v1 } from 'uuid';
 import { Root } from 'ember-composability-tools';
-import MODE from '../utils/modes';
 import overlayToFeature from '../utils/overlay-to-feature';
 import featureCenter from '../utils/feature-center';
 import initMeasureLabel from '../utils/init-measure-label';
@@ -49,24 +47,24 @@ export default class GoogleMapsMarkup extends Root {
   }
   // End Attrs
 
-  @alias('markupData.layers')
-  dataLayers;
-  @alias('markupData.results')
-  results;
-  @alias('markupData.modes')
-  modes;
-  @alias('markupData.drawTools')
-  drawTools;
-  @alias('markupData.measureTools')
-  measureTools;
-  @alias('markupData.textGeoJson')
-  textGeoJson;
-  @alias('markupData.tools')
-  tools;
+  get results() {
+    return this.markupData.results;
+  }
+
+  get textGeoJson() {
+    return this.markupData.textGeoJson;
+  }
+
+  get tools() {
+    return this.markupData.tools;
+  }
+
+  get layer() {
+    return this.markupData.layer;
+  }
 
   @tracked drawFinished;
   @tracked toolActive;
-  @tracked lastActiveLayer;
   @tracked activeTool = undefined;
   @tracked toolId = undefined;
 
@@ -98,8 +96,8 @@ export default class GoogleMapsMarkup extends Root {
   setup(_el, [map]) {
     if (!this.mapSetup && map) {
       this.mapSetup = true;
-      this.setupLayers(map);
-      this.changeMode(MODE.draw);
+      this.setupLayer();
+      this.activateLayer(map);
     }
   }
 
@@ -124,7 +122,6 @@ export default class GoogleMapsMarkup extends Root {
   addTextLabel(tool, position) {
     let autoResetToPan = this.autoResetToPan;
     let results = this.results;
-    let mode = this.markupData.mode;
     let map = this.map;
     let style = copy(tool.style || {});
     let labelMarker = new this.DynamicLabel(position, {
@@ -141,7 +138,6 @@ export default class GoogleMapsMarkup extends Root {
       },
     });
     let item = {
-      mode,
       style,
       isVisible: true,
       type: tool.id,
@@ -196,7 +192,6 @@ export default class GoogleMapsMarkup extends Root {
     let id = v1();
     let properties = {
       name: result.name,
-      mode: result.mode,
       type: result.type,
       style: result.style,
       isVisible: true,
@@ -214,8 +209,7 @@ export default class GoogleMapsMarkup extends Root {
     let autoResetToPan = this.autoResetToPan;
     let toolId = this.toolId;
     let map = this.map;
-    let mode = this.markupData.mode;
-    let activeLayer = this.activeLayer;
+    let layer = this.layer;
     let tool = this.markupData.getTool(toolId);
     let style = copy(tool.style || {});
     let poly = new google.maps.Polyline({
@@ -239,7 +233,6 @@ export default class GoogleMapsMarkup extends Root {
       let path = poly.getPath();
       let polygon = new google.maps.Data.Polygon([path.getArray()]);
       let item = {
-        mode,
         style,
         isVisible: true,
         type: tool.id,
@@ -252,8 +245,8 @@ export default class GoogleMapsMarkup extends Root {
       }
 
       poly = null;
-      activeLayer.data.add(feature);
-      activeLayer.data.overrideStyle(feature, style);
+      layer.data.add(feature);
+      layer.data.overrideStyle(feature, style);
 
       if (autoResetToPan) {
         run.later(
@@ -280,13 +273,16 @@ export default class GoogleMapsMarkup extends Root {
   @action
   updateOptionValue(tool, prop, value) {
     set(tool, prop, value);
-  }
 
-  @action
-  changeMode(mode) {
-    this.markupData.mode = mode.id;
-    this.changeLayer();
-    this.changeTool(this.toolId);
+    switch (prop) {
+      case 'showMeasurement': {
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
   }
 
   @action
@@ -307,7 +303,7 @@ export default class GoogleMapsMarkup extends Root {
   @action
   changeTool(toolId) {
     let markupDataService = this.markupData;
-    let activeLayer = this.activeLayer;
+    let layer = this.layer;
     let map = this.map;
     let dm = this.dm;
     let tool = this.markupData.getTool(toolId);
@@ -317,39 +313,36 @@ export default class GoogleMapsMarkup extends Root {
     this.drawFinished = false;
     markupDataService.set('activeTool', tool.id);
 
-    this.resetAllLayers();
+    this.resetLayer();
     this.clearListeners();
     dm.setDrawingMode(null);
     map.setOptions({ draggableCursor: 'default' });
 
-    if (activeLayer) {
-      activeLayer.data.setDrawingMode(null);
+    if (layer) {
+      layer.data.setDrawingMode(null);
 
       if (tool.id === 'pan') {
-        let clickListener = activeLayer.data.addListener('click', (event) => {
+        let clickListener = layer.data.addListener('click', (event) => {
           let found = this.childComponents.find(function (comp) {
             return comp.args.data?.feature.getId() === event.feature.getId();
           });
 
           if (found) {
-            // invoke action on the component
-            found.send('edit', event.latLng);
+            this.editResult(found.args.data, found.guid);
           }
         });
-        let mouseoverListener = activeLayer.data.addListener(
-          'mouseover',
-          (event) => {
-            let found = this.childComponents.find(function (comp) {
-              return comp.args.data?.feature.getId() === event.feature.getId();
-            });
 
-            if (found) {
-              // invoke action here
-              this.highlightResult(found.args.data);
-            }
+        let mouseoverListener = layer.data.addListener('mouseover', (event) => {
+          let found = this.childComponents.find(function (comp) {
+            return comp.args.data?.feature.getId() === event.feature.getId();
+          });
+
+          if (found) {
+            this.highlightResult(found.args.data);
           }
-        );
-        let mouseoutListener = activeLayer.data.addListener('mouseout', () => {
+        });
+
+        let mouseoutListener = layer.data.addListener('mouseout', () => {
           this.childComponents.forEach((comp) => {
             this.resetResultStyle(comp.args.data);
           });
@@ -373,20 +366,18 @@ export default class GoogleMapsMarkup extends Root {
         });
         listeners.pushObject(mapListener);
 
-        this.dataLayers.forEach((layer) => {
-          let dataListener = layer.data.addListener('click', (event) => {
-            this.addTextLabel(tool, event.latLng);
-            map.setOptions({ draggableCursor: 'default' });
-            event.stop();
-          });
-          listeners.pushObject(dataListener);
+        let dataListener = this.layer.data.addListener('click', (event) => {
+          this.addTextLabel(tool, event.latLng);
+          map.setOptions({ draggableCursor: 'default' });
+          event.stop();
         });
+        listeners.pushObject(dataListener);
       } else if (tool.dataId) {
         let style = copy(tool.style || {});
 
         map.setOptions({ draggableCursor: 'crosshair' });
-        activeLayer.data.setDrawingMode(tool.dataId);
-        activeLayer.data.setStyle(style);
+        layer.data.setDrawingMode(tool.dataId);
+        layer.data.setStyle(style);
       } else if (tool.dmId) {
         let style = copy(tool.style || {});
 
@@ -407,19 +398,18 @@ export default class GoogleMapsMarkup extends Root {
 
   @action
   toggleResults() {
-    let isHidden = this.toggleProperty('resultsHidden');
-    let activeLayer = this.activeLayer;
+    let isHidden = !this.resultsHidden;
     let results = this.results;
 
-    results.forEach((result) => this.toggleResult(result, !isHidden));
-    activeLayer.isHidden = isHidden;
+    results.forEach((result) => this.toggleResult(result, isHidden));
+    this.layer.isHidden = isHidden;
+    this.resultsHidden = isHidden;
   }
 
   @action
   clearResults() {
     if (confirm(clearAllConfirm)) {
-      let mode = this.markupData.mode;
-      let layer = this.activeLayer;
+      let layer = this.layer;
       let results = this.results;
       let textGeoJson = this.textGeoJson;
 
@@ -428,8 +418,8 @@ export default class GoogleMapsMarkup extends Root {
       });
 
       results.forEach((result) => {
-        if (mode === 'measure') {
-          result.label.onRemove();
+        if (result.showMeasurement) {
+          result.label?.onRemove();
         } else if (result.feature.setMap) {
           // remove text marker
           result.feature.setMap(null);
@@ -449,9 +439,8 @@ export default class GoogleMapsMarkup extends Root {
 
   @action
   removeResult(result) {
-    let mode = this.markupData.mode;
     let results = this.results;
-    let layer = this.activeLayer;
+    let layer = this.layer;
     let textGeoJson = this.textGeoJson;
 
     if (result.type === 'text') {
@@ -461,8 +450,8 @@ export default class GoogleMapsMarkup extends Root {
       layer.data.remove(result.feature);
     }
 
-    if (mode === 'measure') {
-      result.label.onRemove();
+    if (result.showMeasurement) {
+      result.label?.onRemove();
     }
 
     results.removeObject(result);
@@ -476,9 +465,7 @@ export default class GoogleMapsMarkup extends Root {
    */
   @action
   toggleResult(result, force) {
-    let layer = this.activeLayer;
-    let mode = this.markupData.mode;
-    let isMeasure = mode === 'measure';
+    let layer = this.layer;
     let hide =
       force !== undefined && force !== null
         ? !force
@@ -495,8 +482,8 @@ export default class GoogleMapsMarkup extends Root {
         result.feature.setProperty('isVisible', false);
         layer.data.remove(result.feature);
 
-        if (isMeasure) {
-          result.label.hide();
+        if (result.showMeasurement) {
+          result.label?.hide();
         }
       }
     } else {
@@ -508,8 +495,8 @@ export default class GoogleMapsMarkup extends Root {
         result.feature.setProperty('isVisible', true);
         layer.data.add(result.feature);
 
-        if (isMeasure) {
-          result.label.show();
+        if (result.showMeasurement) {
+          result.label?.show();
         }
       }
     }
@@ -527,7 +514,7 @@ export default class GoogleMapsMarkup extends Root {
     // disable editing on other items
     childComponents.forEach((comp) => {
       if (comp.guid !== guid) {
-        set(comp, 'data.editing', false);
+        set(comp.args, 'data.editing', false);
       }
     });
 
@@ -561,7 +548,7 @@ export default class GoogleMapsMarkup extends Root {
 
   @action
   highlightResult(data) {
-    let layer = this.activeLayer;
+    let layer = this.layer;
     let style;
 
     this.panToIfHidden(data.feature);
@@ -582,16 +569,14 @@ export default class GoogleMapsMarkup extends Root {
       };
     }
 
-    if (data.label) {
-      data.label.highlight();
-    }
+    data.label?.highlight();
 
     layer.data.overrideStyle(data.feature, style);
   }
 
   @action
   resetResultStyle(data) {
-    let layer = this.activeLayer;
+    let layer = this.layer;
 
     if (!data.editingShape) {
       if (data.type === 'text') {
@@ -602,9 +587,7 @@ export default class GoogleMapsMarkup extends Root {
           layer.data.overrideStyle(data.feature, data.style);
         }
 
-        if (data.label) {
-          data.label.clearHighlight();
-        }
+        data.label?.clearHighlight();
       }
     }
 
@@ -613,12 +596,8 @@ export default class GoogleMapsMarkup extends Root {
     }
   }
 
-  resetAllLayers() {
-    let layers = this.dataLayers;
-
-    layers.forEach((layer) => {
-      layer.data.setDrawingMode(null);
-    });
+  resetLayer() {
+    this.layer.data.setDrawingMode(null);
   }
 
   clearListeners() {
@@ -665,149 +644,106 @@ export default class GoogleMapsMarkup extends Root {
     }
   }
 
-  changeLayer() {
-    let modeId = this.markupData.mode;
+  setupLayer() {
     let map = this.map;
     let toolId = this.toolId;
-    let dataLayers = this.dataLayers;
-    let activeLayer = this.activeLayer;
+    let layer = this.layer;
+    let tool = this.markupData.getTool(toolId);
 
-    this.lastActiveLayer = activeLayer;
+    if (!layer.isHidden) {
+      layer.data.setMap(map);
+    }
 
-    if (modeId === MODE.draw.id || modeId === MODE.measure.id) {
-      let tool = this.markupData.getTool(toolId, modeId);
+    layer.data.setDrawingMode(tool && tool.dataId);
 
-      activeLayer = dataLayers[modeId === MODE.draw.id ? 0 : 1];
-
-      if (!activeLayer.isHidden) {
-        activeLayer.data.setMap(map);
+    let listener = layer.data.addListener('addfeature', (event) => {
+      if (event.feature.getProperty('skip')) {
+        return;
       }
 
-      // tool doesn't exist for this mode, revert to pan
-      if (!tool) {
-        this.changeTool(this.tools.pan.id);
-      }
+      let map = this.map;
+      let tool = this.activeTool;
+      let toolId = this.toolId;
+      let results = this.results;
+      let found = results.find(function (item) {
+        if (item.feature && item.feature.getId) {
+          return item.feature.getId() === event.feature.getId();
+        } else if (item.feature) {
+          return item.feature === event.feature;
+        }
+      });
 
-      activeLayer.data.setDrawingMode(tool && tool.dataId);
+      if (!found) {
+        let fillColorTransparent = copy(tool.fillColorTransparent);
+        let style = copy(tool.style || {});
 
-      this.activeLayer = activeLayer;
-      this.setupActiveLayer();
-    }
-  }
+        event.feature.setProperty('name', tool.name);
+        event.feature.setProperty('type', toolId);
+        event.feature.setProperty('isVisible', true);
+        event.feature.setProperty('style', style);
+        event.feature.setProperty('fillColorTransparent', fillColorTransparent);
+        event.feature.setProperty('distanceUnitId', tool.distanceUnitId);
 
-  setupActiveLayer() {
-    let mode = this.markupData.mode;
-    let layer = this.activeLayer;
-    let lastLayer = this.lastActiveLayer;
+        let item = {
+          layer,
+          style,
+          fillColorTransparent,
+          isVisible: true,
+          type: toolId,
+          name: tool.name,
+          feature: event.feature,
+          options: tool.options,
+          showMeasurement: tool.showMeasurement,
+          distanceUnitId: tool.distanceUnitId,
+          isEditable: Object.keys(style).length ? true : false,
+        };
 
-    if (!layer) {
-      return;
-    }
-
-    if (lastLayer) {
-      google.maps.event.clearListeners(lastLayer.data, 'addfeature');
-    }
-
-    let listener = layer.data.addListener(
-      'addfeature',
-      run.bind(this, (event) => {
-        if (event.feature.getProperty('skip')) {
-          return;
+        if (item.style) {
+          item.style.zIndex = 111;
+          layer.data.overrideStyle(event.feature, item.style);
         }
 
-        let map = this.map;
-        let tool = this.activeTool;
-        let toolId = this.toolId;
-        let results = this.results;
-        let found = results.find(function (item) {
-          if (item.feature && item.feature.getId) {
-            return item.feature.getId() === event.feature.getId();
-          } else if (item.feature) {
-            return item.feature === event.feature;
-          }
-        });
+        initMeasureLabel(item, map);
+        results.insertAt(0, item);
 
-        if (!found) {
-          let fillColorTransparent = copy(tool.fillColorTransparent);
-          let style = copy(tool.style || {});
+        if (this.afterAddFeature) {
+          this.afterAddFeature(item);
+        }
 
-          event.feature.setProperty('name', tool.name);
-          event.feature.setProperty('mode', mode);
-          event.feature.setProperty('type', toolId);
-          event.feature.setProperty('isVisible', true);
-          event.feature.setProperty('style', style);
-          event.feature.setProperty(
-            'fillColorTransparent',
-            fillColorTransparent
+        let autoResetToPan = this.autoResetToPan;
+
+        if (autoResetToPan) {
+          run.later(
+            this,
+            function () {
+              this.changeTool(this.tools.pan.id);
+            },
+            250
           );
-          event.feature.setProperty('distanceUnitId', tool.distanceUnitId);
-
-          let item = {
-            mode,
-            layer,
-            style,
-            fillColorTransparent,
-            isVisible: true,
-            type: toolId,
-            name: tool.name,
-            feature: event.feature,
-            options: tool.options,
-            distanceUnitId: tool.distanceUnitId,
-            isEditable: Object.keys(style).length ? true : false,
-          };
-
-          if (item.style) {
-            item.style.zIndex = 111;
-            layer.data.overrideStyle(event.feature, item.style);
-          }
-
-          initMeasureLabel(item, map);
-          results.insertAt(0, item);
-
-          if (this.afterAddFeature) {
-            this.afterAddFeature(item);
-          }
-
-          let autoResetToPan = this.autoResetToPan;
-
-          if (autoResetToPan) {
-            run.later(
-              this,
-              function () {
-                this.changeTool(this.tools.pan.id);
-              },
-              250
-            );
-          }
-
-          this.drawFinished = true;
         }
-      })
-    );
+
+        this.drawFinished = true;
+      }
+    });
 
     this.listeners.pushObjects([listener]);
   }
 
   @action
-  setupLayers(map) {
+  activateLayer(map) {
     let dm = this.dm;
     let results = this.results;
-    let layers = this.dataLayers;
 
-    // Enable all layers to show on map
-    layers.forEach((layer) => layer.data.setMap(map));
+    // Enable layer to show on map
+    this.markupData.layer.data.setMap(map);
 
-    let listener = dm.addListener(
-      'overlaycomplete',
-      run.bind(this, (event) => {
-        let activeLayer = this.activeLayer;
-        let feature = overlayToFeature(event.type, event.overlay, results);
+    let listener = dm.addListener('overlaycomplete', (event) => {
+      let feature = overlayToFeature(event.type, event.overlay, results);
 
-        event.overlay.setMap(null);
+      event.overlay.setMap(null);
 
-        activeLayer.data.add(feature);
-      })
-    );
+      this.layer.data.add(feature);
+    });
 
     this.listeners.pushObject(listener);
 
@@ -827,10 +763,9 @@ export default class GoogleMapsMarkup extends Root {
       let plotter;
 
       let onClick = run.bind(this, (event) => {
-        let mode = this.markupData.mode;
         let toolId = this.toolId;
         let toolActive = this.toolActive;
-        let tool = this.markupData.getTool(toolId, mode);
+        let tool = this.markupData.getTool(toolId);
         let mapDiv = map.getDiv();
         let target = event.target;
         let withinMap = mapDiv.contains(target);
@@ -842,23 +777,15 @@ export default class GoogleMapsMarkup extends Root {
           data.distanceUnitId = tool.distanceUnitId;
         }
 
-        if (mode === 'draw') {
-          if (
-            withinMap &&
-            toolActive !== true &&
-            toolId === 'freeFormPolygon'
-          ) {
-            next(() => {
-              this.enableFreeFormPolygon();
-            });
-            return;
-          }
+        if (toolId === 'freeFormPolygon' && withinMap && toolActive !== true) {
+          next(() => {
+            this.enableFreeFormPolygon();
+          });
+          return;
+        }
 
-          if (toolActive === false) {
-            this.toolActive = undefined;
-            return;
-          }
-
+        if (toolActive === false) {
+          this.toolActive = undefined;
           return;
         }
 
@@ -866,7 +793,7 @@ export default class GoogleMapsMarkup extends Root {
         let drawFinished = this.drawFinished;
         let noPoints = !currentPoints.length;
 
-        if (toolIsPan || (noPoints && drawFinished)) {
+        if (toolIsPan || !tool.showMeasurement || (noPoints && drawFinished)) {
           return;
         }
 

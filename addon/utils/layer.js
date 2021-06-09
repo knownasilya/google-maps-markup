@@ -2,8 +2,10 @@ import RSVP from 'rsvp';
 
 class Layer {
   constructor(options) {
-    this.isHidden = options.isHidden || false;
-    this.data = options.data;
+    this.isHidden = options.isHidden ?? false;
+    this.data = new google.maps.Data({
+      featureFactory: options.featureFactory,
+    });
     this.textData = options.textGeoJson || [];
   }
 
